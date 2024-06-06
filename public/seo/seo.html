@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги по работе с фотографиями</title>
+    <link rel="stylesheet" href="seo.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div class="container">
+    <h1 class="primary">Как правильно настроить SEO</h1>
+    <p>
+        Сам себе SEO-шник.<br>
+        <strong>Без знания английского. | Без знания программирования.</strong><br>
+        Не в обиду программистам. | Искусственный интеллект дает возможности для творчества.<br>
+        И у меня есть большое желание это делать в интернете.<br><br>
+
+        То, что я узнал от ИИ | Чем хочу поделиться с вами.
+    </p>
+    <hr>
+    <h2>Проверьте свой сайт на ошибки <a href="https://pagespeed.web.dev" target="_blank">https://pagespeed.web.dev </a></h2>
+    <h3>Впишите в поиске <b style="color: #ee5959;">site: ваш_домен </b> (увидите все свои страницы)</h3>
+    <ul>
+        <li>
+            <strong>robots.txt:</strong> Этот файл используется для указания инструкций поисковым роботам, какие страницы или разделы вашего сайта они могут индексировать, а какие - нет. Обычно он создается до публикации сайта в интернете, чтобы управлять доступом поисковых систем к различным частям вашего сайта.
+        </li>
+        <li>
+            <strong>sitemap.xml:</strong> Этот файл представляет собой список всех доступных для индексации страниц вашего сайта. Он помогает поисковым системам более эффективно находить и индексировать страницы вашего сайта. Создавать его лучше после того, как ваш сайт уже имеет значительное количество страниц, и обновлять его при добавлении новых страниц или изменении структуры сайта.
+        </li>
+        <li>
+            <strong>sitemap-images.xml:</strong> Этот файл подобен sitemap.xml, но предназначен специально для изображений на вашем сайте. Он помогает поисковым системам индексировать изображения на вашем сайте. Создавать его нужно, если на вашем сайте присутствует много изображений, и вы хотите, чтобы они были хорошо индексированы поисковыми системами.
+        </li>
+    </ul>
+
+    <p>Важно помнить, что хорошо продуманный robots.txt и sitemap.xml могут значительно помочь в продвижении вашего сайта в поисковых системах.</p>
+
+
+    <div class="styled-div">
+        <p><strong>robots.txt</strong></p>
+        <p>User-agent: *</p>
+        <p># Указать путь к файлу sitemap.xml</p>
+        <p>Sitemap: https://ваш_сайт/sitemap.xml</p>
+        <p>Sitemap: https://ваш_сайт/sitemap-images.xml</p>
+    </div>
+
+    <div class="service">
+        <div class="square"><span>1</span></div>
+        <div class="description">
+            <p>Пример кода с использованием атрибута <strong>src</strong> | <strong>alt</strong> | <strong>width</strong> | <strong>height</strong>.</p>
+            <pre>&lt;img <span style='color: #ee5959;'>src</span>=<span style='color: #4dce4d;'>"dostawka-iz-evropy.webp"</span> <span style='color: #ee5959;'>alt</span>=<span style='color: #4dce4d;'>"Доставка из Европы"</span> width="500" height="300" /&gt;</pre>
+        </div>
+        <div class="description">
+            <h2>Редактирование фотографий</h2>
+            <p><b style="color: #ee5959;">src</b> Рекомендации:</p>
+            <li>Подпиши изображение тематически. Пример:"dostawka-iz-evropy.webp"</li>
+            <li>Использовать современный формат изображений WEBp <a href="https://squoosh.app/" target="_blank">https://squoosh.app/</a></li>
+            <li> + Уменьшает размер изображения</li>
+
+            <p><b style="color: #ee5959;">alt</b> Рекомендации:</p>
+            <li>Подпиши изображение тематически. Пример:"Доставка из Европы"</li>
+            <p><b style="color: #ee5959;">width и height</b> Рекомендации:</p>
+            <li>Google рекомендует указывать в коде html эти параметры и они должны совпадать с размером изображений</li>
+            <li>Каждое изображение делалось через фотошоп вручную в определенном размере. Пример: "500" и "300" px</li>
+            <li>Важным является указать правильный размер. "Так как в коде будет писатся, "ошибка" укажите точный размер"</li>
+        </div>
+    </div>
+    <div class="service">
+    <div class="description">
+        <p>Пример кода <strong>image-sitemap.xml</strong></p>
+        <pre>&lt;image:loc&gt;https://www.toaric.ru/dostawka-iz-evropy.webp&lt;/image:loc&gt;
+&lt;image:title&gt;Услуга доставки из Европы&lt;/image:title&gt;
+&lt;image:caption&gt;Изображение, демонстрирующее процесс доставки товаров из Европы в компании Toaric&lt;/image:caption&gt;</pre>
+    </div>
+    <div class="description">
+        <h2>Карта сайта изображений</h2>
+        <p><b style="color: #ee5959;">Карта сайта изображений (image sitemap)</b> — это файл XML, который содержит информацию об изображениях на вашем сайте. Этот файл помогает поисковым системам лучше понять содержание изображений на вашем сайте и улучшает их индексацию в поисковой выдаче. Карты изображений также могут включать метаданные об изображениях, такие как заголовок, описание и URL изображения, что помогает поисковым системам лучше понять контекст и содержание изображений.</p>
+        <p>Из бесплатных сайтов где можно сделать карту сайта с изображениями и всеми страницами я нашел только этот <a href="https://www.mysitemapgenerator.com/start/free.str.image" target="_blank">https://www.mysitemapgenerator.com</a> вот условия от Google по карте сайта <a href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps?hl=ru" target="_blank">image-sitemaps Google</a>. Лично я делал себе вручную через ИИ, давал ему шаблон и он добавлял фотографии, и описание (это был долгий и трудоемкий процесс).</p>
+        <p>Рекомендуется указывать частоту проверки файла для Роботов &lt;changefreq&gt; weekly &lt;/changefreq&gt; - один раз в неделю.</p>
+    </div>
+    </div>
+    <div class="bordered-box">
+        <p>Если у вас есть достаточно времени для подписывания изображений в соответствии с тематикой сайта, изменения их размеров для более корректного отображения на веб-страницах и в коде, а также перекодирования изображений в формат WEBp для более быстрой загрузки ваших страниц, то этот материал будет весьма полезным. Однако, если вы владелец интернет-магазина и имеете большое количество продуктов, и не хотите выполнять эти задачи вручную, проще всего заплатить за услуги специалиста.</p>
+        <p>Если вы готовы заплатить за эту работу, ознакомьтесь с условиями сделки: <a href="http://localhost:3000/pomogator/pomogator.html">ПОМОГАТОР</a></p>
+        <p>Буду также рад любым <strong>DONATION</strong> от тех, кому я смог помочь, а также готов подробно ответить на ваши вопросы по электронной почте <a href="mailto:j.travinov@gmail.com">j.travinov@gmail.com</a>.</p>
+    </div>
+    <div class="service">
+        <div class="square"><span>2</span></div>
+        <div class="description">
+            <p>Пример кода с использованием атрибута <strong>meta</strong>.</p>
+            <pre>&lt;img <span style='color: #ee5959;'>src</span>=<span style='color: #4dce4d;'>"edit-photo.webp"</span> <span style='color: #ee5959;'>alt</span>=<span style='color: #4dce4d;'>"Редактирование фотографии"</span> width="500" height="300" /&gt;</pre>
+        </div>
+        <div class="description">
+            <h2>Редактирование фотографий</h2>
+            <p><b style="color: #28b0a4;">Alt</b> - это текст, который будет отображаться вместо изображения, если изображение не загружено или недоступно для просмотра. Обычно это краткое описание изображения или его функции.</p>
+        </div>
+    </div>
+    <!-- Добавьте остальные блоки .service с аналогичной структурой -->
+</div>
+<div id="footer"></div>
+<script src="/global.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+nav {
+    text-align: center; /* Центрирует элементы списка */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 10px 0 0; /* Верхний отступ в 10px, остальные - 0 */
+    margin: 0; /* Убирает внешние отступы */
+}
+
+nav ul li {
+    display: inline-block; /* Делает элементы списка блочными, чтобы можно было задать ширину и выравнивание */
+    margin-right: 20px;
+    border: 1px solid black; /* Рамка всегда видна */
+}
+
+nav ul li:last-child {
+    margin-right: 0; /* Убирает правый отступ у последнего элемента */
+}
+
+nav ul li a {
+    color: black; /* Цвет текста черный */
+    text-decoration: none;
+    display: block; /* Делаем ссылку блочным элементом, чтобы рамка полностью окружала текст */
+    padding: 10px; /* Добавляем небольшие отступы для улучшения внешнего вида */
+}
+
+nav ul li:hover {
+    background-color: black; /* Цвет фона при наведении */
+}
+
+nav ul li a:hover {
+    color: white; /* Цвет текста меняется на белый при наведении */
+    text-decoration: none; /* Убирает подчеркивание при наведении */
+}
+

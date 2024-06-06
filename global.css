@@ -1,0 +1,85 @@
+/* Основные стили */
+
+body {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.primary {
+    color: #ff6600;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.section {
+    padding: 20px;
+}
+
+.button {
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #ff6600;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+li {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Медиа-запросы для адаптивного дизайна */
+
+@media (max-width: 1200px) {
+    /* Подгоняем размер шрифта для более крупных экранов */
+    p, a, li, h1 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Адаптивные стили для экранов среднего размера */
+    .container {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Полностью убираем отступы контейнера на узких экранах */
+    .container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Дополнительные адаптивные стили для очень узких экранов */
+    p, a, li, h1 {
+        font-size: 14px;
+    }
+}

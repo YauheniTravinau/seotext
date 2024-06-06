@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сравнение текстов</title>
+    <link rel="stylesheet" href="compare.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<h1 class="primary">Самописные GPT помогаторы для SEO</h1>
+<div class="container">
+    <h2>Сравнение текстов на отличия друг от друга</h2>
+    <div class="text-container">
+        <label for="text1"></label><textarea id="text1" placeholder="Введите текст 1"></textarea>
+        <p id="charCount1" class="char-count">Количество символов: 0</p>
+    </div>
+    <div class="text-container">
+        <label for="text2"></label><textarea id="text2" placeholder="Введите текст 2"></textarea>
+        <p id="charCount2" class="char-count">Количество символов: 0</p>
+    </div>
+</div>
+
+<div class="result">
+    <p id="differences"></p>
+</div>
+
+<div class="container">
+    <h2>Конвертер изображений | Быстрая обрезка</h2>
+    <div class="input-container">
+        <label for="width">Ширина:</label>
+        <input type="text" id="width" placeholder="2500">
+    </div>
+    <div class="input-container">
+        <label for="height">Высота:</label>
+        <input type="text" id="height" placeholder="2500">
+    </div>
+    <div class="input-container">
+        <label for="copies">Количество копий:</label>
+        <input type="number" id="copies" min="1" value="1">
+    </div>
+    <input type="file" id="fileInput" multiple>
+    <div class="input-container">
+        <label for="format">Формат:</label>
+        <select id="format">
+            <option value="original">Оригинальный</option>
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="captions">Подписи:</label>
+        <textarea id="captions" rows="10" placeholder="Введите подписи для фотографий в столбик" oninput="countLines(this)"></textarea>
+        <div id="lineCount">Строк: 0</div>
+    </div>
+    <button class="process-btn" onclick="resizeAndRenameImages()">Обработать и переименовать</button>
+    <div id="output"></div>
+</div>
+
+<br>
+<div class="container">
+    <h2>Быстрое сокращение и преобразование текста</h2>
+    <label for="unique_inputText"></label><textarea id="unique_inputText" placeholder="Введите текст здесь..."></textarea>
+    <div class="options">
+        <label for="maxLineLength">Макс. длина строки:</label>
+        <input type="number" id="maxLineLength" value="70" placeholder="Введите число">
+    </div>
+    <div class="options">
+        <label for="shuffleMode">Выберите режим:</label>
+        <select id="shuffleMode" onchange="changeShuffleMode()">
+            <option value="1">Подписи: Фото | Файлы-SEO</option>
+            <option value="2">Подписи: Alt | Теги | Мета-теги | Фото-title</option>
+        </select>
+    </div>
+    <div class="options">
+        <label for="transliteration">Преобразовать русские слова в латиницу:</label>
+        <input type="checkbox" id="transliteration">
+    </div>
+    <button class="process-btn" id="shuffleButton" onclick="shuffleText()">Обработать текст</button>
+    <button class="process-btn" onclick="copyResult()">&#128203;</button>
+    <h2>Готовый результат:</h2>
+    <div id="unique_output"></div>
+</div>
+<br>
+<div class="container">
+    <h2>Создание Sitemap - способ через Windows</h2>
+    <p><a href="/downloads/robots.txt" download>robots.txt</a> - пример файла (Добавляем в корневую директорию сайта, исправте внутри ссылку "ваш_сайт")</p>
+    <p><a href="/downloads/wget_1.21.1.rar" download>wget_1.21.1</a> - скачайте архив | разорхивируйте | скопируйте путь к архиву</p>
+    <p>мой путь cd /d E:\программер\Программки\wget_1.21.1 - пути начинаются с "cd /d"</p>
+
+    <p>Win + R - вписываем cmd и жмём OK</p>
+    <p>в появившемся окне вписываем путь к файлу wget_1.21.1</p>
+    <p>cd /d E:\программер\Программки\wget_1.21.1</p>
+    <hr>
+    <br>
+    <label for="urlInput_new"></label><input type="text" id="urlInput_new" placeholder="Введите URL сайта">
+    <button class="process-btn" onclick="generateWgetCommand()">Сгенерировать wget команду</button>
+    <div id="resultContainer_new" style="display: none;">
+        <h2>Готовый результат:</h2>
+        <div id="changed_unique_output_new"></div>
+        <button class="process-btn" onclick="copyToClipboard()">&#128203;</button>
+        <p>Копируем и вставляем команду в "cmd". Файл появится в той же папке, где программа, и ждём примерно 1-5 минут до полного завершения.</p>
+        <hr>
+        <h2>Cюда добавляем полученный файл wget-log.txt</h2>
+        <input type="file" id="file-input_new" accept=".txt"><p>Файл мгновенно скачается, под названием extracted_links</p>
+        <br>
+        <p>загружаем данный файл в "Создание Sitemap"</p>
+        <br>
+        <hr>
+        <h2>Создание Sitemap</h2>
+        <p>(jpg|jpeg|webp) форматы изображений которые будут в sitemap-images</p>
+        <form id="fileForm_new">
+            <label for="fileInput_new">Загрузите файл extracted_links.txt:</label>
+            <input type="file" id="fileInput_new" accept=".txt">
+            <label for="textInput"></label><textarea id="textInput" placeholder="Введите текст для использования в sitemap (в одной строке не более 100 символов, если будет больше то обрежется текст)"></textarea>
+            <button class="process-btn" type="submit">Создать Sitemap</button>
+        </form>
+    </div>
+</div>
+<br>
+<div id="footer"></div>
+<script src="/global.js"></script>
+<script src="compare.js"></script>
+</body>
+</html>

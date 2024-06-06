@@ -1,0 +1,82 @@
+/* Общие стили для .service */
+.service {
+    display: flex;
+    flex-direction: column; /* Изменяем направление flex контейнера на вертикальное */
+    margin-bottom: 40px;
+}
+
+/* Стили для .description */
+.description {
+    margin-left: 0; /* Убираем отступ слева */
+    margin-top: 10px; /* Добавляем отступ сверху для разделения блоков услуг */
+}
+
+
+.square span {
+    font-size: 42px; /* Уменьшим размер числа в квадрате */
+    font-weight: bold; /* Жирный шрифт для большей выразительности */
+    border: 2px solid black;
+    padding: 10px; /* Добавим равномерные отступы */
+}
+
+/* Стили для pre внутри .description */
+.description pre {
+    white-space: pre-wrap; /* Перенос строк в pre элементе при необходимости */
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+/* Стили для .bordered-box */
+.bordered-box {
+    border: 2px solid #ff6600;
+    padding: 20px; /* Увеличим отступы внутри блока */
+    margin-top: 40px; /* Увеличим интервал от верхнего блока */
+}
+
+/* Стили для .container */
+.container {
+    max-width: 800px; /* Ширина контейнера ограничена для улучшения читаемости на больших экранах */
+    margin: 0 auto; /* Центрирование контейнера на странице */
+}
+
+/* Стили для .primary заголовка */
+.primary {
+    color: #333; /* Цвет заголовка */
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (min-width: 768px) {
+    /* При ширине экрана не менее 768px */
+    .service {
+        flex-direction: row; /* Изменяем направление flex контейнера на горизонтальное */
+    }
+    .description {
+        margin-left: 20px; /* Возвращаем отступ слева для блока описания */
+        margin-top: 0; /* Убираем отступ сверху для блока описания */
+        flex: 1; /* Растягиваем блок описания на всю доступную ширину */
+    }
+
+    .bordered-box {
+        margin-top: 40px; /* Возвращаем интервал от верхнего блока */
+        margin-bottom: 40px; /* Возвращаем интервал к нижнему блоку */
+    }
+}
+
+.styled-div {
+    background-color: #f0f0f0; /* Цвет фона */
+    padding: 20px; /* Отступы внутри блока */
+    border-radius: 8px; /* Закругление углов */
+    margin-bottom: 20px; /* Интервал снизу */
+}
+
+.styled-div p {
+    margin: 0; /* Убираем внешние отступы у параграфов */
+    line-height: 1.5; /* Межстрочный интервал */
+}
+
+.styled-div strong {
+    color: #333; /* Цвет текста внутри тега <strong> */
+}

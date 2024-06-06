@@ -1,0 +1,95 @@
+.container h2,
+.container textarea,
+.container .options,
+.container .input-container {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.text-container {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+textarea {
+    width: calc(100% - 10px); /* Учитываем внутренние отступы */
+    height: 100px;
+    resize: none;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.char-count {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.result {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+#differences {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.added {
+    background-color: lightgreen;
+}
+
+.container {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 40px;
+}
+
+button.convert-btn,
+button.process-btn {
+    color: black; /* Цвет текста кнопки */
+    background-color: white; /* Цвет фона кнопки */
+    border: 1px solid black; /* Рамка вокруг кнопки */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Изменение курсора при наведении */
+    transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
+}
+
+button.convert-btn:hover,
+button.process-btn:hover {
+    background-color: black; /* Цвет фона кнопки при наведении */
+    color: white; /* Цвет текста кнопки при наведении */
+}
+
+#unique_output {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    min-height: 100px;
+}
+
+
+/* Дополнительные стили для мобильных устройств */
+@media only screen and (max-width: 600px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    textarea {
+        height: 80px;
+    }
+
+    button.convert-btn,
+    button.process-btn {
+        margin-bottom: 20px; /* Добавляем отступ снизу для кнопок */
+    }
+
+    #unique_output {
+        margin-bottom: 20px; /* Добавляем отступ снизу для окна #unique_output */
+    }
+}

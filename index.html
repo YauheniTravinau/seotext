@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой сайт со статьями</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/public/seo/article/article.css">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div class="container">
+    <h1 class="primary">Статейки - GPT ПОМОГАТОР</h1>
+    <p>Каждый современный человек хочет иметь свой сайт, но...</p>
+    <ul>
+        <li>требует фантазии</li>
+        <li>требует усилий для достижения цели</li>
+        <li>простой путь - финансово независимый (купил и забыл)</li>
+        <li>в интернете распространены "ПОМОГАТОРЫ", которые делают сайты или "аля сайты"</li>
+    </ul>
+    <p class="highlighted">Этот Сайт Целиком и полностью написан через ChatGPT. Без знаний Английского и без знаний кода. Правильно сформулированные вопросы - дают правильный ответ.</p>
+    <p> самое главное, статейки - помогают SEO (ссылки внутри статей, ссылаясь на другие ресурсы)</p>
+    <main>
+        <section id="articles">
+            <article class="article" data-target="/seo/article/article1">
+                <h2>Аля - сайты</h2>
+                <p>Этот текст обращается к тем, кто интересуется созданием сайтов, предупреждая о возможных проблемах при выборе метода разработки и наполнения контентом. Он обсуждает различные аспекты создания и продвижения веб-сайта, подчеркивая важность знаний о кодировании, SEO и качественного контента для успешного онлайн-присутствия.</p>
+            </article>
+            <article class="article" data-target="/seo/article/article2">
+                <h2 data-target="article2">Как путешествовать бюджетно и не потерять в качестве</h2>
+                <p>Я расскажу о своих приключениях по миру и поделюсь секретами, как путешествовать экономно, не жертвуя при этом комфортом.</p>
+            </article>
+            <article class="article" data-target="/seo/article/article3">
+                <h2 data-target="article3">Как я перестал откладывать дела на потом</h2>
+                <p>В этой статье я расскажу о своем опыте борьбы с прокрастинацией и поделюсь методами, которые помогли мне стать более продуктивным.</p>
+            </article>
+            <article class="article" data-target="/seo/article/article4">
+                <h2 data-target="article4">Как я научился управлять своим временем</h2>
+                <p>В данной статье я поделюсь с вами своими методами организации времени и планирования, которые помогли мне стать более успешным.</p>
+            </article>
+        </section>
+    </main>
+
+</div>
+<div class="overlay"></div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="article-container"></div>
+    </div>
+</div>
+<div id="footer"></div>
+<script src="index.js"></script>
+<script src="global.js"></script>
+</body>
+</html>

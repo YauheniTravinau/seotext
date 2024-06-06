@@ -1,0 +1,5 @@
+User-agent: *
+
+# Указать путь к файлу sitemap.xml
+Sitemap: https://ваш_сайт/sitemap.xml
+Sitemap: https://ваш_сайт/sitemap-images.xml
