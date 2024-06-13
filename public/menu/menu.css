@@ -47,6 +47,10 @@ nav ul li a:hover {
         display: flex;
         justify-content: flex-end;
         padding: 10px;
+        position: absolute; /* Используем absolute для абсолютного позиционирования */
+        top: -75px; /* Поднимаем иконку выше */
+        right: 10px; /* Располагаем справа */
+        z-index: 9999; /* Устанавливаем большой z-index, чтобы иконка была поверх других элементов */
     }
 
     .menu-items {

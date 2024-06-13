@@ -91,7 +91,7 @@ body {
     to { transform: translateX(-100%); }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1620px) {
     .container {
         padding: 0 20px; /* Добавляем отступы по краям */
     }
