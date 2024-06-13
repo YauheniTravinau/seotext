@@ -1,36 +1,80 @@
 nav {
-    text-align: center; /* Центрирует элементы списка */
+    text-align: center;
 }
 
 nav ul {
     list-style-type: none;
-    padding: 10px 0 0; /* Верхний отступ в 10px, остальные - 0 */
-    margin: 0; /* Убирает внешние отступы */
+    padding: 10px 0 0;
+    margin: 0;
 }
 
 nav ul li {
-    display: inline-block; /* Делает элементы списка блочными, чтобы можно было задать ширину и выравнивание */
+    display: inline-block;
     margin-right: 20px;
-    border: 1px solid black; /* Рамка всегда видна */
+    border: 1px solid black;
 }
 
 nav ul li:last-child {
-    margin-right: 0; /* Убирает правый отступ у последнего элемента */
+    margin-right: 0;
 }
 
 nav ul li a {
-    color: black; /* Цвет текста черный */
+    color: black;
     text-decoration: none;
-    display: block; /* Делаем ссылку блочным элементом, чтобы рамка полностью окружала текст */
-    padding: 10px; /* Добавляем небольшие отступы для улучшения внешнего вида */
+    display: block;
+    padding: 10px;
 }
 
 nav ul li:hover {
-    background-color: black; /* Цвет фона при наведении */
+    background-color: black;
 }
 
 nav ul li a:hover {
-    color: white; /* Цвет текста меняется на белый при наведении */
-    text-decoration: none; /* Убирает подчеркивание при наведении */
+    color: white;
+    text-decoration: none;
 }
 
+.burger-menu {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    nav {
+        position: relative;
+    }
+
+    .burger-menu {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px;
+    }
+
+    .menu-items {
+        width: 240px; /* Example fixed width */
+        position: fixed;
+        top: 0;
+        left: -100%;
+        background-color: #f9f9f9;
+        height: 100%;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        border-top: 16px solid #ff6600; /* Широкая полоска сверху */
+        padding: 20px;
+    }
+
+    .menu-items.open {
+        left: 0;
+        z-index: 998;
+    }
+
+    .burger-icon {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+}

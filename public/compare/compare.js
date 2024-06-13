@@ -507,3 +507,22 @@ function sanitizeXmlContent(content) {
     return content.replace(/&/g, '&amp;');
 }
 
+/*быстро делаем текст через запятую*/
+function combinePhrases() {
+    const input = document.getElementById('input').value;
+    const phrases = input.split('\n')
+        .map(phrase => phrase.trim())
+        .filter(phrase => phrase !== '');
+    const combined = phrases.join(', ');
+    document.getElementById('outputt').innerText = combined;
+}
+
+function copyToClipboardd() {
+    const outputText = document.getElementById('outputt').innerText;
+    const tempInput = document.createElement('textarea');
+    tempInput.value = outputText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+}

@@ -13,6 +13,7 @@
 <body>
 <div id="header"></div>
 <div id="menu"></div>
+<div id="marquee-container"></div>
 <h1 class="primary">Самописные GPT помогаторы для SEO</h1>
 <div class="container">
     <h2>Сравнение текстов на отличия друг от друга</h2>
@@ -30,6 +31,15 @@
     <p id="differences"></p>
 </div>
 
+<div class="container">
+    <h2>Быстро делаем текст через запятую</h2>
+    <label for="input"></label>
+    <textarea id="input" placeholder="Введите словосочетания по одному на строку"></textarea>
+    <button class="process-btn" onclick="combinePhrases()">Combine</button>
+    <button class="process-btn" id="copyBtn" onclick="copyToClipboardd()">&#128203;</button>
+    <div id="outputt"></div>
+</div>
+<br>
 <div class="container">
     <h2>Конвертер изображений | Быстрая обрезка</h2>
     <div class="input-container">
@@ -109,9 +119,7 @@
         <hr>
         <h2>Cюда добавляем полученный файл wget-log.txt</h2>
         <input type="file" id="file-input_new" accept=".txt"><p>Файл мгновенно скачается, под названием extracted_links</p>
-        <br>
         <p>загружаем данный файл в "Создание Sitemap"</p>
-        <br>
         <hr>
         <h2>Создание Sitemap</h2>
         <p>(jpg|jpeg|webp) форматы изображений которые будут в sitemap-images</p>

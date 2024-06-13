@@ -53,33 +53,76 @@ h1 {
     text-align: center;
 }
 
-/* Медиа-запросы для адаптивного дизайна */
 
-@media (max-width: 1200px) {
-    /* Подгоняем размер шрифта для более крупных экранов */
-    p, a, li, h1 {
-        font-size: 16px;
-    }
+/*бегущая строка*/
+body {
+    margin: 0;
+    overflow-x: hidden;
 }
 
-@media (max-width: 992px) {
-    /* Адаптивные стили для экранов среднего размера */
+.marquee-container {
+    width: 100vw;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    height: 50px; /* Задайте высоту контейнера по вашему усмотрению */
+    margin-top: 20px; /* Добавьте отступ сверху по вашему усмотрению */
+}
+
+.marquee {
+    display: inline-block;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.marquee span {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 2rem; /* Задайте размер шрифта по вашему усмотрению */
+    animation: marquee 180s linear infinite;
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@media screen and (max-width: 768px) {
     .container {
-        padding: 0 20px;
+        padding: 0 20px; /* Добавляем отступы по краям */
+    }
+
+    .section {
+        padding: 10px; /* Уменьшаем внутренние отступы */
+    }
+
+    p,
+    a,
+    li {
+        font-size: 16px; /* Уменьшаем размер шрифта */
+    }
+    h1 {
+        font-size: 24px; /* Уменьшаем размер h1 */
+    }
+
+    h2 {
+        font-size: 20px; /* Уменьшаем размер h2 */
     }
 }
 
+/* Медиа запросы для уменьшения размера бегущей строки на мобильных устройствах */
 @media (max-width: 768px) {
-    /* Полностью убираем отступы контейнера на узких экранах */
-    .container {
-        max-width: 100%;
-        padding: 0 15px;
+    .marquee span {
+        font-size: 1.5rem; /* Уменьшение размера шрифта на мобильных устройствах */
     }
 }
 
-@media (max-width: 576px) {
-    /* Дополнительные адаптивные стили для очень узких экранов */
-    p, a, li, h1 {
-        font-size: 14px;
+@media (max-width: 480px) {
+    .marquee span {
+        font-size: 1rem; /* Дополнительное уменьшение размера шрифта на более узких экранах */
     }
 }

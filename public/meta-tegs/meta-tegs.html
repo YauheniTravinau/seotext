@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор мета-тегов HTML / HTML Meta Tags Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Редактор мета-тегов HTML / HTML Meta Tags Editor</h1>
+
+    <label for="fileInput">Загрузите HTML файл / Upload HTML file</label>
+    <input type="file" id="fileInput" accept=".html">
+    <div class="text-trimmer-container">
+        <h1>Обрезчик текста / Text Trimmer</h1>
+        <textarea id="inputText" placeholder="Введите ваш текст здесь / Enter your text here"></textarea>
+        <input type="number" id="charLimit" placeholder="Введите ограничение символов / Enter character limit">
+        <button id="trimButton">Обрезать текст / Trim Text</button>
+        <div id="result"></div>
+    </div>
+    <br><br>
+    <form id="metaForm">
+        <fieldset>
+            <legend>Заголовок документа / Document Title</legend>
+            <label for="pageTitle">Заголовок страницы / Page Title <span id="pageTitleCounter">0/60</span></label>
+            <input type="text" id="pageTitle" name="pageTitle" placeholder="Пример: Моя страница / Example: My Page" minlength="1" maxlength="60" required>
+
+            <label for="description">Описание / Description <span id="descriptionCounter">0/160</span></label>
+            <input type="text" id="description" name="description" placeholder="Description for search engines" minlength="1" maxlength="160" required>
+
+            <label for="keywords">Ключевые слова / Keywords <span id="keywordsCounter">0/255</span></label>
+            <input type="text" id="keywords" name="keywords" placeholder="Keywords for search engines" minlength="1" maxlength="255" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Автор и индексация / Group: Author and Indexing -->
+        <fieldset>
+            <legend>Автор и индексация / Author and Indexing</legend>
+            <label for="author">Автор / Author <span id="authorCounter">0/50</span></label>
+            <input type="text" id="author" name="author" placeholder="kinderkrama" minlength="1" maxlength="50" required>
+
+            <label for="robots">Robots <span id="robotsCounter"></span></label>
+            <select id="robots" name="robots" required>
+                <option value="index, follow, revisit-after=7 days">index, follow, revisit-after=7 days</option>
+                <option value="index, follow, revisit-after=14 days">index, follow, revisit-after=14 days</option>
+                <option value="index, follow, revisit-after=30 days">index, follow, revisit-after=30 days</option>
+                <option value="index, follow, revisit-after=60 days">index, follow, revisit-after=60 days</option>
+                <option value="index, follow, revisit-after=90 days">index, follow, revisit-after=90 days</option>
+            </select>
+            <label for="language">Язык (Language) <span id="languageCounter"></span></label>
+            <select id="language" name="language" required>
+                <option value="en">en (English)</option>
+                <option value="fr">fr (French)</option>
+                <option value="de">de (German)</option>
+                <option value="es">es (Spanish)</option>
+                <option value="ru">ru (Russian)</option>
+                <option value="eu">eu (Europe)</option>
+                <option value="us">us (America)</option>
+                <option value="es-es">es-es (Spain)</option>
+                <option value="ar-ae">ar-ae (Arabic, United Arab Emirates)</option>
+                <option value="da">da (Danish)</option>
+            </select>
+
+        </fieldset>
+        <br>
+        <!-- Группа: Географическое положение / Group: Geographic Location -->
+        <fieldset>
+            <legend>Географическое положение / Geographic Location</legend>
+
+            <label for="geoRegion">Регион (Region) <span id="geoRegionCounter"></span></label>
+            <select id="geoRegion" name="geoRegion" onchange="updateCoordinates()" required>
+                <option value="RU" data-lat="55.7558" data-lng="37.6173">Россия</option>
+                <option value="US" data-lat="37.7749" data-lng="-122.4194">Америка</option>
+                <option value="EU" data-lat="48.8566" data-lng="2.3522">Европа</option>
+                <option value="AE" data-lat="25.276987" data-lng="55.296249">Арабские Эмираты</option>
+                <option value="ES" data-lat="40.4168" data-lng="-3.7038">Испания</option>
+                <option value="IT" data-lat="41.9028" data-lng="12.4964">Италия</option>
+                <option value="FR" data-lat="48.8566" data-lng="2.3522">Франция</option>
+                <option value="DE" data-lat="52.5200" data-lng="13.4050">Германия</option>
+                <option value="PL" data-lat="52.2297" data-lng="21.0122">Польша</option>
+            </select>
+
+            <label for="geoPlaceName">Место (Place Name) <span id="geoPlaceNameCounter"></span></label>
+            <select id="geoPlaceName" name="geoPlaceName" required>
+                <!-- Здесь будут отображаться места, зависящие от выбранного региона -->
+            </select>
+
+            <label for="geoPosition">Позиция (Position) <span id="geoPositionCounter"></span></label>
+            <input type="text" id="geoPosition" name="geoPosition" placeholder="55.7558; 37.6173" required>
+
+            <label for="icbm">ICBM <span id="icbmCounter"></span></label>
+            <input type="text" id="icbm" name="icbm" placeholder="55.7558, 37.6173" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Канонический URL документа / Group: Document Canonical URL -->
+        <fieldset>
+            <legend>Канонический URL документа / Document Canonical URL</legend>
+            <label for="canonicalUrl">Канонический URL (Canonical URL) <span id="canonicalUrlCounter"></span></label>
+            <input type="text" id="canonicalUrl" name="canonicalUrl" placeholder="https://kinderkrama.com/" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Подтверждение в Поиске / Group: Search Confirmation -->
+        <fieldset>
+            <legend>Подтверждение в Поиске / Search Confirmation</legend>
+            <label for="googleVerification">Код подтверждения Google / Google Verification Code <span id="googleVerificationCounter"></span></label>
+            <input type="text" id="googleVerification" name="googleVerification" placeholder="YOUR_VERIFICATION_CODE" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Метатеги Open Graph для Facebook / Group: Open Graph Meta Tags for Facebook -->
+        <fieldset>
+            <legend>Метатеги Open Graph для Facebook / Open Graph Meta Tags for Facebook</legend>
+            <label for="ogTitle">Заголовок OG (OG Title) <span id="ogTitleCounter"></span></label>
+            <input type="text" id="ogTitle" name="ogTitle" placeholder="Title for OG" required>
+
+            <label for="ogDescription">Описание OG (OG Description) <span id="ogDescriptionCounter"></span></label>
+            <input type="text" id="ogDescription" name="ogDescription" placeholder="Description for OG" required>
+
+            <label for="ogSubject">Тема OG (OG Subject) <span id="ogSubjectCounter"></span></label>
+            <input type="text" id="ogSubject" name="ogSubject" placeholder="Subject for OG" required>
+
+            <label for="ogImage">Изображение OG (OG Image) <span id="ogImageCounter"></span></label>
+            <input type="text" id="ogImage" name="ogImage" placeholder="https://www.example.com/image.jpg" required>
+
+            <label for="ogUrl">URL OG (OG URL) <span id="ogUrlCounter"></span></label>
+            <input type="text" id="ogUrl" name="ogUrl" placeholder="https://www.example.com/page" required>
+
+            <label for="ogLocale">Локаль OG (OG Locale) <span id="ogLocaleCounter"></span></label>
+            <select id="ogLocale" name="ogLocale" required>
+                <option value="en_US">English (US)</option>
+                <option value="en_GB">English (UK)</option>
+                <option value="fr_FR">French</option>
+                <option value="es_ES">Spanish</option>
+                <option value="ru_RU">Russian (Russia)</option>
+                <option value="pl_PL">Polish (Poland)</option>
+                <option value="de_DE">German (Germany)</option>
+                <option value="en_US">American (United States)</option>
+                <option value="ar_AE">Arabic (United Arab Emirates)</option>
+                <option value="da_DK">Danish (Denmark)</option>
+                <option value="it_IT">Italian (Italy)</option>
+                <!-- Добавьте другие локали по вашему усмотрению -->
+            </select>
+
+
+            <label for="ogType">Тип OG (OG Type) <span id="ogTypeCounter"></span></label>
+            <select id="ogType" name="ogType" required>
+                <option value="website">Website</option>
+                <option value="article">Article</option>
+                <option value="video">Video</option>
+                <option value="music">Music</option>
+                <!-- Добавьте другие варианты по вашему усмотрению -->
+            </select>
+
+            <label for="ogSiteName">Название сайта OG (OG Site Name) <span id="ogSiteNameCounter"></span></label>
+            <input type="text" id="ogSiteName" name="ogSiteName" placeholder="Site Name for OG" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Метатеги Dublin Core / Group: Dublin Core Meta Tags -->
+        <fieldset>
+            <legend>Метатеги Dublin Core / Dublin Core Meta Tags</legend>
+            <label for="dcTitle">Заголовок DC (DC Title) <span id="dcTitleCounter"></span></label>
+            <input type="text" id="dcTitle" name="dcTitle" placeholder="Title for DC" required>
+            <label for="dcDescription">Описание DC (DC Description) <span id="dcDescriptionCounter"></span></label>
+            <input type="text" id="dcDescription" name="dcDescription" placeholder="Description for DC" required>
+
+            <label for="dcSubject">Тема DC (DC Subject) <span id="dcSubjectCounter"></span></label>
+            <input type="text" id="dcSubject" name="dcSubject" placeholder="Subject for DC" required>
+
+            <label for="dcCreator">Создатель DC (DC Creator) <span id="dcCreatorCounter"></span></label>
+            <input type="text" id="dcCreator" name="dcCreator" placeholder="Creator for DC" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Микроразметка X Cards / Group: X Cards Microdata -->
+        <fieldset>
+            <legend>Микроразметка X Cards / X Cards Microdata</legend>
+            <label for="xCardsType">Тип X Cards (X Cards Type) <span id="xCardsTypeCounter"></span></label>
+            <input type="text" id="xCardsType" name="xCardsType" placeholder="website" required>
+            <label for="xCardsTitle">Заголовок X Cards (X Cards Title) <span id="xCardsTitleCounter"></span></label>
+            <input type="text" id="xCardsTitle" name="xCardsTitle" placeholder="Title for X Cards" required>
+
+            <label for="xCardsDescription">Описание X Cards (X Cards Description) <span id="xCardsDescriptionCounter"></span></label>
+            <input type="text" id="xCardsDescription" name="xCardsDescription" placeholder="Description for X Cards" required>
+
+            <label for="xCardsImage">Изображение X Cards (X Cards Image) <span id="xCardsImageCounter"></span></label>
+            <input type="text" id="xCardsImage" name="xCardsImage" placeholder="https://www.example.com/image.jpg" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Контроль за источником ссылки / Group: Referrer Policy -->
+        <fieldset>
+            <legend>Контроль за источником ссылки / Referrer Policy</legend>
+            <label for="referrer">Источник ссылки (Referrer) <span id="referrerCounter"></span></label>
+            <input type="text" id="referrer" name="referrer" placeholder="origin" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Метатеги TikTok / Group: TikTok Meta Tags -->
+        <fieldset>
+            <legend>Метатеги TikTok / TikTok Meta Tags</legend>
+            <label for="tiktokTitle">Заголовок TikTok (TikTok Title) <span id="tiktokTitleCounter"></span></label>
+            <input type="text" id="tiktokTitle" name="tiktokTitle" placeholder="Title for TikTok" required>
+            <label for="tiktokDescription">Описание TikTok (TikTok Description) <span id="tiktokDescriptionCounter"></span></label>
+            <input type="text" id="tiktokDescription" name="tiktokDescription" placeholder="Description for TikTok" required>
+
+            <label for="tiktokImage">Изображение TikTok (TikTok Image) <span id="tiktokImageCounter"></span></label>
+            <input type="text" id="tiktokImage" name="tiktokImage" placeholder="https://www.example.com/image.jpg" required>
+
+            <label for="tiktokSite">Сайт TikTok (TikTok Site) <span id="tiktokSiteCounter"></span></label>
+            <input type="text" id="tiktokSite" name="tiktokSite" placeholder="example.com" required>
+
+            <label for="tiktokCreator">Создатель TikTok (TikTok Creator) <span id="tiktokCreatorCounter"></span></label>
+            <input type="text" id="tiktokCreator" name="tiktokCreator" placeholder="@creator_username" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Метатеги для Facebook / Group: Facebook Meta Tags -->
+        <fieldset>
+            <legend>Метатеги для Facebook / Facebook Meta Tags</legend>
+            <label for="fbAppId">ID приложения Facebook (Facebook App ID) <span id="fbAppIdCounter"></span></label>
+            <input type="text" id="fbAppId" name="fbAppId" placeholder="123456789" required>
+        </fieldset>
+        <br>
+        <!-- Группа: Метатеги для Twitter / Group: Twitter Meta Tags -->
+        <fieldset>
+            <legend>Метатеги для Twitter / Twitter Meta Tags</legend>
+            <label for="twitterTitle">Заголовок Twitter (Twitter Title) <span id="twitterTitleCounter"></span></label>
+            <input type="text" id="twitterTitle" name="twitterTitle" placeholder="Title for Twitter" required>
+            <label for="twitterDescription">Описание Twitter (Twitter Description) <span id="twitterDescriptionCounter"></span></label>
+            <input type="text" id="twitterDescription" name="twitterDescription" placeholder="Description for Twitter" required>
+
+            <label for="twitterImage">Изображение Twitter (Twitter Image) <span id="twitterImageCounter"></span></label>
+            <input type="text" id="twitterImage" name="twitterImage" placeholder="https://www.example.com/image.jpg" required>
+
+            <label for="twitterCard">Карточка Twitter (Twitter Card) <span id="twitterCardCounter"></span></label>
+            <input type="text" id="twitterCard" name="twitterCard" placeholder="summary_large_image" required>
+        </fieldset>
+        <br>
+        <button type="button" id="processButton">Обработать HTML / Process HTML</button>
+    </form>
+    <a id="downloadLink" style="display: none;">Скачать обработанный HTML / Download Processed HTML</a>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
+
+
