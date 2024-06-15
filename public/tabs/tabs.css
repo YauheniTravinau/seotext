@@ -1,0 +1,107 @@
+.containerr {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tab {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+
+}
+
+.tab .info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.tab .info img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.tab .info .text {
+    flex: 1;
+    word-break: break-all;
+}
+
+.tab .description {
+    font-size: 12px;
+    color: #666;
+    margin: 20px 0 20px 40px;
+    word-break: break-all;
+
+}
+
+.tab .actions {
+    margin-left: 10px;
+}
+
+.tab .actions button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.quick-rubrics {
+    margin-top: 20px;
+}
+
+.quick-rubrics-list {
+    margin-top: 10px;
+}
+
+.quick-rubric-button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.rubric {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Стили для скрытия вкладок */
+.tab.hidden {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Медиа-запросы для мобильных устройств */
+@media (max-width: 768px) {
+    .containerr {
+        padding: 10px;
+    }
+
+    .tab {
+        flex-direction: column;
+    }
+
+    .tab .info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tab .info img {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .tab .description {
+        margin: 10px 0;
+    }
+}

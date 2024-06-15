@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Услуги по работе с фотографиями</title>
+  <link rel="stylesheet" href="tabs.css">
+  <link rel="stylesheet" href="/global.css">
+  <link rel="stylesheet" href="/public/menu/menu.css">
+  <link rel="stylesheet" href="/public/header/header.css">
+  <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div id="marquee-container"></div>
+<div class="containerr">
+  <h1 class="primary">Мои Вкладки</h1>
+  <p>
+  <form id="addForm">
+    <label for="rubricInput"></label><input type="text" id="rubricInput" placeholder="Введите рубрику">
+    <label for="linkInput"></label><input type="text" id="linkInput" placeholder="Введите ссылку">
+    <label for="descriptionInput"></label><input type="text" id="descriptionInput" placeholder="Введите описание">
+    <button class="process-btn" type="submit">Добавить вкладку</button>
+  </form>
+  <!-- Поле для быстрого выбора рубрик -->
+  <div class="quick-rubrics">
+    <label for="quickRubricInput"></label><input type="text" id="quickRubricInput" placeholder="Быстрый выбор рубрик">
+    <button class="process-btn" type="button" onclick="addQuickRubric()">Добавить</button>
+    <div id="quickRubricsList" class="quick-rubrics-list">
+      <!-- Здесь будут отображаться кнопки добавленных рубрик -->
+    </div>
+  </div>
+
+  <div class="actions">
+    <label for="exportSelect"></label><select id="exportSelect">
+    <option value="txt">Сохранить в TXT</option>
+  </select>
+    <button class="process-btn" onclick="exportData()">Скачать</button>
+    <input type="file" id="fileInput" accept=".txt" onchange="importFile(event)">
+  </div>
+  <br>
+  <div class="link-actions">
+    <label for="linkActionSelect">Действие с ссылкой:</label>
+    <select id="linkActionSelect">
+      <option value="original">Оригинальная ссылка</option>
+      <option value="shorten">Сократить ссылку</option>
+      <option value="hide">Скрыть ссылку</option>
+    </select>
+  </div>
+  <p><strong>важная информация:</strong> при обнавлении страницы всё сбрасывается(перед обновлением или закрытием скачайте файл с ссылками txt)</p>
+  <br>
+  <button id="toggleTabsBtn" class="process-btn" onclick="toggleAllTabs()" disabled>Скрыть/Отобразить все вкладки</button>
+  <br><br>
+  <div id="tabsContainer" class="tabs-container">
+    <!-- Здесь будут добавляться вкладки динамически -->
+  </div>
+</div>
+<div id="footer"></div>
+<script src="/global.js"></script>
+<script src="tabs.js"></script>
+</body>
+</html>

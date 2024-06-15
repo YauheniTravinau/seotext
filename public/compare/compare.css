@@ -49,22 +49,6 @@ textarea {
     padding: 40px;
 }
 
-button.convert-btn,
-button.process-btn {
-    color: black; /* Цвет текста кнопки */
-    background-color: white; /* Цвет фона кнопки */
-    border: 1px solid black; /* Рамка вокруг кнопки */
-    padding: 10px 20px; /* Отступы внутри кнопки */
-    cursor: pointer; /* Изменение курсора при наведении */
-    transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
-}
-
-button.convert-btn:hover,
-button.process-btn:hover {
-    background-color: black; /* Цвет фона кнопки при наведении */
-    color: white; /* Цвет текста кнопки при наведении */
-}
-
 #unique_output {
     margin-top: 10px;
     padding: 10px;

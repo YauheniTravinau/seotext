@@ -61,7 +61,7 @@ body {
 }
 
 .marquee-container {
-    width: 100vw;
+    width: 100%;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     overflow: hidden;
@@ -69,8 +69,8 @@ body {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    height: 50px; /* Задайте высоту контейнера по вашему усмотрению */
-    margin-top: 20px; /* Добавьте отступ сверху по вашему усмотрению */
+    height: 50px; /* Высота контейнера */
+    margin-top: 20px; /* Отступ сверху */
 }
 
 .marquee {
@@ -82,8 +82,24 @@ body {
 .marquee span {
     display: inline-block;
     white-space: nowrap;
-    font-size: 2rem; /* Задайте размер шрифта по вашему усмотрению */
-    animation: marquee 180s linear infinite;
+    font-size: 2rem; /* Размер шрифта */
+    animation: marquee 180s linear infinite; /* Изменяем время анимации для теста */
+}
+
+button.convert-btn,
+button.process-btn {
+    color: black; /* Цвет текста кнопки */
+    background-color: white; /* Цвет фона кнопки */
+    border: 1px solid black; /* Рамка вокруг кнопки */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Изменение курсора при наведении */
+    transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
+}
+
+button.convert-btn:hover,
+button.process-btn:hover {
+    background-color: black; /* Цвет фона кнопки при наведении */
+    color: white; /* Цвет текста кнопки при наведении */
 }
 
 @keyframes marquee {

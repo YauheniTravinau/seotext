@@ -2,29 +2,30 @@
 document.addEventListener("DOMContentLoaded", function() {
     const marqueeContainer = document.querySelector('.marquee-container');
     const marquee = document.querySelector('.marquee span');
-    const text = marquee.textContent;
-    let containerWidth = marqueeContainer.offsetWidth;
+    const text = marquee.textContent.trim(); // Убираем лишние пробелы в начале и в конце
 
     // Клонируем текст, чтобы заполнить контейнер
     let newText = text;
-    while (newText.length < containerWidth / 2) { // Удвоенная длина текста для гарантированного заполнения
-        newText += text;
+    while (newText.length < marqueeContainer.offsetWidth) {
+        newText += ' ' + text;
     }
-    marquee.textContent = newText; // Используем textContent для безопасной вставки текста
+    marquee.textContent = newText; // Обновляем текст в бегущей строке
 
     // Функция для обновления анимации
     function updateAnimation() {
         const marqueeWidth = marquee.offsetWidth;
-        const animationDuration = marqueeWidth / 50; // Скорость анимации
+        const containerWidth = marqueeContainer.offsetWidth;
+        const animationDuration = marqueeWidth / 50; // Вычисляем скорость анимации
+
+        // Устанавливаем анимацию
         marquee.style.animation = `marquee ${animationDuration}s linear infinite`;
     }
 
-    // Инициализация анимации
+    // Инициализируем анимацию
     updateAnimation();
 
-    // Динамическое обновление анимации при изменении размеров окна
+    // Обновляем анимацию при изменении размеров окна
     window.addEventListener('resize', function() {
-        containerWidth = marqueeContainer.offsetWidth; // Обновляем ширину контейнера
-        updateAnimation(); // Пересчитываем анимацию
+        updateAnimation();
     });
 });
