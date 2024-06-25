@@ -43,7 +43,7 @@ function loadContent(url, elementId) {
         });
 }
 
-// Вызываем функцию loadContent для загрузки содержимого страницы
+
 // Замените 'url_другой_страницы' на реальный URL страницы, содержимое которой вы хотите загрузить
 loadContent('/public/beguschaya-stroka-seo/beguschaya-stroka-seo.html', 'marquee-container');
 

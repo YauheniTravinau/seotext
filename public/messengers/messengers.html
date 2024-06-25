@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="/public/messengers/messengers.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div id="marquee-container"></div>
+<div class="container">
+    <label for="inputText1"></label><textarea id="inputText1" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
+    <label for="inputText2"></label><textarea id="inputText2" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
+    <label for="inputText3"></label><textarea id="inputText3" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
+    <label for="inputMessage"></label><textarea id="inputMessage" placeholder="Введите сообщение для мессенджеров"></textarea>
+
+    <button id="createButtons" class="dropdown">Создать кнопки</button>
+    <button id="downloadList" class="dropdown">Скачать список</button>
+    <input type="file" id="uploadList" accept=".txt" style="display: none;">
+    <button id="uploadButton" class="dropdown">Загрузить список</button>
+</div>
+
+<div id="textAndButtons" class="text-and-buttons-container">
+    <!-- Text and buttons will be dynamically added here -->
+</div>
+<div id="footer"></div>
+<script src="messengers.js" type="module"></script>
+<script src="/global.js"></script>
+</body>
+</html>

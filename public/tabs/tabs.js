@@ -113,7 +113,7 @@ function addTab(rubric, link, description) {
         rubricElement.setAttribute('data-name', rubric);
         rubricElement.innerHTML = `
             ${rubric} 
-            <button onclick="toggleRubric(this)">+</button>
+            <button onclick="toggleRubric(this)">-</button>
         `;
         // Вставляем новую рубрику перед вкладками
         tabsContainer.appendChild(rubricElement);
