@@ -25,10 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Remove duplicates based on email
+        const combinedLines = lines1.map((name, index) => ({
+            name: name,
+            phone: lines2[index],
+            email: lines3[index]
+        }));
+
+        const uniqueLines = removeDuplicates(combinedLines);
+
         // Clear existing content in the container
         textAndButtonsContainer.innerHTML = '';
 
-        lines1.forEach((name, index) => {
+        uniqueLines.forEach((line, index) => {
             // Create a div element for each line of text
             const lineElement = document.createElement('div');
             lineElement.className = 'text-line';
@@ -41,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Name column
             const nameColumn = document.createElement('div');
             const nameText = document.createElement('span');
-            nameText.textContent = name;
+            nameText.textContent = line.name;
             nameText.className = 'editable';
             nameColumn.appendChild(nameText);
             const editNameIcon = document.createElement('span');
@@ -55,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Phone column
             const phoneColumn = document.createElement('div');
             const phoneText = document.createElement('span');
-            phoneText.textContent = lines2[index];
+            phoneText.textContent = line.phone;
             phoneText.className = 'editable';
             phoneColumn.appendChild(phoneText);
             const editPhoneIcon = document.createElement('span');
@@ -69,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Email column
             const emailColumn = document.createElement('div');
             const emailText = document.createElement('span');
-            emailText.textContent = lines3[index];
+            emailText.textContent = line.email;
             emailText.className = 'editable';
             emailColumn.appendChild(emailText);
             const editEmailIcon = document.createElement('span');
@@ -87,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.className = 'messenger-button ' + messenger;
                 button.textContent = messenger.charAt(0).toUpperCase() + messenger.slice(1);
                 button.onclick = function() {
-                    openMessenger(messenger, lines2[index], lines3[index], message); // Pass message
+                    openMessenger(messenger, line.phone, line.email, message); // Передача сообщения
                 };
                 const deleteIcon = document.createElement('span');
                 deleteIcon.className = 'delete-icon';
@@ -125,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             textAndButtonsContainer.appendChild(lineElement);
         });
     }
+
 
     function openMessenger(messenger, phone, email, message) {
         let url = '';
@@ -171,11 +181,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        let content = '';
+        let uniqueLines = [];
+        const uniqueEmails = new Set();
+
         lines1.forEach((name, index) => {
-            content += `${name}\t${lines2[index]}\t${lines3[index]}\n`;
+            const email = lines3[index].trim(); // Assuming email is in lines3
+
+            if (!uniqueEmails.has(email)) {
+                uniqueEmails.add(email);
+                uniqueLines.push(`${name}\t${lines2[index]}\t${email}`);
+            }
         });
 
+        const content = uniqueLines.join('\n');
         const blob = new Blob([content], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -212,5 +230,14 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         reader.readAsText(file);
+    }
+
+    function removeDuplicates(lines) {
+        const uniqueEmails = new Set();
+        return lines.filter(line => {
+            const isUnique = !uniqueEmails.has(line.email);
+            uniqueEmails.add(line.email);
+            return isUnique;
+        });
     }
 });
