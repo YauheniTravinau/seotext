@@ -125,3 +125,11 @@ nav ul li .dropdown-menu li a {
     text-decoration: none;
     display: block;
 }
+
+/* Прокрутка для выпадающего меню на узких экранах */
+@media (max-width: 768px) {
+    nav ul li .dropdown-menu {
+        max-height: 300px; /* Максимальная высота выпадающего меню */
+        overflow-y: auto; /* Включаем вертикальную прокрутку */
+    }
+}

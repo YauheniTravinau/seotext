@@ -80,9 +80,15 @@ function addFile(fileName, fileContent) {
         updateFileCount();
     });
 
-    fileContainer.addEventListener('dblclick', () => {
-        openModal(fileContainer);
+    let lastClickTime = 0;
+    fileContainer.addEventListener('click', () => {
+        const now = new Date().getTime();
+        if (now - lastClickTime < 300) {  // Если разница между кликами меньше 300 мс
+            openModal(fileContainer);  // Открытие модального окна
+        }
+        lastClickTime = now;  // Сохранение времени последнего клика
     });
+
 
     fileList.appendChild(fileContainer);
     fileCount++;

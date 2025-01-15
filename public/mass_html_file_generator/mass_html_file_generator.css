@@ -8,8 +8,8 @@ textarea {
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     resize: none;
-    border-radius: 0; /* Убираем закругления */
-    display: block; /* Центрируем элемент */
+    border-radius: 0;
+    display: block;
     margin-left: auto;
     margin-right: auto;
 }
@@ -17,13 +17,36 @@ textarea {
 /* Стили для кнопки */
 #generate {
     display: block;
-    margin: 20px auto; /* Центрирование кнопки с отступом сверху и снизу */
-    width: auto; /* Автоматическая ширина */
+    margin: 20px auto;
+    width: auto;
 }
 
+/* Центрирование для элементов */
 .centered {
     display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+/* Адаптивность для экранов меньшей ширины */
+@media (max-width: 768px) {
+    textarea {
+        font-size: 14px;
+        height: 180px; /* Уменьшаем высоту textarea на мобильных */
+    }
+    #generate {
+        width: 80%; /* Делаем кнопку шире на мобильных */
+    }
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+    textarea {
+        font-size: 12px;
+        height: 150px; /* Еще меньше высота для маленьких экранов */
+    }
+    #generate {
+        width: 70%; /* Кнопка еще шире */
+    }
 }

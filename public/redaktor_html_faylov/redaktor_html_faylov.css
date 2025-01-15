@@ -4,6 +4,7 @@
     max-width: 1200px;
     text-align: center;
     margin: 0 auto;
+    box-sizing: border-box; /* Учитываем padding и border в общей ширине */
 }
 
 /* Список файлов */
@@ -12,6 +13,8 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     margin-bottom: 20px;
+    padding: 0 10px; /* Добавляем отступы внутри списка */
+    box-sizing: border-box;
 }
 
 /* Контейнер для файла */
@@ -25,6 +28,7 @@
     justify-content: space-between;
     position: relative;
     transition: box-shadow 0.3s ease;
+    box-sizing: border-box; /* Учитываем padding и border */
 }
 
 .file-container:hover {
@@ -38,6 +42,7 @@
     align-items: center;
 }
 
+/* Поле ввода имени файла */
 .file-name-input {
     width: 100%;
     max-width: 200px; /* Максимальная ширина поля ввода */
@@ -46,6 +51,7 @@
     word-wrap: break-word; /* Для совместимости с браузерами */
     border: 1px solid #ccc;
     padding: 5px;
+    box-sizing: border-box;
 }
 
 /* Кнопка удаления */
@@ -66,6 +72,7 @@
     height: 150px;
     margin-top: 10px;
     resize: none;
+    box-sizing: border-box;
 }
 
 /* Действия с файлом */
@@ -104,6 +111,7 @@
     max-width: 800px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 #modal-textarea {
@@ -132,25 +140,105 @@
     border: 1px solid #ff9800;  /* Оранжевая рамка */
 }
 
-/* Адаптивность: Мобильные стили */
-@media (max-width: 768px) {
+/* Адаптивность: планшеты и мобильные устройства */
+@media (max-width: 1024px) {
     .file-list {
-        grid-template-columns: repeat(2, 1fr); /* Два столбца на мобильных устройствах */
+        grid-template-columns: repeat(3, 1fr); /* Три столбца для планшетов */
+    }
+
+    .file-name-input {
+        max-width: 150px; /* Уменьшаем максимальную ширину поля ввода */
+    }
+
+    .file-actions {
+        flex-direction: column; /* Стили для вертикального расположения элементов действий */
+        align-items: flex-start;
     }
 
     .file-container {
         padding: 15px;
     }
 
-    .file-name-input {
-        font-size: 0.9rem; /* Меньший размер текста на мобильных */
-    }
-
     .delete-file-btn {
-        font-size: 1.2rem; /* Уменьшаем кнопку удаления */
+        font-size: 1.4rem;
     }
 
     #file-count {
-        font-size: 0.9rem; /* Меньший размер шрифта для подсчета */
+        font-size: 1rem;
+    }
+
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .file-list {
+        grid-template-columns: repeat(2, 1fr); /* Два столбца на мобильных устройствах */
+    }
+
+    .file-name-input {
+        font-size: 0.9rem; /* Меньший размер текста на мобильных */
+        max-width: 100%;
+    }
+
+    .file-actions {
+        flex-direction: column;
+        margin-top: 10px;
+        gap: 10px;
+    }
+
+    .delete-file-btn {
+        font-size: 1.2rem;
+    }
+
+    #file-count {
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        width: 90%; /* Ширина модального окна на мобильных устройствах */
+        padding: 15px;
+        margin: 20% auto; /* Отступ сверху для мобильных */
+    }
+
+    #modal-textarea {
+        height: 300px; /* Меньшая высота для текстового поля на мобильных устройствах */
+    }
+
+    .close {
+        font-size: 24px; /* Уменьшаем размер кнопки закрытия */
+    }
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 480px) {
+    .app-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .file-container {
+        padding: 20px;
+    }
+
+    .file-actions {
+        width: 100%;
+        align-items: center;
+    }
+
+    .delete-file-btn {
+        font-size: 1.1rem;
+    }
+
+    .modal-content {
+        width: 95%; /* Ширина на маленьких экранах */
+        margin: 30% auto; /* Увеличиваем отступ сверху */
+    }
+
+    #modal-textarea {
+        height: 250px; /* Еще меньше высота для текстового поля */
+    }
+
+    .close {
+        font-size: 20px; /* Ещё меньше кнопка закрытия */
     }
 }
