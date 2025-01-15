@@ -1,0 +1,156 @@
+/* Основной контейнер */
+.app-container {
+    width: 90%;
+    max-width: 1200px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Список файлов */
+.file-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Контейнер для файла */
+.file-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+}
+
+.file-container:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Эффект на наведение */
+}
+
+/* Заголовок файла */
+.file-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-name-input {
+    width: 100%;
+    max-width: 200px; /* Максимальная ширина поля ввода */
+    white-space: normal; /* Разрешает перенос строк */
+    overflow-wrap: break-word; /* Переносит длинные слова */
+    word-wrap: break-word; /* Для совместимости с браузерами */
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+/* Кнопка удаления */
+.delete-file-btn {
+    color: red;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* Текстовое поле для контента файла */
+.file-container textarea {
+    width: 100%;
+    height: 150px;
+    margin-top: 10px;
+    resize: none;
+}
+
+/* Действия с файлом */
+.file-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Количество файлов */
+#file-count {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Модальные стили */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+#modal-textarea {
+    height: 500px;
+    resize: none;
+}
+
+/* Кнопка закрытия */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Подсветка изменяемого имени файла */
+.file-name-input.highlight {
+    background-color: #ffeb3b;  /* Желтая подсветка */
+    border: 1px solid #ff9800;  /* Оранжевая рамка */
+}
+
+/* Адаптивность: Мобильные стили */
+@media (max-width: 768px) {
+    .file-list {
+        grid-template-columns: repeat(2, 1fr); /* Два столбца на мобильных устройствах */
+    }
+
+    .file-container {
+        padding: 15px;
+    }
+
+    .file-name-input {
+        font-size: 0.9rem; /* Меньший размер текста на мобильных */
+    }
+
+    .delete-file-btn {
+        font-size: 1.2rem; /* Уменьшаем кнопку удаления */
+    }
+
+    #file-count {
+        font-size: 0.9rem; /* Меньший размер шрифта для подсчета */
+    }
+}

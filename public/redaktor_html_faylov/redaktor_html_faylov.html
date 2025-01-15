@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="redaktor_html_faylov.css"> <!-- Локальные стили -->
+    <link rel="stylesheet" href="/global.css"> <!-- Глобальные стили (не изменяются) -->
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+    <title>Редактор HTML файлов</title>
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div id="marquee-container"></div>
+
+<!-- Основной контейнер -->
+<div class="app-container">
+    <h1>Редактор HTML файлов</h1>
+
+    <!-- Кнопка для добавления файлов -->
+    <button id="add-files-btn" class="process-btn">Добавить файлы</button>
+
+    <!-- Скрытый input для выбора файлов -->
+    <input type="file" id="file-input" multiple accept=".html" style="display: none;">
+
+    <!-- Подсчет файлов -->
+    <p id="file-count">Файлов: 0 / 50</p>
+
+    <!-- Список файлов -->
+    <div class="file-list">
+        <!-- Список файлов будет добавлен сюда динамически -->
+    </div>
+
+    <!-- Кнопки для сохранения и скачивания всех файлов -->
+    <button id="save-all-btn" class="process-btn">Сохранить все</button>
+    <button id="download-all-btn" class="process-btn">Скачать все</button>
+</div>
+
+<!-- Шаблон для каждого файла -->
+<template id="file-template">
+    <div class="file-container">
+            <label>
+                <input class="file-name-input" type="text" />
+            </label>
+            <button class="delete-file-btn" title="Удалить">&#x2716;</button>
+        <label>
+            <textarea class="file-content"></textarea>
+        </label>
+        <div class="file-actions">
+            <button class="save-file-btn process-btn">Сохранить</button>
+            <button class="download-file-btn process-btn">Скачать</button>
+        </div>
+    </div>
+</template>
+
+<!-- Модальное окно для редактирования файла -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="close-modal" class="close">&times;</span>
+        <label for="modal-textarea"></label>
+        <textarea id="modal-textarea" class="file-content" style="height: 500px;"></textarea>
+        <div class="file-actions">
+            <button id="modal-save-btn" class="process-btn">Сохранить</button>
+        </div>
+    </div>
+</div>
+<br>
+<div id="footer"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/global.js"></script>
+<script src="redaktor_html_faylov.js"></script>
+</body>
+</html>

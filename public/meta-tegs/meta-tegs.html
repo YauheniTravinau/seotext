@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактор мета-тегов HTML / HTML Meta Tags Editor</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="meta-tegs.css">
 </head>
 <body>
 <div class="container">
@@ -14,8 +14,8 @@
     <input type="file" id="fileInput" accept=".html">
     <div class="text-trimmer-container">
         <h1>Обрезчик текста / Text Trimmer</h1>
-        <textarea id="inputText" placeholder="Введите ваш текст здесь / Enter your text here"></textarea>
-        <input type="number" id="charLimit" placeholder="Введите ограничение символов / Enter character limit">
+        <label for="inputText"></label><textarea id="inputText" placeholder="Введите ваш текст здесь / Enter your text here"></textarea>
+        <label for="charLimit"></label><input type="number" id="charLimit" placeholder="Введите ограничение символов / Enter character limit">
         <button id="trimButton">Обрезать текст / Trim Text</button>
         <div id="result"></div>
     </div>
@@ -235,7 +235,7 @@
     </form>
     <a id="downloadLink" style="display: none;">Скачать обработанный HTML / Download Processed HTML</a>
 </div>
-<script src="script.js"></script>
+<script src="meta-tegs.js"></script>
 </body>
 </html>
 

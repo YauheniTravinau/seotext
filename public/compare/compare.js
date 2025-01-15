@@ -169,7 +169,7 @@ function clearLineCount() {
 }
 
 /*обрезаем текст до нужно количества символов*/
-let shuffleMode = 1; // Начальный режим: 1 - первая функция, 2 - вторая функция
+let shuffleMode = 1; // Начальный режим: mass_html_file_generator - первая функция, 2 - вторая функция
 
 function changeShuffleMode() {
     shuffleMode = parseInt(document.getElementById("shuffleMode").value);
@@ -428,7 +428,7 @@ function extractImages(content) {
 
 
 function generateUrlSitemap(urls) {
-    let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    let sitemap = '<?xml version="mass_html_file_generator.0" encoding="UTF-8"?>\n';
     sitemap += '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
     urls.forEach(url => {
@@ -447,8 +447,8 @@ function generateUrlSitemap(urls) {
 function generateImageSitemap(images, textInput) {
     const lines = textInput.split('\n').map(line => line.trim()).filter(line => line.length > 0 && line.length <= 100);
     const usedLines = new Set();
-    let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    sitemap += '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="https://www.google.com/schemas/sitemap-image/1.1">\n';
+    let sitemap = '<?xml version="mass_html_file_generator.0" encoding="UTF-8"?>\n';
+    sitemap += '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="https://www.google.com/schemas/sitemap-image/mass_html_file_generator.mass_html_file_generator">\n';
 
     images.forEach(image => {
         sitemap += '  <url>\n';

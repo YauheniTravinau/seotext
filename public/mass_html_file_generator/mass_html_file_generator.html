@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор HTML Файлов</title>
+    <link rel="stylesheet" href="mass_html_file_generator.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div id="marquee-container"></div>
+<h1>Генератор HTML Файлов</h1>
+
+<label for="separator" class="centered">Выберите разделитель:</label>
+<select id="separator" class="centered">
+    <option value="-">-</option>
+    <option value="_">_</option>
+</select>
+
+
+<label for="fileNames" class="centered">Введите имена файлов, по одному в строке:</label>
+<textarea id="fileNames" placeholder="Введите имена файлов, по одному в строке"></textarea>
+
+<button id="generate" class="process-btn">Сгенерировать и Скачать</button>
+
+<div id="footer"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="mass_html_file_generator.js"></script>
+<script src="/global.js"></script>
+
+</body>
+</html>
