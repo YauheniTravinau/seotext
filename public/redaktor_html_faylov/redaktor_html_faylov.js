@@ -8,9 +8,11 @@ const modal = document.getElementById('modal');
 const modalTextarea = document.getElementById('modal-textarea');
 const closeModalBtn = document.getElementById('close-modal');
 const modalSaveBtn = document.getElementById('modal-save-btn');
+const templateInput = document.getElementById('template-input');
+const applyTemplateBtn = document.getElementById('apply-template-btn');
 
 let fileCount = 0;
-const MAX_FILES = 50;
+const MAX_FILES = 2500;
 let currentFileContainer;
 
 addFilesBtn.addEventListener('click', () => fileInput.click());
@@ -180,3 +182,16 @@ function updateFileCount() {
     fileCountDisplay.textContent = `Файлов: ${fileCount} / ${MAX_FILES}`;
 }
 
+
+
+applyTemplateBtn.addEventListener('click', applyTemplateToAllFiles);
+
+function applyTemplateToAllFiles() {
+    const fileContainers = fileList.querySelectorAll('.file-container');
+    const template = templateInput.value;
+
+    fileContainers.forEach(fileContainer => {
+        const contentElement = fileContainer.querySelector('.file-content');
+        contentElement.value = template;
+    });
+}

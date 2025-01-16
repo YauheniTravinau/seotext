@@ -18,6 +18,14 @@
 <!-- Основной контейнер -->
 <div class="app-container">
     <h1>Редактор HTML файлов</h1>
+    <!-- Поле ввода для шаблона -->
+    <label for="template-input">Шаблон:</label>
+    <textarea id="template-input"></textarea>
+
+    <!-- Кнопка для применения шаблона -->
+    <div class="button-container">
+        <button id="apply-template-btn" class="process-btn">Применить шаблон</button>
+    </div>
 
     <!-- Кнопка для добавления файлов -->
     <button id="add-files-btn" class="process-btn">Добавить файлы</button>
@@ -26,7 +34,7 @@
     <input type="file" id="file-input" multiple accept=".html" style="display: none;">
 
     <!-- Подсчет файлов -->
-    <p id="file-count">Файлов: 0 / 50</p>
+    <p id="file-count">Файлов: 0 / 2500</p>
 
     <!-- Список файлов -->
     <div class="file-list">
