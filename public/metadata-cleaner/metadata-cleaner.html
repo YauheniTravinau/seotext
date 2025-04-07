@@ -11,6 +11,37 @@
     <link rel="stylesheet" href="/public/metadata-cleaner/metadata-cleaner.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .analyzer-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        .analyzer-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .analyzer-section p {
+            color: #6c757d;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .analyzer-section .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .analyzer-section .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
 <div id="header"></div>
@@ -19,6 +50,15 @@
 <br>
 <div class="container">
     <h1>Полная очистка метаданных фотографий</h1>
+
+    <!-- Анализатор метаданных -->
+    <div class="analyzer-section">
+        <h3><i class="fas fa-chart-bar"></i> Анализатор метаданных</h3>
+        <p>Моя разработка для массового сравнения метаданных фотографий. Позволяет анализировать и сравнивать метаданные нескольких фотографий одновременно.</p>
+        <a href="/public/metadata-cleaner/metadata_viewer.html" target="_blank" class="btn btn-primary">
+            <i class="fas fa-chart-bar"></i> Открыть анализатор
+        </a>
+    </div>
 
     <!-- Блок для проверки фотографий -->
     <div class="check-photos-section">
@@ -141,6 +181,147 @@
             <div class="option-group" id="randomOptions" style="display: none;">
                 <div class="checkbox-container">
                     <label class="checkbox-label">
+                        <input type="checkbox" id="customCountry">
+                        <span>Выбрать страну вручную</span>
+                    </label>
+                </div>
+                <div id="countrySelectContainer" style="display: none; margin-bottom: 10px;">
+                    <select id="countrySelect" class="form-control">
+                        <optgroup label="Европа">
+                            <option value="paris">Франция (Париж)</option>
+                            <option value="berlin">Германия (Берлин)</option>
+                            <option value="rome">Италия (Рим)</option>
+                            <option value="madrid">Испания (Мадрид)</option>
+                            <option value="lisbon">Португалия (Лиссабон)</option>
+                            <option value="amsterdam">Нидерланды (Амстердам)</option>
+                            <option value="vienna">Австрия (Вена)</option>
+                            <option value="prague">Чехия (Прага)</option>
+                            <option value="warsaw">Польша (Варшава)</option>
+                            <option value="budapest">Венгрия (Будапешт)</option>
+                            <option value="brussels">Бельгия (Брюссель)</option>
+                            <option value="copenhagen">Дания (Копенгаген)</option>
+                            <option value="helsinki">Финляндия (Хельсинки)</option>
+                            <option value="stockholm">Швеция (Стокгольм)</option>
+                            <option value="oslo">Норвегия (Осло)</option>
+                            <option value="dublin">Ирландия (Дублин)</option>
+                            <option value="london">Великобритания (Лондон)</option>
+                            <option value="zurich">Швейцария (Цюрих)</option>
+                            <option value="athens">Греция (Афины)</option>
+                            <option value="sofia">Болгария (София)</option>
+                            <option value="bucharest">Румыния (Бухарест)</option>
+                            <option value="zagreb">Хорватия (Загреб)</option>
+                            <option value="ljubljana">Словения (Любляна)</option>
+                            <option value="bratislava">Словакия (Братислава)</option>
+                            <option value="tallinn">Эстония (Таллин)</option>
+                            <option value="riga">Латвия (Рига)</option>
+                            <option value="vilnius">Литва (Вильнюс)</option>
+                            <option value="reykjavik">Исландия (Рейкьявик)</option>
+                            <option value="valletta">Мальта (Валлетта)</option>
+                            <option value="nicosia">Кипр (Никосия)</option>
+                            <option value="tirana">Албания (Тирана)</option>
+                            <option value="podgorica">Черногория (Подгорица)</option>
+                            <option value="skopje">Северная Македония (Скопье)</option>
+                            <option value="belgrade">Сербия (Белград)</option>
+                            <option value="sarajevo">Босния и Герцеговина (Сараево)</option>
+                        </optgroup>
+
+                        <optgroup label="СНГ и Ближнее Зарубежье">
+                            <option value="chisinau">Молдова (Кишинев)</option>
+                            <option value="yerevan">Армения (Ереван)</option>
+                            <option value="tbilisi">Грузия (Тбилиси)</option>
+                            <option value="astana">Казахстан (Астана)</option>
+                            <option value="bishkek">Кыргызстан (Бишкек)</option>
+                            <option value="dushanbe">Таджикистан (Душанбе)</option>
+                            <option value="ashgabat">Туркменистан (Ашхабад)</option>
+                            <option value="tashkent">Узбекистан (Ташкент)</option>
+                        </optgroup>
+
+                        <optgroup label="Северная Америка">
+                            <option value="newyork">США (Нью-Йорк)</option>
+                            <option value="losangeles">США (Лос-Анджелес)</option>
+                            <option value="chicago">США (Чикаго)</option>
+                            <option value="miami">США (Майами)</option>
+                            <option value="toronto">Канада (Торонто)</option>
+                            <option value="vancouver">Канада (Ванкувер)</option>
+                            <option value="montreal">Канада (Монреаль)</option>
+                        </optgroup>
+
+                        <optgroup label="Азия">
+                            <option value="tokyo">Япония (Токио)</option>
+                            <option value="seoul">Южная Корея (Сеул)</option>
+                            <option value="singapore">Сингапур</option>
+                            <option value="taipei">Тайвань (Тайбэй)</option>
+                            <option value="hongkong">Гонконг</option>
+                            <option value="bangkok">Таиланд (Бангкок)</option>
+                            <option value="kualalumpur">Малайзия (Куала-Лумпур)</option>
+                            <option value="jakarta">Индонезия (Джакарта)</option>
+                            <option value="manila">Филиппины (Манила)</option>
+                            <option value="hanoi">Вьетнам (Ханой)</option>
+                            <option value="phnompenh">Камбоджа (Пномпень)</option>
+                            <option value="vientiane">Лаос (Вьентьян)</option>
+                            <option value="yangon">Мьянма (Янгон)</option>
+                        </optgroup>
+
+                        <optgroup label="Ближний Восток">
+                            <option value="dubai">ОАЭ (Дубай)</option>
+                            <option value="abudhabi">ОАЭ (Абу-Даби)</option>
+                            <option value="doha">Катар (Доха)</option>
+                            <option value="manama">Бахрейн (Манама)</option>
+                            <option value="muscat">Оман (Маскат)</option>
+                            <option value="kuwait">Кувейт</option>
+                            <option value="riyadh">Саудовская Аравия (Эр-Рияд)</option>
+                            <option value="telaviv">Израиль (Тель-Авив)</option>
+                            <option value="amman">Иордания (Амман)</option>
+                            <option value="beirut">Ливан (Бейрут)</option>
+                        </optgroup>
+
+                        <optgroup label="Океания">
+                            <option value="sydney">Австралия (Сидней)</option>
+                            <option value="melbourne">Австралия (Мельбурн)</option>
+                            <option value="auckland">Новая Зеландия (Окленд)</option>
+                            <option value="wellington">Новая Зеландия (Веллингтон)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="customCamera">
+                        <span>Выбрать фотоаппарат вручную</span>
+                    </label>
+                </div>
+                <div id="cameraSelectContainer" style="display: none; margin-bottom: 10px;">
+                    <select id="cameraSelect" class="form-control">
+                        <option value="canon">Canon EOS 5D Mark IV</option>
+                        <option value="nikon">Nikon D850</option>
+                        <option value="sony">Sony A7R IV</option>
+                        <option value="fujifilm">Fujifilm X-T4</option>
+                        <option value="panasonic">Panasonic Lumix GH5</option>
+                        <option value="leica">Leica Q2</option>
+                        <option value="apple">Apple iPhone 15 Pro</option>
+                        <option value="samsung">Samsung Galaxy S23 Ultra</option>
+                        <option value="google">Google Pixel 7 Pro</option>
+                        <option value="hasselblad">Hasselblad X1D II 50C</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="customDates">
+                        <span>Выбрать диапазон дат</span>
+                    </label>
+                </div>
+                <div id="datesSelectContainer" style="display: none; margin-bottom: 10px;">
+                    <div class="date-range">
+                        <label>От:</label>
+                        <input type="date" id="dateFrom" class="form-control">
+                        <label>До:</label>
+                        <input type="date" id="dateTo" class="form-control">
+                    </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
                         <input type="checkbox" id="keepOriginalName">
                         <span>Сохранить оригинальное имя файла</span>
                     </label>
@@ -223,13 +404,40 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Новая секция для массового переименования -->
+                <div class="mass-rename-section">
+                    <div class="checkbox-container">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="useCustomNames">
+                            <span>Задать массово имена файлов</span>
+                        </label>
+                        <div class="info-icon-container">
+                            <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                            <div class="tooltip">
+                                Позволяет задать список названий для файлов. Каждая строка - новое название.
+                                Если строк меньше чем файлов - оставшиеся файлы получат случайные имена.
+                                Если строк больше чем файлов - будут использованы первые N строк.
+                            </div>
+                        </div>
+                    </div>
+                    <div id="customNamesContainer" style="display: none; margin-top: 10px;">
+                        <textarea id="customNames" rows="5" placeholder="Введите названия файлов (каждое с новой строки)"></textarea>
+                        <div class="names-counter">
+                            <span>Строк: </span><span id="linesCount">0</span>
+                            <span> | Файлов: </span><span id="filesCount">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="drop-area" id="dropArea">
         <p>Перетащите сюда фотографии или</p>
-        <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/gif,image/webp">
-        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Выбрать файлы</button>
+        <div class="file-input-wrapper">
+            <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
+            <label for="fileInput" class="btn btn-primary">Выбрать файлы</label>
+        </div>
         <div class="file-counter" id="fileCounter" style="display: none; margin-top: 10px; font-size: 14px; color: #666;"></div>
     </div>
     <div class="file-list" id="fileList"></div>

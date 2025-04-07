@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaDiff Pro — Анализ метаданных изображений</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --success-color: #27ae60;
+      --error-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 15px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: var(--dark-gray);
+      margin-bottom: 20px;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+    }
+    
+    #drop-zone {
+      border: 3px dashed var(--dark-gray);
+      padding: 30px;
+      text-align: center;
+      color: var(--dark-gray);
+      background: white;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    #drop-zone.highlight {
+      border-color: var(--secondary-color);
+      background-color: #f0f8ff;
+    }
+    
+    #drop-zone p {
+      margin-bottom: 10px;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+    
+    #drop-zone small {
+      font-size: 0.8rem;
+      color: var(--dark-gray);
+    }
+    
+    #progress-container {
+      width: 100%;
+      background-color: var(--light-gray);
+      border-radius: 5px;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    #progress-bar {
+      width: 0;
+      height: 25px;
+      background-color: var(--success-color);
+      border-radius: 5px;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      transition: width 0.3s;
+    }
+    
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      padding: 10px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    button:hover {
+      background-color: #1a252f;
+      transform: translateY(-1px);
+    }
+    
+    button:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    button i {
+      font-size: 1rem;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .file-input-label {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    
+    .file-input-label:hover {
+      background-color: #1a252f;
+    }
+    
+    .error {
+      color: var(--error-color);
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fdecea;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    .results-container {
+      overflow-x: auto;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      position: sticky;
+      top: 0;
+      font-weight: normal;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .identical {
+      background-color: #e6ffe6;
+    }
+    
+    .diff {
+      background-color: #ffe6f0;
+    }
+    
+    .metadata-type {
+      font-weight: bold;
+      color: var(--secondary-color);
+      background-color: #eaf2f8 !important;
+    }
+    
+    .metadata-key {
+      font-weight: 500;
+    }
+    
+    .metadata-translation {
+      font-size: 0.7rem;
+      color: var(--dark-gray);
+      display: block;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    
+    .empty-value {
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      #drop-zone {
+        padding: 20px 10px;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .control-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iptc-js/dist/iptc.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exiftool-js/dist/exiftool.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>MetaDiff Pro</h1>
+    <p class="subtitle">Анализ и сравнение метаданных изображений</p>
+    
+    <div id="drop-zone">
+      <p>Перетащите сюда изображения для анализа</p>
+      <p><small>Поддерживаются: JPG, PNG, TIFF, HEIC, RAW (CR2, NEF, ARW) и другие</small></p>
+      <label for="file-input" class="file-input-label">
+        <i class="fas fa-folder-open"></i> Выбрать файлы
+      </label>
+      <input type="file" id="file-input" class="file-input" multiple accept="image/*">
+    </div>
+    
+    <div id="progress-container">
+      <div id="progress-bar">0%</div>
+    </div>
+    
+    <div class="controls">
+      <div class="control-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-only-diff"> Показывать только отличия
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="group-by-type" checked> Группировать по типу
+        </label>
+      </div>
+      <div class="control-group">
+        <button id="download-excel">
+          <i class="fas fa-file-excel"></i> Скачать Excel
+        </button>
+        <button id="reset">
+          <i class="fas fa-trash-alt"></i> Сбросить
+        </button>
+      </div>
+    </div>
+    
+    <div id="error-message" class="error">
+      <i class="fas fa-exclamation-circle"></i> <span id="error-text"></span>
+    </div>
+    
+    <div class="results-container">
+      <table id="results"></table>
+    </div>
+  </div>
+
+  <script>
+    // Элементы DOM
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const results = document.getElementById('results');
+    const showOnlyDiff = document.getElementById('show-only-diff');
+    const groupByType = document.getElementById('group-by-type');
+    const downloadExcelBtn = document.getElementById('download-excel');
+    const resetBtn = document.getElementById('reset');
+    const errorMessage = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+
+    // Данные приложения
+    let metadataMap = {};
+    let fileNames = [];
+    let allMetadata = [];
+
+    // Словарь метаданных с русскими переводами
+    const METADATA_TRANSLATIONS = {
+      // Информация о файле
+      "FileName": "Имя файла",
+      "FileType": "Тип файла",
+      "FileSize": "Размер файла",
+      "LastModified": "Дата изменения",
+      
+      // EXIF основное
+      "ImageDescription": "Описание изображения",
+      "Make": "Производитель камеры",
+      "Model": "Модель камеры",
+      "XResolution": "Разрешение по X",
+      "YResolution": "Разрешение по Y",
+      "ResolutionUnit": "Единица измерения разрешения",
+      "Software": "Программное обеспечение",
+      "DateTime": "Дата и время",
+      "ExposureTime": "Выдержка",
+      "FNumber": "Диафрагма (f/)",
+      "ISOSpeedRatings": "Светочувствительность ISO",
+      "DateTimeOriginal": "Дата съёмки",
+      "DateTimeDigitized": "Дата оцифровки",
+      "FocalLength": "Фокусное расстояние",
+      "ColorSpace": "Цветовое пространство",
+      "PixelXDimension": "Ширина изображения",
+      "PixelYDimension": "Высота изображения",
+      "ExposureMode": "Режим экспозиции",
+      "WhiteBalance": "Баланс белого",
+      "SceneCaptureType": "Тип сцены",
+      
+      // GPS данные
+      "GPSLatitudeRef": "Широта (направление)",
+      "GPSLatitude": "Широта",
+      "GPSLongitudeRef": "Долгота (направление)",
+      "GPSLongitude": "Долгота",
+      "GPSAltitudeRef": "Высота (отсчет)",
+      "GPSAltitude": "Высота",
+      "GPSTimeStamp": "Время GPS",
+      "GPSDateStamp": "Дата GPS",
+      
+      // Дополнительные EXIF
+      "ExposureProgram": "Программа экспозиции",
+      "MeteringMode": "Режим замера экспозиции",
+      "LightSource": "Источник света",
+      "Flash": "Вспышка",
+      "FocalLengthIn35mmFilm": "Фокусное расстояние (35мм)",
+      "Contrast": "Контраст",
+      "Saturation": "Насыщенность",
+      "Sharpness": "Резкость",
+      
+      // IPTC
+      "ObjectName": "Название",
+      "Keywords": "Ключевые слова",
+      "DateCreated": "Дата создания",
+      "TimeCreated": "Время создания",
+      "By-line": "Автор",
+      "City": "Город",
+      "Country": "Страна",
+      "Headline": "Заголовок",
+      "Caption": "Подпись",
+      "Copyright": "Авторские права"
+    };
+
+    // Типы метаданных
+    const METADATA_TYPES = {
+      EXIF: 'EXIF метаданные',
+      IPTC: 'IPTC метаданные',
+      FILE: 'Информация о файле',
+      ICC: 'ICC профиль',
+      XMP: 'XMP метаданные',
+      GPS: 'GPS данные',
+      JFIF: 'JFIF данные',
+      OTHER: 'Другие метаданные'
+    };
+
+    // Инициализация приложения
+    function init() {
+      setupDragAndDrop();
+      setupFileInput();
+      setupEventListeners();
+      hideError();
+    }
+
+    // Настройка drag and drop
+    function setupDragAndDrop() {
+      ['dragover', 'dragenter'].forEach(event => {
+        dropZone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('highlight');
+        });
+      });
+
+      ['dragleave', 'dragend'].forEach(event => {
+        dropZone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('highlight');
+        });
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('highlight');
+        
+        const files = Array.from(e.dataTransfer.files).filter(isImageFile);
+        if (files.length > 0) {
+          handleFiles(files);
+        } else {
+          showError('Пожалуйста, перетащите файлы изображений');
+        }
+      });
+    }
+
+    // Настройка input для выбора файлов
+    function setupFileInput() {
+      fileInput.addEventListener('change', handleFileSelect);
+      
+      // Добавляем обработчик клика на кнопку выбора файлов
+      const fileInputLabel = document.querySelector('.file-input-label');
+      fileInputLabel.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Проверяем, есть ли уже выбранные файлы
+        if (fileInput.files.length === 0) {
+          fileInput.click();
+        }
+      });
+    }
+
+    // Настройка обработчиков событий
+    function setupEventListeners() {
+      showOnlyDiff.addEventListener('change', buildTable);
+      groupByType.addEventListener('change', buildTable);
+      downloadExcelBtn.addEventListener('click', exportExcel);
+      resetBtn.addEventListener('click', reset);
+    }
+
+    // Обработчики событий drag and drop
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add('highlight');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('highlight');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('highlight');
+      
+      const files = Array.from(e.dataTransfer.files).filter(isImageFile);
+      handleFiles(files);
+    }
+
+    // Обработчик выбора файлов через input
+    function handleFileSelect(e) {
+      const files = Array.from(e.target.files).filter(isImageFile);
+      handleFiles(files);
+    }
+
+    // Проверка, является ли файл изображением
+    function isImageFile(file) {
+      const supportedTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+        'image/bmp',
+        'image/tiff',
+        'image/heic',
+        'image/heif',
+        // RAW форматы
+        'image/x-canon-cr2',
+        'image/x-nikon-nef',
+        'image/x-sony-arw',
+        'image/x-adobe-dng',
+        'image/x-fuji-raf',
+        'image/x-panasonic-raw',
+        'image/x-olympus-orf',
+        'image/x-pentax-pef'
+      ];
+
+      const fileType = file.type || getFileTypeFromExtension(file.name);
+      return supportedTypes.includes(fileType);
+    }
+
+    // Обработка выбранных файлов
+    async function handleFiles(files) {
+      if (files.length === 0) {
+        showError('Пожалуйста, выберите файлы изображений (JPG, PNG, TIFF, HEIC, RAW и другие)');
+        return;
+      }
+      
+      try {
+        resetUI();
+        showProgress();
+        fileNames = files.map(f => f.name);
+        allMetadata = [];
+        
+        // Обработка файлов параллельно
+        const promises = files.map(async (file, index) => {
+          try {
+            const meta = await extractAllMetadata(file);
+            updateProgress(index, files.length);
+            return meta;
+          } catch (err) {
+            console.error(`Ошибка обработки файла ${file.name}:`, err);
+            return { error: `Ошибка извлечения метаданных: ${err.message}` };
+          }
+        });
+
+        allMetadata = await Promise.all(promises);
+        buildMetadataMap();
+        buildTable();
+        completeProgress();
+      } catch (err) {
+        showError(`Ошибка при обработке файлов: ${err.message}`);
+        hideProgress();
+      }
+    }
+
+    // Определение типа файла по расширению
+    function getFileTypeFromExtension(filename) {
+      const ext = filename.split('.').pop().toLowerCase();
+      const typeMap = {
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'gif': 'image/gif',
+        'webp': 'image/webp',
+        'bmp': 'image/bmp',
+        'tiff': 'image/tiff',
+        'tif': 'image/tiff',
+        'heic': 'image/heic',
+        'heif': 'image/heif',
+        // RAW форматы
+        'cr2': 'image/x-canon-cr2',
+        'nef': 'image/x-nikon-nef',
+        'arw': 'image/x-sony-arw',
+        'dng': 'image/x-adobe-dng',
+        'raf': 'image/x-fuji-raf',
+        'rw2': 'image/x-panasonic-raw',
+        'orf': 'image/x-olympus-orf',
+        'pef': 'image/x-pentax-pef'
+      };
+      return typeMap[ext] || 'application/octet-stream';
+    }
+
+    // Очистка ключа метаданных от префиксов
+    function cleanMetadataKey(key) {
+      // Удаляем префиксы типов (EXIF., IPTC. и т.д.)
+      const cleanKey = key.split('.').pop();
+      return cleanKey;
+    }
+
+    // Построение карты метаданных для сравнения
+    function buildMetadataMap() {
+      metadataMap = {};
+      
+      allMetadata.forEach((fileMeta, fileIndex) => {
+        // Обработка ошибок
+        if (fileMeta.error) {
+          if (!metadataMap.error) metadataMap.error = Array(fileNames.length).fill('');
+          metadataMap.error[fileIndex] = fileMeta.error;
+          return;
+        }
+        
+        // Информация о файле
+        addToMetadataMap('File:FileName', fileIndex, fileMeta.fileName);
+        addToMetadataMap('File:FileType', fileIndex, fileMeta.fileType);
+        addToMetadataMap('File:FileSize', fileIndex, formatFileSize(fileMeta.fileSize));
+        addToMetadataMap('File:LastModified', fileIndex, fileMeta.lastModified);
+        
+        // Обработка метаданных по типам
+        for (const [type, data] of Object.entries(fileMeta.metadata)) {
+          if (!data) continue;
+          
+          flattenMetadata(data, type).forEach(([key, value]) => {
+            addToMetadataMap(`${type}:${key}`, fileIndex, value);
+          });
+        }
+      });
+    }
+
+    // Рекурсивное "выравнивание" метаданных
+    function flattenMetadata(obj, prefix = '', result = []) {
+      for (const [key, value] of Object.entries(obj)) {
+        const fullKey = prefix ? `${prefix}.${key}` : key;
+        
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          flattenMetadata(value, fullKey, result);
+        } else {
+          result.push([fullKey, formatMetadataValue(value)]);
+        }
+      }
+      
+      return result;
+    }
+
+    // Определение типа файла и извлечение метаданных
+    async function extractAllMetadata(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = async function(e) {
+          try {
+            const result = {
+              fileName: file.name,
+              fileType: file.type || getFileTypeFromExtension(file.name),
+              fileSize: formatFileSize(file.size),
+              lastModified: new Date(file.lastModified).toLocaleString('ru-RU'),
+              metadata: {
+                FILE: {
+                  'FileName': file.name,
+                  'FileType': file.type || getFileTypeFromExtension(file.name),
+                  'FileSize': formatFileSize(file.size),
+                  'LastModified': new Date(file.lastModified).toLocaleString('ru-RU'),
+                  'LastAccessed': new Date(file.lastModified).toLocaleString('ru-RU'),
+                  'MIMEType': file.type,
+                }
+              }
+            };
+
+            // Создаем временное изображение для получения всех возможных данных
+            const img = new Image();
+            img.onload = async function() {
+              // Базовые параметры изображения
+              result.metadata.IMAGE = {
+                'Width': img.naturalWidth + ' px',
+                'Height': img.naturalHeight + ' px',
+                'AspectRatio': (img.naturalWidth / img.naturalHeight).toFixed(2),
+                'Megapixels': ((img.naturalWidth * img.naturalHeight) / 1000000).toFixed(2) + ' MP',
+                'BitDepth': '8', // Стандартное значение для большинства веб-изображений
+                'ColorType': file.type.includes('png') ? 'PNG' : 
+                           file.type.includes('gif') ? 'GIF' : 
+                           'JPEG',
+                'Compression': file.type.includes('png') ? 'Deflate/Inflate' : 
+                             file.type.includes('gif') ? 'LZW' : 
+                             'JPEG (DCT)',
+              };
+
+              // Извлечение EXIF
+              try {
+                const exifData = EXIF.readFromBinaryFile(e.target.result);
+                if (exifData && Object.keys(exifData).length > 0) {
+                  const cleanedExif = {};
+                  
+                  // GPS данные в отдельную группу
+                  const gpsData = {};
+                  
+                  for (let [key, value] of Object.entries(exifData)) {
+                    // Пропускаем пустые и технические поля
+                    if (!value || key.includes('undefined')) continue;
+                    
+                    // Обработка GPS данных
+                    if (key.includes('GPS')) {
+                      gpsData[key.replace('GPS', '')] = value;
+                      continue;
+                    }
+                    
+                    // Форматируем значение
+                    let formattedValue = formatMetadataValue(value);
+                    
+                    // Добавляем единицы измерения
+                    if (key.includes('Resolution')) formattedValue += ' dpi';
+                    if (key.includes('FocalLength')) formattedValue += ' mm';
+                    if (key.includes('Exposure')) {
+                      if (typeof value === 'number' && value < 1) {
+                        formattedValue = `1/${Math.round(1/value)} сек`;
+                      } else {
+                        formattedValue += ' сек';
+                      }
+                    }
+                    if (key.includes('FNumber')) formattedValue = 'f/' + formattedValue;
+                    if (key.includes('Temperature')) formattedValue += ' K';
+                    
+                    cleanedExif[key] = formattedValue;
+                  }
+                  
+                  if (Object.keys(cleanedExif).length > 0) {
+                    result.metadata.EXIF = cleanedExif;
+                  }
+                  if (Object.keys(gpsData).length > 0) {
+                    result.metadata.GPS = gpsData;
+                  }
+                }
+              } catch (exifErr) {
+                console.warn('Ошибка извлечения EXIF:', exifErr);
+              }
+
+              // Извлечение IPTC
+              try {
+                const iptcData = IPTC.parse(e.target.result);
+                if (iptcData && Object.keys(iptcData).length > 0) {
+                  result.metadata.IPTC = iptcData;
+                }
+              } catch (iptcErr) {
+                console.warn('Ошибка извлечения IPTC:', iptcErr);
+              }
+
+              // Попытка извлечь цветовой профиль
+              try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+                
+                result.metadata.COLOR = {
+                  'ColorSpace': 'sRGB', // Стандартное веб-пространство
+                  'ColorDepth': ctx.getImageData(0, 0, 1, 1).data.length * 8 + ' bits',
+                  'HasAlpha': file.type.includes('png') || file.type.includes('gif'),
+                  'IsGrayscale': false // Можно определить анализом пикселей
+                };
+              } catch (colorErr) {
+                console.warn('Ошибка извлечения цветового профиля:', colorErr);
+              }
+
+              resolve(result);
+            };
+
+            img.onerror = function() {
+              // Для не-изображений возвращаем только информацию о файле
+              resolve(result);
+            };
+
+            const blob = new Blob([e.target.result], { type: file.type });
+            img.src = URL.createObjectURL(blob);
+          } catch (err) {
+            reject(err);
+          }
+        };
+        
+        reader.onerror = () => {
+          reject(new Error('Ошибка чтения файла'));
+        };
+        
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    // Форматирование значений метаданных
+    function formatMetadataValue(value) {
+      if (value === null || value === undefined) return '';
+      
+      // Обработка GPS координат
+      if (Array.isArray(value) && value.length === 3 && typeof value[0] === 'number') {
+        const degrees = value[0];
+        const minutes = value[1];
+        const seconds = value[2];
+        return `${degrees}° ${minutes}' ${seconds.toFixed(2)}"`;
+      }
+      
+      // Обработка дробных значений
+      if (value && typeof value === 'object' && 'numerator' in value && 'denominator' in value) {
+        if (value.denominator === 0) return 'inf';
+        const result = value.numerator / value.denominator;
+        if (result < 1) {
+          return `1/${Math.round(1/result)}`;
+        }
+        return result.toFixed(2);
+      }
+      
+      if (typeof value === 'string') return value.trim();
+      if (typeof value === 'number') return value.toFixed(2);
+      if (Array.isArray(value)) return value.join(', ');
+      if (typeof value === 'object') {
+        const skipFields = ['IFDPointer', 'undefined', 'Unknown'];
+        const filteredObj = Object.entries(value).filter(([key]) => 
+          !skipFields.some(field => key.includes(field))
+        );
+        return filteredObj.length ? JSON.stringify(filteredObj) : '';
+      }
+      return String(value);
+    }
+
+    // Форматирование размера файла
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Б';
+      const k = 1024;
+      const sizes = ['Б', 'КБ', 'МБ', 'ГБ'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Добавление значения в карту метаданных
+    function addToMetadataMap(key, fileIndex, value) {
+      if (!metadataMap[key]) {
+        metadataMap[key] = Array(fileNames.length).fill('');
+      }
+      metadataMap[key][fileIndex] = value;
+    }
+
+    // Построение таблицы результатов
+    function buildTable() {
+      results.innerHTML = '';
+      
+      if (fileNames.length === 0) return;
+      
+      // Создание заголовка
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = '<th>Параметр</th>' + fileNames.map(f => `<th>${f}</th>`).join('');
+      thead.appendChild(headerRow);
+      results.appendChild(thead);
+      
+      // Группировка метаданных по типу
+      const metadataGroups = {};
+      for (const tag in metadataMap) {
+        const [type, ...rest] = tag.split(':');
+        const groupType = METADATA_TYPES[type] || METADATA_TYPES.OTHER;
+        
+        if (!metadataGroups[groupType]) {
+          metadataGroups[groupType] = [];
+        }
+        
+        metadataGroups[groupType].push({
+          key: tag,
+          values: metadataMap[tag]
+        });
+      }
+      
+      // Создание тела таблицы
+      const tbody = document.createElement('tbody');
+      
+      // Добавление групп в таблицу
+      for (const [groupType, tags] of Object.entries(metadataGroups)) {
+        // Заголовок группы
+        if (groupByType.checked) {
+          const groupHeader = document.createElement('tr');
+          groupHeader.innerHTML = `<td colspan="${fileNames.length + 1}" class="metadata-type">${groupType}</td>`;
+          tbody.appendChild(groupHeader);
+        }
+        
+        // Теги группы
+        for (const {key, values} of tags) {
+          const displayKey = key.includes(':') ? key.split(':').slice(1).join(':') : key;
+          const translation = METADATA_TRANSLATIONS[displayKey] || '';
+          const isDiff = new Set(values.map(v => JSON.stringify(v))).size > 1;
+          
+          if (showOnlyDiff.checked && !isDiff) continue;
+          
+          const row = document.createElement('tr');
+          const keyCell = document.createElement('td');
+          keyCell.className = 'metadata-key';
+          keyCell.innerHTML = displayKey;
+          
+          if (translation) {
+            keyCell.innerHTML += `<span class="metadata-translation">${translation}</span>`;
+          }
+          
+          row.appendChild(keyCell);
+          
+          values.forEach(val => {
+            const cell = document.createElement('td');
+            cell.className = isDiff ? 'diff' : 'identical';
+            
+            if (val === '') {
+              cell.innerHTML = '<span class="empty-value">—</span>';
+            } else {
+              cell.textContent = val;
+            }
+            
+            row.appendChild(cell);
+          });
+          
+          tbody.appendChild(row);
+        }
+      }
+      
+      results.appendChild(tbody);
+    }
+
+    // Экспорт в Excel
+    function exportExcel() {
+      if (fileNames.length === 0) {
+        showError('Нет данных для экспорта');
+        return;
+      }
+      
+      try {
+        // Подготовка данных
+        const data = [];
+        
+        // Заголовок
+        const header = ['Тип', 'Параметр', 'Описание'].concat(fileNames);
+        data.push(header);
+        
+        // Группировка для Excel
+        const metadataGroups = {};
+        for (const tag in metadataMap) {
+          const [type, ...rest] = tag.split(':');
+          const groupType = METADATA_TYPES[type] || METADATA_TYPES.OTHER;
+          const displayKey = tag.includes(':') ? tag.split(':').slice(1).join(':') : tag;
+          const translation = METADATA_TRANSLATIONS[displayKey] || '';
+          
+          if (!metadataGroups[groupType]) {
+            metadataGroups[groupType] = [];
+          }
+          
+          metadataGroups[groupType].push({
+            key: displayKey,
+            translation: translation,
+            values: metadataMap[tag]
+          });
+        }
+        
+        // Добавление данных
+        for (const [groupType, tags] of Object.entries(metadataGroups)) {
+          tags.forEach(({key, translation, values}) => {
+            const row = [groupType, key, translation].concat(values.map(v => v === '' ? '—' : v));
+            data.push(row);
+          });
+        }
+        
+        // Создание книги Excel
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        
+        // Настройка ширины столбцов
+        ws['!cols'] = [
+          { wch: 15 }, // Тип
+          { wch: 30 }, // Параметр
+          { wch: 40 }, // Описание
+          ...fileNames.map(() => ({ wch: 30 })) // Значения для каждого файла
+        ];
+        
+        XLSX.utils.book_append_sheet(wb, ws, "Метаданные");
+        
+        // Экспорт
+        const date = new Date().toISOString().slice(0, 10);
+        XLSX.writeFile(wb, `Метаданные_${date}.xlsx`);
+      } catch (err) {
+        showError(`Ошибка при экспорте в Excel: ${err.message}`);
+      }
+    }
+
+    // Управление прогресс-баром
+    function showProgress() {
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressBar.textContent = '0%';
+    }
+
+    function updateProgress(current, total) {
+      const percent = Math.round((current + 1) / total * 100);
+      progressBar.style.width = `${percent}%`;
+      progressBar.textContent = `${percent}%`;
+    }
+
+    function completeProgress() {
+      progressBar.style.width = '100%';
+      progressBar.textContent = '100%';
+      setTimeout(hideProgress, 1000);
+    }
+
+    function hideProgress() {
+      progressContainer.style.display = 'none';
+    }
+
+    // Управление ошибками
+    function showError(message) {
+      errorText.textContent = message;
+      errorMessage.style.display = 'block';
+      setTimeout(hideError, 5000);
+    }
+
+    function hideError() {
+      errorMessage.style.display = 'none';
+    }
+
+    // Сброс UI
+    function resetUI() {
+      results.innerHTML = '';
+      hideError();
+      fileInput.value = '';
+    }
+
+    // Полный сброс
+    function reset() {
+      resetUI();
+      metadataMap = {};
+      fileNames = [];
+      allMetadata = [];
+    }
+
+    // Запуск приложения
+    init();
+  </script>
+</body>
+</html>

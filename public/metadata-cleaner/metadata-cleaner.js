@@ -55,6 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const randomOptions = document.getElementById('randomOptions');
     const webpOption = document.getElementById('webpOption');
     const downloadZipBtn = document.getElementById('downloadZipBtn');
+    const useCustomNames = document.getElementById('useCustomNames');
+    const customNamesContainer = document.getElementById('customNamesContainer');
+    const customNames = document.getElementById('customNames');
+    const linesCount = document.getElementById('linesCount');
+    const filesCount = document.getElementById('filesCount');
 
     const SUPPORTED_FORMATS = [
         'image/jpeg', 'image/png', 'image/webp',
@@ -136,11 +141,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Обработчик выбора файлов
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length) {
             addFiles(fileInput.files);
         }
     });
+
+    // Обработчик для переключения видимости поля ввода названий
+    useCustomNames.addEventListener('change', function() {
+        customNamesContainer.style.display = this.checked ? 'block' : 'none';
+        updateNamesCounter();
+    });
+
+    // Обработчик для подсчета строк в поле ввода
+    customNames.addEventListener('input', updateNamesCounter);
+
+    // Функция обновления счетчиков
+    function updateNamesCounter() {
+        const lines = customNames.value.split('\n').filter(line => line.trim() !== '');
+        linesCount.textContent = lines.length;
+        filesCount.textContent = files.length;
+    }
 
     // Основные функции
     function addFiles(newFiles) {
@@ -159,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateFileList();
         updateButtons();
+        updateNamesCounter();
     }
 
     function updateFileList() {
@@ -249,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateFileList();
         updateButtons();
+        updateNamesCounter();
     };
 
     clearBtn.addEventListener('click', () => {
@@ -264,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
         progressBar.style.width = '0%';
         statusDiv.textContent = '';
         statusDiv.className = 'status';
+        updateNamesCounter();
     });
 
     function updateButtons() {
@@ -298,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < files.length; i++) {
             try {
                 const file = files[i];
-                const processedFile = await processImage(file, action, options);
+                const processedFile = await processImage(file, action, options, i);
                 processedFiles.push(processedFile);
 
                 const progress = Math.round((i + 1) / files.length * 100);
@@ -438,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    async function processImage(file, action, options) {
+    async function processImage(file, action, options, index) {
         return new Promise((resolve, reject) => {
             if (file.type === 'image/svg+xml') {
                 resolve(file);
@@ -538,10 +563,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             canvas.toBlob(async blob => {
                                 try {
-                                    const newFileName = options.keepOriginalName ?
-                                        file.name.replace(/\.[^/.]+$/, '') +
-                                        (options.convertToWebP ? '.webp' : `.${mimeType.split('/')[1]}`) :
-                                        generateUniqueFilename(file.name, action, options.convertToWebP);
+                                    const newFileName = generateUniqueFilename(file.name, action, options.convertToWebP, index);
 
                                     let resultBlob = blob;
 
@@ -574,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function processSpecialFormat(file, action, options) {
         const newFileName = options.keepOriginalName ?
             file.name :
-            generateUniqueFilename(file.name, action, false);
+            generateUniqueFilename(file.name, action, false, 0);
 
         return new File([file], newFileName, { type: file.type });
     }
@@ -593,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
 
-                    const randomDate = getRandomDate(new Date(2018, 0, 1), new Date());
+                    const randomDate = getRandomDate();
                     const device = getRandomDevice();
                     const software = getRandomSoftware();
                     const location = getRandomLocation();
@@ -654,6 +676,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getRandomDevice() {
+        const customCamera = document.getElementById('customCamera').checked;
+        const cameraSelect = document.getElementById('cameraSelect');
+        
+        if (customCamera) {
+            const selectedCamera = cameraSelect.value;
+            const cameras = {
+                canon: { make: 'Canon', model: 'EOS 5D Mark IV' },
+                nikon: { make: 'Nikon', model: 'D850' },
+                sony: { make: 'Sony', model: 'A7R IV' },
+                fujifilm: { make: 'Fujifilm', model: 'X-T4' },
+                panasonic: { make: 'Panasonic', model: 'Lumix GH5' },
+                leica: { make: 'Leica', model: 'Q2' },
+                apple: { make: 'Apple', model: 'iPhone 15 Pro' },
+                samsung: { make: 'Samsung', model: 'Galaxy S23 Ultra' },
+                google: { make: 'Google', model: 'Pixel 7 Pro' },
+                hasselblad: { make: 'Hasselblad', model: 'X1D II 50C' }
+            };
+            return cameras[selectedCamera];
+        }
+
+        // Если не выбран конкретный фотоаппарат, используем случайный
         const devices = [
             { make: 'Canon', model: 'EOS 5D Mark IV' },
             { make: 'Nikon', model: 'D850' },
@@ -664,9 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
             { make: 'Apple', model: 'iPhone 15 Pro' },
             { make: 'Samsung', model: 'Galaxy S23 Ultra' },
             { make: 'Google', model: 'Pixel 7 Pro' },
-            { make: 'Hasselblad', model: 'X1D II 50C' },
-            { make: 'Olympus', model: 'OM-D E-M1 Mark III' },
-            { make: 'Pentax', model: 'K-1 Mark II' }
+            { make: 'Hasselblad', model: 'X1D II 50C' }
         ];
         return devices[Math.floor(Math.random() * devices.length)];
     }
@@ -693,29 +734,197 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getRandomLocation() {
-        const safeLocations = [
-            { city: 'Paris', lat: 48.8566, lng: 2.3522 },
-            { city: 'Berlin', lat: 52.5200, lng: 13.4050 },
-            { city: 'Rome', lat: 41.9028, lng: 12.4964 },
-            { city: 'Madrid', lat: 40.4168, lng: -3.7038 },
-            { city: 'Lisbon', lat: 38.7223, lng: -9.1393 },
-            { city: 'Amsterdam', lat: 52.3676, lng: 4.9041 },
-            { city: 'Vienna', lat: 48.2082, lng: 16.3738 },
-            { city: 'Prague', lat: 50.0755, lng: 14.4378 },
-            { city: 'Warsaw', lat: 52.2297, lng: 21.0122 },
-            { city: 'New York', lat: 40.7128, lng: -74.0060 },
-            { city: 'Los Angeles', lat: 34.0522, lng: -118.2437 },
-            { city: 'Toronto', lat: 43.6532, lng: -79.3832 },
-            { city: 'Mexico City', lat: 19.4326, lng: -99.1332 },
-            { city: 'Buenos Aires', lat: -34.6037, lng: -58.3816 },
-            { city: 'Tokyo', lat: 35.6762, lng: 139.6503 },
-            { city: 'Seoul', lat: 37.5665, lng: 126.9780 },
-            { city: 'Singapore', lat: 1.3521, lng: 103.8198 },
-            { city: 'Sydney', lat: -33.8688, lng: 151.2093 },
-            { city: 'Dubai', lat: 25.2048, lng: 55.2708 }
-        ];
+        const customCountry = document.getElementById('customCountry').checked;
+        const countrySelect = document.getElementById('countrySelect');
+        
+        if (customCountry) {
+            const selectedCountry = countrySelect.value;
+            const baseLocations = {
+                // Европа
+                paris: { lat: 48.8566, lng: 2.3522 },
+                berlin: { lat: 52.5200, lng: 13.4050 },
+                rome: { lat: 41.9028, lng: 12.4964 },
+                madrid: { lat: 40.4168, lng: -3.7038 },
+                lisbon: { lat: 38.7223, lng: -9.1393 },
+                amsterdam: { lat: 52.3676, lng: 4.9041 },
+                vienna: { lat: 48.2082, lng: 16.3738 },
+                prague: { lat: 50.0755, lng: 14.4378 },
+                warsaw: { lat: 52.2297, lng: 21.0122 },
+                budapest: { lat: 47.4979, lng: 19.0402 },
+                brussels: { lat: 50.8503, lng: 4.3517 },
+                copenhagen: { lat: 55.6761, lng: 12.5683 },
+                helsinki: { lat: 60.1699, lng: 24.9384 },
+                stockholm: { lat: 59.3293, lng: 18.0686 },
+                oslo: { lat: 59.9139, lng: 10.7522 },
+                dublin: { lat: 53.3498, lng: -6.2603 },
+                london: { lat: 51.5074, lng: -0.1278 },
+                zurich: { lat: 47.3769, lng: 8.5417 },
+                athens: { lat: 37.9838, lng: 23.7275 },
+                sofia: { lat: 42.6977, lng: 23.3219 },
+                bucharest: { lat: 44.4268, lng: 26.1025 },
+                zagreb: { lat: 45.8150, lng: 15.9819 },
+                ljubljana: { lat: 46.0569, lng: 14.5058 },
+                bratislava: { lat: 48.1486, lng: 17.1077 },
+                tallinn: { lat: 59.4370, lng: 24.7536 },
+                riga: { lat: 56.9496, lng: 24.1052 },
+                vilnius: { lat: 54.6872, lng: 25.2797 },
+                reykjavik: { lat: 64.1265, lng: -21.8174 },
+                valletta: { lat: 35.8989, lng: 14.5146 },
+                nicosia: { lat: 35.1856, lng: 33.3823 },
+                tirana: { lat: 41.3275, lng: 19.8187 },
+                podgorica: { lat: 42.4304, lng: 19.2594 },
+                skopje: { lat: 42.0038, lng: 21.4522 },
+                belgrade: { lat: 44.7866, lng: 20.4489 },
+                sarajevo: { lat: 43.8563, lng: 18.4131 },
+                chisinau: { lat: 47.0105, lng: 28.8638 },
+                yerevan: { lat: 40.1792, lng: 44.4991 },
+                tbilisi: { lat: 41.7151, lng: 44.8271 },
+                astana: { lat: 51.1694, lng: 71.4491 },
+                bishkek: { lat: 42.8746, lng: 74.5698 },
+                dushanbe: { lat: 38.5598, lng: 68.7870 },
+                ashgabat: { lat: 37.9601, lng: 58.3261 },
+                tashkent: { lat: 41.2995, lng: 69.2401 },
 
-        if (Math.random() < 0.3) return null;
+                // Северная Америка
+                newyork: { lat: 40.7128, lng: -74.0060 },
+                losangeles: { lat: 34.0522, lng: -118.2437 },
+                chicago: { lat: 41.8781, lng: -87.6298 },
+                miami: { lat: 25.7617, lng: -80.1918 },
+                toronto: { lat: 43.6532, lng: -79.3832 },
+                vancouver: { lat: 49.2827, lng: -123.1207 },
+                montreal: { lat: 45.5017, lng: -73.5673 },
+
+                // Азия
+                tokyo: { lat: 35.6762, lng: 139.6503 },
+                seoul: { lat: 37.5665, lng: 126.9780 },
+                singapore: { lat: 1.3521, lng: 103.8198 },
+                taipei: { lat: 25.0330, lng: 121.5654 },
+                hongkong: { lat: 22.3193, lng: 114.1694 },
+                bangkok: { lat: 13.7563, lng: 100.5018 },
+                kualalumpur: { lat: 3.1390, lng: 101.6869 },
+                jakarta: { lat: -6.2088, lng: 106.8456 },
+                manila: { lat: 14.5995, lng: 120.9842 },
+                hanoi: { lat: 21.0278, lng: 105.8342 },
+                phnompenh: { lat: 11.5564, lng: 104.9282 },
+                vientiane: { lat: 17.9757, lng: 102.6331 },
+                yangon: { lat: 16.8409, lng: 96.1735 },
+
+                // Ближний Восток
+                dubai: { lat: 25.2048, lng: 55.2708 },
+                abudhabi: { lat: 24.4539, lng: 54.3773 },
+                doha: { lat: 25.2769, lng: 51.5200 },
+                manama: { lat: 26.2285, lng: 50.5860 },
+                muscat: { lat: 23.5859, lng: 58.4059 },
+                kuwait: { lat: 29.3759, lng: 47.9774 },
+                riyadh: { lat: 24.7136, lng: 46.6753 },
+                telaviv: { lat: 32.0853, lng: 34.7818 },
+                amman: { lat: 31.9454, lng: 35.9284 },
+                beirut: { lat: 33.8938, lng: 35.5018 },
+
+                // Океания
+                sydney: { lat: -33.8688, lng: 151.2093 },
+                melbourne: { lat: -37.8136, lng: 144.9631 },
+                auckland: { lat: -36.8485, lng: 174.7633 },
+                wellington: { lat: -41.2866, lng: 174.7756 }
+            };
+
+            const baseLocation = baseLocations[selectedCountry];
+            // Добавляем небольшие случайные отклонения для каждого фото
+            return {
+                lat: baseLocation.lat + (Math.random() * 0.1 - 0.05),
+                lng: baseLocation.lng + (Math.random() * 0.1 - 0.05)
+            };
+        }
+
+        // Если не выбрана конкретная страна, используем случайную из безопасных локаций
+        const safeLocations = [
+            // Европа
+            { lat: 48.8566, lng: 2.3522 }, // Париж
+            { lat: 52.5200, lng: 13.4050 }, // Берлин
+            { lat: 41.9028, lng: 12.4964 }, // Рим
+            { lat: 40.4168, lng: -3.7038 }, // Мадрид
+            { lat: 38.7223, lng: -9.1393 }, // Лиссабон
+            { lat: 52.3676, lng: 4.9041 }, // Амстердам
+            { lat: 48.2082, lng: 16.3738 }, // Вена
+            { lat: 50.0755, lng: 14.4378 }, // Прага
+            { lat: 52.2297, lng: 21.0122 }, // Варшава
+            { lat: 47.4979, lng: 19.0402 }, // Будапешт
+            { lat: 50.8503, lng: 4.3517 }, // Брюссель
+            { lat: 55.6761, lng: 12.5683 }, // Копенгаген
+            { lat: 60.1699, lng: 24.9384 }, // Хельсинки
+            { lat: 59.3293, lng: 18.0686 }, // Стокгольм
+            { lat: 59.9139, lng: 10.7522 }, // Осло
+            { lat: 53.3498, lng: -6.2603 }, // Дублин
+            { lat: 51.5074, lng: -0.1278 }, // Лондон
+            { lat: 47.3769, lng: 8.5417 }, // Цюрих
+            { lat: 37.9838, lng: 23.7275 }, // Афины
+            { lat: 42.6977, lng: 23.3219 }, // София
+            { lat: 44.4268, lng: 26.1025 }, // Бухарест
+            { lat: 45.8150, lng: 15.9819 }, // Загреб
+            { lat: 46.0569, lng: 14.5058 }, // Любляна
+            { lat: 48.1486, lng: 17.1077 }, // Братислава
+            { lat: 59.4370, lng: 24.7536 }, // Таллин
+            { lat: 56.9496, lng: 24.1052 }, // Рига
+            { lat: 54.6872, lng: 25.2797 }, // Вильнюс
+            { lat: 64.1265, lng: -21.8174 }, // Рейкьявик
+            { lat: 35.8989, lng: 14.5146 }, // Валлетта
+            { lat: 35.1856, lng: 33.3823 }, // Никосия
+            { lat: 41.3275, lng: 19.8187 }, // Тирана
+            { lat: 42.4304, lng: 19.2594 }, // Подгорица
+            { lat: 42.0038, lng: 21.4522 }, // Скопье
+            { lat: 44.7866, lng: 20.4489 }, // Белград
+            { lat: 43.8563, lng: 18.4131 }, // Сараево
+            { lat: 47.0105, lng: 28.8638 }, // Кишинев
+            { lat: 40.1792, lng: 44.4991 }, // Ереван
+            { lat: 41.7151, lng: 44.8271 }, // Тбилиси
+            { lat: 51.1694, lng: 71.4491 }, // Астана
+            { lat: 42.8746, lng: 74.5698 }, // Бишкек
+            { lat: 38.5598, lng: 68.7870 }, // Душанбе
+            { lat: 37.9601, lng: 58.3261 }, // Ашхабад
+            { lat: 41.2995, lng: 69.2401 }, // Ташкент
+
+            // Северная Америка
+            { lat: 40.7128, lng: -74.0060 }, // Нью-Йорк
+            { lat: 34.0522, lng: -118.2437 }, // Лос-Анджелес
+            { lat: 41.8781, lng: -87.6298 }, // Чикаго
+            { lat: 25.7617, lng: -80.1918 }, // Майами
+            { lat: 43.6532, lng: -79.3832 }, // Торонто
+            { lat: 49.2827, lng: -123.1207 }, // Ванкувер
+            { lat: 45.5017, lng: -73.5673 }, // Монреаль
+
+            // Азия
+            { lat: 35.6762, lng: 139.6503 }, // Токио
+            { lat: 37.5665, lng: 126.9780 }, // Сеул
+            { lat: 1.3521, lng: 103.8198 }, // Сингапур
+            { lat: 25.0330, lng: 121.5654 }, // Тайбэй
+            { lat: 22.3193, lng: 114.1694 }, // Гонконг
+            { lat: 13.7563, lng: 100.5018 }, // Бангкок
+            { lat: 3.1390, lng: 101.6869 }, // Куала-Лумпур
+            { lat: -6.2088, lng: 106.8456 }, // Джакарта
+            { lat: 14.5995, lng: 120.9842 }, // Манила
+            { lat: 21.0278, lng: 105.8342 }, // Ханой
+            { lat: 11.5564, lng: 104.9282 }, // Пномпень
+            { lat: 17.9757, lng: 102.6331 }, // Вьентьян
+            { lat: 16.8409, lng: 96.1735 }, // Янгон
+
+            // Ближний Восток
+            { lat: 25.2048, lng: 55.2708 }, // Дубай
+            { lat: 24.4539, lng: 54.3773 }, // Абу-Даби
+            { lat: 25.2769, lng: 51.5200 }, // Доха
+            { lat: 26.2285, lng: 50.5860 }, // Манама
+            { lat: 23.5859, lng: 58.4059 }, // Маскат
+            { lat: 29.3759, lng: 47.9774 }, // Кувейт
+            { lat: 24.7136, lng: 46.6753 }, // Эр-Рияд
+            { lat: 32.0853, lng: 34.7818 }, // Тель-Авив
+            { lat: 31.9454, lng: 35.9284 }, // Амман
+            { lat: 33.8938, lng: 35.5018 }, // Бейрут
+
+            // Океания
+            { lat: -33.8688, lng: 151.2093 }, // Сидней
+            { lat: -37.8136, lng: 144.9631 }, // Мельбурн
+            { lat: -36.8485, lng: 174.7633 }, // Окленд
+            { lat: -41.2866, lng: 174.7756 } // Веллингтон
+        ];
 
         const loc = safeLocations[Math.floor(Math.random() * safeLocations.length)];
         return {
@@ -724,8 +933,21 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    function getRandomDate(start, end) {
-        return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    function getRandomDate() {
+        const customDates = document.getElementById('customDates').checked;
+        const dateFrom = document.getElementById('dateFrom');
+        const dateTo = document.getElementById('dateTo');
+        
+        if (customDates && dateFrom.value && dateTo.value) {
+            const start = new Date(dateFrom.value);
+            const end = new Date(dateTo.value);
+            return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+        }
+
+        // Если не выбран диапазон дат, используем случайную дату за последние 5 лет
+        const start = new Date();
+        start.setFullYear(start.getFullYear() - 5);
+        return new Date(start.getTime() + Math.random() * (new Date().getTime() - start.getTime()));
     }
 
     function formatExifDate(date) {
@@ -755,14 +977,45 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Blob([ab], { type: mimeString });
     }
 
-    function generateUniqueFilename(originalName, action, isWebP) {
+    function generateUniqueFilename(originalName, action, isWebP, index) {
         const ext = isWebP ? 'webp' : originalName.split('.').pop();
+        
+        // Если включено сохранение оригинального имени
+        if (document.getElementById('keepOriginalName').checked) {
+            return originalName;
+        }
+
+        // Если включено использование списка названий
+        if (useCustomNames.checked) {
+            const names = customNames.value.split('\n').filter(line => line.trim() !== '');
+            if (names.length > 0) {
+                // Если есть достаточно имен, используем их
+                if (index < names.length) {
+                    return `${names[index].trim()}.${ext}`;
+                }
+            }
+        }
+
+        // Если не используется список имен или их недостаточно, генерируем случайное
         const randomStr = Math.random().toString(36).substring(2, 8);
         const randomDate = new Date();
         const dateStr = `${randomDate.getFullYear()}${(randomDate.getMonth()+1).toString().padStart(2, '0')}${randomDate.getDate().toString().padStart(2, '0')}`;
         const timeStr = `${randomDate.getHours()}${randomDate.getMinutes()}${randomDate.getSeconds()}`;
         return `${action}_${dateStr}_${timeStr}_${randomStr}.${ext}`;
     }
+
+    // Обработчики для новых элементов управления
+    document.getElementById('customCountry').addEventListener('change', function() {
+        document.getElementById('countrySelectContainer').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('customCamera').addEventListener('change', function() {
+        document.getElementById('cameraSelectContainer').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('customDates').addEventListener('change', function() {
+        document.getElementById('datesSelectContainer').style.display = this.checked ? 'block' : 'none';
+    });
 });
 
 // Обработчик кнопки "Сказать спасибо"
