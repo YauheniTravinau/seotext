@@ -40,52 +40,71 @@ text2.addEventListener('input', compareText);
 
 
 // Функция для изменения размера изображений и их сохранения
-function resizeAndRenameImages() {
+async function resizeAndRenameImages() {
     const files = document.getElementById('fileInput').files;
     const width = parseInt(document.getElementById('width').value) || 0;
     const height = parseInt(document.getElementById('height').value) || 0;
     const copies = parseInt(document.getElementById('copies').value);
-    let captions = document.getElementById('captions').value.trim() !== '' ? document.getElementById('captions').value.split('\n') : [];
+    let captions = document.getElementById('captions').value.trim() !== '' ?
+        document.getElementById('captions').value.split('\n') : [];
     const formatSelect = document.getElementById('format');
     const selectedFormat = formatSelect.value;
+    const saveMethod = document.getElementById('saveMethod').value;
     const outputDiv = document.getElementById('output');
 
     let captionIndex = 0;
-    let fileIndex = 0;
+    let processedCount = 0;
+    const totalToProcess = files.length * copies;
 
-    function processNextFile() {
-        if (fileIndex < files.length) {
-            const file = files[fileIndex];
+    // Для ZIP-архива
+    let zip;
+    if (saveMethod === 'zip') {
+        zip = new JSZip();
+        outputDiv.innerHTML = '<p>Подготовка ZIP-архива...</p>';
+    } else {
+        outputDiv.innerHTML = '';
+    }
+
+    async function processFile(file) {
+        return new Promise((resolve) => {
             const reader = new FileReader();
 
             reader.onload = function(e) {
                 const img = new Image();
                 img.src = e.target.result;
 
-                img.onload = function() {
+                img.onload = async function() {
                     const aspectRatio = img.width / img.height;
+                    const promises = [];
 
                     for (let j = 0; j < copies; j++) {
                         let fileName = file.name.split('.')[0];
                         if (captionIndex < captions.length && captions[captionIndex].trim() !== '') {
-                            fileName = captions[captionIndex].trim().replace(/\s+/g, '-');
+                            fileName = sanitizeFilename(captions[captionIndex].trim());
                             captionIndex++;
+                        } else if (copies > 1) {
+                            fileName = sanitizeFilename(fileName) + `_${j + 1}`;
                         }
 
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
 
-                        canvas.width = width;
-                        canvas.height = height;
+                        canvas.width = width || img.width;
+                        canvas.height = height || img.height;
 
                         let newWidth, newHeight;
 
-                        if (width / aspectRatio > height) {
-                            newWidth = width;
-                            newHeight = width / aspectRatio;
+                        if (width && height) {
+                            if (width / aspectRatio > height) {
+                                newWidth = width;
+                                newHeight = width / aspectRatio;
+                            } else {
+                                newHeight = height;
+                                newWidth = height * aspectRatio;
+                            }
                         } else {
-                            newHeight = height;
-                            newWidth = height * aspectRatio;
+                            newWidth = width || img.width;
+                            newHeight = height || img.height;
                         }
 
                         const offsetX = (canvas.width - newWidth) / 2;
@@ -93,42 +112,111 @@ function resizeAndRenameImages() {
 
                         ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, newWidth, newHeight);
 
-                        let format = file.type.split('/')[1];
-                        if (selectedFormat !== 'original') {
-                            format = selectedFormat;
-                        }
-                        const newDataUrl = canvas.toDataURL(`image/${format}`, 0.75);
+                        let format = selectedFormat === 'original' ?
+                            file.type.split('/')[1] : selectedFormat;
 
-                        const newName = `${fileName}.${format}`;
-                        downloadImage(newDataUrl, newName);
+                        if (!['jpeg', 'png', 'webp'].includes(format.toLowerCase())) {
+                            format = 'jpeg';
+                        }
+
+                        const quality = format === 'png' ? 1.0 : 0.85;
+
+                        promises.push(new Promise((resolveCanvas) => {
+                            canvas.toBlob(async (blob) => {
+                                const newName = `${fileName}.${format}`;
+
+                                if (saveMethod === 'zip') {
+                                    zip.file(newName, blob);
+                                } else {
+                                    downloadImage(blob, newName);
+                                }
+
+                                processedCount++;
+                                outputDiv.innerHTML = `<p>Обработано ${processedCount} из ${totalToProcess}</p>`;
+                                resolveCanvas();
+                            }, `image/${format}`, quality);
+                        }));
                     }
-                    fileIndex++;
-                    setTimeout(processNextFile, 1500); // Задержка в 1500 миллисекунд перед обработкой следующего файла
-                }
+
+                    await Promise.all(promises);
+                    resolve();
+                };
+
+                img.onerror = function() {
+                    console.error('Ошибка загрузки изображения');
+                    resolve();
+                };
+            };
+
+            reader.onerror = function() {
+                console.error('Ошибка чтения файла');
+                resolve();
             };
 
             reader.readAsDataURL(file);
-        } else {
-            // Очистка полей ввода и вывода после завершения обработки всех файлов
-            document.getElementById('width').value = '';
-            document.getElementById('height').value = '';
-            document.getElementById('captions').value = '';
-            document.getElementById('fileInput').value = '';
-            outputDiv.innerHTML = '';
-            clearLineCount(); // Вызов функции очистки количества строк
-        }
+        });
     }
 
-    processNextFile();
+    // Обрабатываем файлы последовательно для избежания перегрузки памяти
+    for (let i = 0; i < files.length; i++) {
+        await processFile(files[i]);
+    }
+
+    if (saveMethod === 'zip' && zip) {
+        try {
+            outputDiv.innerHTML = '<p>Создание ZIP-архива...</p>';
+
+            // Упрощенная версия сохранения архива
+            const content = await zip.generateAsync({type: 'blob'});
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'images.zip';
+            document.body.appendChild(a);
+            a.click();
+
+            // Очистка через 100 мс
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                outputDiv.innerHTML = '<p>ZIP-архив успешно создан и сохранен!</p>';
+            }, 100);
+
+        } catch (error) {
+            console.error('Ошибка при создании ZIP-архива:', error);
+            outputDiv.innerHTML = '<p>Ошибка при создании ZIP-архива</p>';
+        }
+    } else {
+        outputDiv.innerHTML = '<p>Все изображения обработаны!</p>';
+    }
+
+    // Очистка полей ввода
+    document.getElementById('width').value = '';
+    document.getElementById('height').value = '';
+    document.getElementById('captions').value = '';
+    document.getElementById('fileInput').value = '';
+    clearLineCount();
 }
 
-function downloadImage(dataUrl, filename) {
+// Остальные функции остаются без изменений
+function sanitizeFilename(filename) {
+    return filename
+        .replace(/[^a-zA-Z0-9а-яА-ЯёЁ\-_]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+}
+
+function downloadImage(blob, filename) {
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = dataUrl;
+    a.href = url;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
 }
 
 document.getElementById('fileInput').addEventListener('change', function() {

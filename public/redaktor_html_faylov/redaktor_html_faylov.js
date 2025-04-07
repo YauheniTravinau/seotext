@@ -195,3 +195,4 @@ function applyTemplateToAllFiles() {
         contentElement.value = template;
     });
 }
+

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Глубокая очистка метаданных</title>
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+    <link rel="stylesheet" href="/public/metadata-cleaner/metadata-cleaner.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div id="header"></div>
+<div id="menu"></div>
+<div id="marquee-container"></div>
+<br>
+<div class="container">
+    <h1>Полная очистка метаданных фотографий</h1>
+
+    <!-- Блок для проверки фотографий -->
+    <div class="check-photos-section">
+        <h3><i class="fas fa-search"></i> Проверить фотографии</h3>
+        <p>Вы можете проверить свои фотографии до и после обработки с помощью этих сервисов:</p>
+        <div class="check-links">
+            <a href="https://exif.tools/" target="_blank" class="check-link"><i class="fas fa-external-link-alt"></i> EXIF.tools</a>
+            <a href="https://exifinfo.org/" target="_blank" class="check-link"><i class="fas fa-external-link-alt"></i> EXIFinfo.org</a>
+            <a href="https://www.verexif.com/" target="_blank" class="check-link"><i class="fas fa-external-link-alt"></i> Verexif.com</a>
+        </div>
+    </div>
+
+    <div class="options">
+        <div class="option-group">
+            <div class="option-row">
+                <label for="action" class="option-title">Действие:</label>
+                <div class="info-icon-container">
+                    <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                    <div class="tooltip">
+                        <strong>Полностью удалить все метаданные</strong> - полностью очищает файл от всех метаданных, включая EXIF, GPS, ICC профили и другую служебную информацию.<br><br>
+                        <strong>Заменить на случайные метаданные</strong> - заменяет все существующие метаданные на случайно сгенерированные, делая каждое фото уникальным.
+                        <div class="example">
+                            <div class="example-title">Пример:</div>
+                            <div><strong>Было:</strong> Фото с данными камеры, GPS координатами, датой съемки</div>
+                            <div><strong>Стало:</strong> Фото с новыми случайными метаданными (разные для каждого файла)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <select id="action">
+                <option value="remove">Полностью удалить все метаданные</option>
+                <option value="random">Заменить на случайные метаданные</option>
+            </select>
+
+            <div class="webp-option" id="webpOption">
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="keepOriginalNameRemove">
+                        <span>Сохранить оригинальное имя файла</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Сохраняет исходное имя файла вместо генерации случайного. Если не отмечено, каждое фото получит уникальное имя.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="convertToWebP">
+                        <span>Конвертировать в WebP (quality: 85)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Конвертирует изображение в современный формат WebP с хорошим сжатием без потери качества (quality: 85).
+                            <div class="example">
+                                <div class="example-title">Пример:</div>
+                                <div><strong>Было:</strong> image.jpg (2.5 MB)</div>
+                                <div><strong>Стало:</strong> image.webp (1.2 MB) с аналогичным качеством</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addNoise" checked>
+                        <span>Добавить легкий шум (5-10%)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Добавляет случайный шум к изображению (5-10% пикселей), что делает его более уникальным без видимых изменений.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addRotation" checked>
+                        <span>Добавить ротацию (0.1-0.5°)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Добавляет случайный поворот изображения на 0.1-0.5 градусов, что делает его уникальным без видимых изменений.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="adjustBrightnessContrast" checked>
+                        <span>Коррекция яркости/контраста (1-3%)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Незначительно изменяет яркость и контраст изображения для усиления уникальности.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="stripColorProfileRemove" checked>
+                        <span>Удалить ICC-профиль</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Удаляет цветовые профили, которые могут содержать информацию об устройстве. При отключении сохраняет оригинальный ICC-профиль.
+                            <div class="example">
+                                <div class="example-title">Пример:</div>
+                                <div><strong>Было:</strong> Фото с цветовым профилем sRGB или AdobeRGB</div>
+                                <div><strong>Стало:</strong> Фото без цветового профиля (если включено)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option-group" id="randomOptions" style="display: none;">
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="keepOriginalName">
+                        <span>Сохранить оригинальное имя файла</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Сохраняет исходное имя файла вместо генерации случайного. Если не отмечено, каждое фото получит уникальное имя.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addRandomMetadata" checked>
+                        <span>Добавить случайные метаданные</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Добавляет уникальные случайные метаданные EXIF (производитель камеры, модель, настройки съемки) для каждого файла.
+                            <div class="example">
+                                <div class="example-title">Пример:</div>
+                                <div><strong>Было:</strong> Canon EOS 5D, 2023-01-15, f/5.6, 1/250s, ISO 400</div>
+                                <div><strong>Стало:</strong> Sony A7R IV, 2022-06-22, f/8.0, 1/500s, ISO 200 (уникально для каждого файла)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="stripColorProfile" checked>
+                        <span>Удалить ICC-профиль</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Удаляет цветовые профили, которые могут содержать информацию об устройстве. Каждый файл получает случайные цветовые характеристики.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addRotationRandom" checked>
+                        <span>Добавить ротацию (0.1-0.5°)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Добавляет случайный поворот изображения на 0.1-0.5 градусов, что делает его уникальным без видимых изменений.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="adjustBrightnessContrastRandom" checked>
+                        <span>Коррекция яркости/контраста (1-3%)</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Незначительно изменяет яркость и контраст изображения для усиления уникальности.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="changeSize" checked>
+                        <span>Изменить размер на 1-2%</span>
+                    </label>
+                    <div class="info-icon-container">
+                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
+                        <div class="tooltip">
+                            Незначительно изменяет размер изображения (на случайное значение от 1% до 2%), что делает каждое фото уникальным без визуальных изменений.
+                            <div class="example">
+                                <div class="example-title">Пример:</div>
+                                <div><strong>Было:</strong> 4000×3000 пикселей</div>
+                                <div><strong>Стало:</strong> 3960×2970 пикселей (разное для каждого файла)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="drop-area" id="dropArea">
+        <p>Перетащите сюда фотографии или</p>
+        <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/gif,image/webp">
+        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Выбрать файлы</button>
+        <div class="file-counter" id="fileCounter" style="display: none; margin-top: 10px; font-size: 14px; color: #666;"></div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <div class="pagination" id="pagination" style="display: none;"></div>
+    <div class="buttons-container">
+        <button class="btn" id="processBtn" disabled>Обработать файлы</button>
+        <button class="btn btn-danger" id="clearBtn" disabled>Очистить список</button>
+        <div class="download-options">
+            <button class="btn btn-primary" id="downloadBtn" disabled>Скачать все</button>
+            <button class="btn btn-secondary" id="downloadZipBtn" disabled>Скачать ZIP</button>
+        </div>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="status" id="status"></div>
+
+    <!-- Блок кнопок связи и благодарности -->
+    <div class="contact-section">
+        <div class="contact-buttons">
+            <button class="btn btn-contact" onclick="window.open('https://t.me/eticryptoman', '_blank')">
+                <i class="fab fa-telegram"></i> Написать в Telegram
+            </button>
+            <button class="btn btn-contact" onclick="window.location.href='mailto:j.travinov@gmail.com?subject=Вопрос по сайту очистки метаданных'">
+                <i class="fas fa-envelope"></i> Написать на почту
+            </button>
+        </div>
+
+        <div class="thank-you-section">
+            <button class="btn btn-thank-you" id="thankYouBtn">
+                <i class="fas fa-heart"></i> Сказать спасибо
+            </button>
+            <div class="thank-you-options" id="thankYouOptions" style="display: none;">
+                <h4>Поддержите проект:</h4>
+                <ul>
+                    <li><strong>PayPal:</strong> j.travinov@gmail.com</li>
+                    <li><strong>USDT (TRC20):</strong> TPmNY5TizJQqeayzvNzAsMUohKUdS6W9y8</li>
+                    <li><strong>USDC (BSC|BEP20):</strong> 0x784Ea834014370Cf06221E89735B10737C50dFbC</li>
+                    <li><strong>Wise:</strong> j.travinov@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div id="footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
+<script src="metadata-cleaner.js"></script>
+<script src="/global.js"></script>
+</body>
+</html>

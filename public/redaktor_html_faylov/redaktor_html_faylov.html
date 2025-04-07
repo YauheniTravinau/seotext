@@ -20,12 +20,32 @@
     <h1>Редактор HTML файлов</h1>
     <!-- Поле ввода для шаблона -->
     <label for="template-input">Шаблон:</label>
-    <textarea id="template-input"></textarea>
+    <textarea id="template-input" class="template-input"></textarea>
 
     <!-- Кнопка для применения шаблона -->
     <div class="button-container">
         <button id="apply-template-btn" class="process-btn">Применить шаблон</button>
     </div>
+
+    <label for="meta-tag-select">Выберите мета тег:</label>
+    <select id="meta-tag-select">
+        <option value="title">Title</option>
+        <option value="description">Description</option>
+        <option value="keywords">Keywords</option>
+        <option value="author">Author</option>
+        <option value="robots">Robots</option>
+        <option value="og_title">OG Title</option>
+        <option value="og_description">OG Description</option>
+        <option value="og_image">OG Image</option>
+    </select>
+
+    <label for="meta-tag-value">Значения SEO мета тегов (каждое на новой строке):</label>
+    <textarea id="meta-tag-value" placeholder="Введите значения мета тегов..." class="template-input"></textarea>
+
+    <div id="line-count">Количество строк: 0</div>
+
+    <button id="apply-meta-tag-btn" class="process-btn">Применить мета теги</button>
+
 
     <!-- Кнопка для добавления файлов -->
     <button id="add-files-btn" class="process-btn">Добавить файлы</button>
@@ -35,15 +55,13 @@
 
     <!-- Подсчет файлов -->
     <p id="file-count">Файлов: 0 / 2500</p>
-
+    <!-- Кнопки для сохранения и скачивания всех файлов -->
+    <button id="save-all-btn" class="process-btn">Сохранить все</button>
+    <button id="download-all-btn" class="process-btn">Скачать все</button>
     <!-- Список файлов -->
     <div class="file-list">
         <!-- Список файлов будет добавлен сюда динамически -->
     </div>
-
-    <!-- Кнопки для сохранения и скачивания всех файлов -->
-    <button id="save-all-btn" class="process-btn">Сохранить все</button>
-    <button id="download-all-btn" class="process-btn">Скачать все</button>
 </div>
 
 <!-- Шаблон для каждого файла -->

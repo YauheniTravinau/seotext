@@ -94,6 +94,7 @@ button.process-btn {
     padding: 10px 20px; /* Отступы внутри кнопки */
     cursor: pointer; /* Изменение курсора при наведении */
     transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
+    margin: 10px;
 }
 
 button.convert-btn:hover,
