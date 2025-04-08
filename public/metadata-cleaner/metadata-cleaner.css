@@ -284,6 +284,57 @@ select, input[type="text"] {
         padding: 12px;
         font-size: 16px;
     }
+
+    .date-range {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .date-range input[type="date"] {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .thank-you-options {
+        margin: 10px;
+        padding: 10px;
+        max-width: calc(100vw - 20px);
+        box-sizing: border-box;
+    }
+
+    .thank-you-options ul {
+        padding-left: 15px;
+        word-break: break-word;
+    }
+
+    .thank-you-options li {
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    #countrySelectContainer,
+    #cameraSelectContainer,
+    #datesSelectContainer {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .option-group {
+        padding: 0 10px;
+    }
+
+    .checkbox-container {
+        margin-bottom: 10px;
+    }
+
+    .tooltip {
+        max-width: calc(100vw - 20px);
+        left: 10px;
+        transform: none;
+    }
 }
 
 @media (max-width: 480px) {
@@ -305,6 +356,35 @@ select, input[type="text"] {
 
     .analyzer-section h3 {
         font-size: 18px;
+    }
+
+    .date-range {
+        gap: 5px;
+    }
+
+    .date-range label {
+        font-size: 14px;
+    }
+
+    .thank-you-options {
+        margin: 5px;
+        padding: 8px;
+    }
+
+    .thank-you-options h4 {
+        font-size: 16px;
+    }
+
+    .thank-you-options li {
+        font-size: 13px;
+    }
+
+    .option-group {
+        padding: 0 5px;
+    }
+
+    .checkbox-container {
+        margin-bottom: 8px;
     }
 }
 
@@ -472,6 +552,7 @@ select, input[type="text"] {
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .date-range label {
@@ -486,6 +567,7 @@ select, input[type="text"] {
     padding: 6px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
 #countrySelectContainer,
@@ -496,6 +578,7 @@ select, input[type="text"] {
     background-color: #f9f9f9;
     border-radius: 4px;
     border-left: 3px solid #4CAF50;
+    box-sizing: border-box;
 }
 
 /* Стили для секции массового переименования */
@@ -543,4 +626,45 @@ select, input[type="text"] {
 #linesCount, #filesCount {
     font-weight: bold;
     color: #2196F3;
+}
+
+/* Медиа-запросы для адаптации */
+@media (max-width: 768px) {
+    #datesSelectContainer {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .date-range {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .date-range input[type="date"] {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .date-range label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    #datesSelectContainer {
+        padding: 8px;
+    }
+
+    .date-range {
+        gap: 5px;
+    }
+
+    .date-range label {
+        font-size: 14px;
+    }
 }
