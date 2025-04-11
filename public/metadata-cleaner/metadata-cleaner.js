@@ -496,17 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             canvas.height = newHeight;
                             const ctx = canvas.getContext('2d');
 
-                            const rotationEnabled = action === 'remove'
-                                ? document.getElementById('addRotation').checked
-                                : document.getElementById('addRotationRandom').checked;
-
-                            if (rotationEnabled) {
-                                const rotationAngle = (Math.random() * 0.4 + 0.1) * (Math.random() > 0.5 ? 1 : -1);
-                                ctx.translate(canvas.width / 2, canvas.height / 2);
-                                ctx.rotate(rotationAngle * Math.PI / 180);
-                                ctx.translate(-canvas.width / 2, -canvas.height / 2);
-                            }
-
                             if (action === 'remove' || document.getElementById('addNoise').checked) {
                                 ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.01})`;
                                 ctx.fillRect(0, 0, canvas.width, canvas.height);

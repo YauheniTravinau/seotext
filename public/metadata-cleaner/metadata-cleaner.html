@@ -11,37 +11,7 @@
     <link rel="stylesheet" href="/public/metadata-cleaner/metadata-cleaner.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .analyzer-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-            border: 1px solid #e9ecef;
-        }
-        .analyzer-section h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        .analyzer-section p {
-            color: #6c757d;
-            margin-bottom: 20px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .analyzer-section .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        .analyzer-section .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-    </style>
+
 </head>
 <body>
 <div id="header"></div>
@@ -132,18 +102,6 @@
                         <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
                         <div class="tooltip">
                             Добавляет случайный шум к изображению (5-10% пикселей), что делает его более уникальным без видимых изменений.
-                        </div>
-                    </div>
-                </div>
-                <div class="checkbox-container">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="addRotation" checked>
-                        <span>Добавить ротацию (0.1-0.5°)</span>
-                    </label>
-                    <div class="info-icon-container">
-                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
-                        <div class="tooltip">
-                            Добавляет случайный поворот изображения на 0.1-0.5 градусов, что делает его уникальным без видимых изменений.
                         </div>
                     </div>
                 </div>
@@ -360,18 +318,6 @@
                         <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
                         <div class="tooltip">
                             Удаляет цветовые профили, которые могут содержать информацию об устройстве. Каждый файл получает случайные цветовые характеристики.
-                        </div>
-                    </div>
-                </div>
-                <div class="checkbox-container">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="addRotationRandom" checked>
-                        <span>Добавить ротацию (0.1-0.5°)</span>
-                    </label>
-                    <div class="info-icon-container">
-                        <span class="info-icon" onclick="toggleTooltip(this, event)">i</span>
-                        <div class="tooltip">
-                            Добавляет случайный поворот изображения на 0.1-0.5 градусов, что делает его уникальным без видимых изменений.
                         </div>
                     </div>
                 </div>
