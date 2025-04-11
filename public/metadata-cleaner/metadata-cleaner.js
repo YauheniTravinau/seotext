@@ -667,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function getRandomDevice() {
         const customCamera = document.getElementById('customCamera').checked;
         const cameraSelect = document.getElementById('cameraSelect');
-        
+
         if (customCamera) {
             const selectedCamera = cameraSelect.value;
             const cameras = {
@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function getRandomLocation() {
         const customCountry = document.getElementById('customCountry').checked;
         const countrySelect = document.getElementById('countrySelect');
-        
+
         if (customCountry) {
             const selectedCountry = countrySelect.value;
             const baseLocations = {
@@ -926,7 +926,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const customDates = document.getElementById('customDates').checked;
         const dateFrom = document.getElementById('dateFrom');
         const dateTo = document.getElementById('dateTo');
-        
+
         if (customDates && dateFrom.value && dateTo.value) {
             const start = new Date(dateFrom.value);
             const end = new Date(dateTo.value);
@@ -968,7 +968,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function generateUniqueFilename(originalName, action, isWebP, index) {
         const ext = isWebP ? 'webp' : originalName.split('.').pop();
-        
+
         // Если включено сохранение оригинального имени
         if (document.getElementById('keepOriginalName').checked) {
             return originalName;

@@ -144,7 +144,7 @@
                     </label>
                 </div>
                 <div id="countrySelectContainer" style="display: none; margin-bottom: 10px;">
-                    <select id="countrySelect" class="form-control">
+                    <label for="countrySelect"></label><select id="countrySelect" class="form-control">
                         <optgroup label="Европа">
                             <option value="paris">Франция (Париж)</option>
                             <option value="berlin">Германия (Берлин)</option>
@@ -249,7 +249,7 @@
                     </label>
                 </div>
                 <div id="cameraSelectContainer" style="display: none; margin-bottom: 10px;">
-                    <select id="cameraSelect" class="form-control">
+                    <label for="cameraSelect"></label><select id="cameraSelect" class="form-control">
                         <option value="canon">Canon EOS 5D Mark IV</option>
                         <option value="nikon">Nikon D850</option>
                         <option value="sony">Sony A7R IV</option>
@@ -272,9 +272,9 @@
                 <div id="datesSelectContainer" style="display: none; margin-bottom: 10px;">
                     <div class="date-range">
                         <label>От:</label>
-                        <input type="date" id="dateFrom" class="form-control">
+                        <label for="dateFrom"></label><input type="date" id="dateFrom" class="form-control">
                         <label>До:</label>
-                        <input type="date" id="dateTo" class="form-control">
+                        <label for="dateTo"></label><input type="date" id="dateTo" class="form-control">
                     </div>
                 </div>
 
@@ -368,7 +368,7 @@
                         </div>
                     </div>
                     <div id="customNamesContainer" style="display: none; margin-top: 10px;">
-                        <textarea id="customNames" rows="5" placeholder="Введите названия файлов (каждое с новой строки)"></textarea>
+                        <label for="customNames"></label><textarea id="customNames" rows="5" placeholder="Введите названия файлов (каждое с новой строки)"></textarea>
                         <div class="names-counter">
                             <span>Строк: </span><span id="linesCount">0</span>
                             <span> | Файлов: </span><span id="filesCount">0</span>
