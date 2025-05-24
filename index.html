@@ -1,61 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт со статьями</title>
+    <title>Статейки - опыт | Личные истории и советы</title>
+    <meta name="description" content="Коллекция статей из личного опыта на различные темы: программирование, создание сайтов, SEO, безопасность, базы данных, фото, видео и многое другое.">
+    <meta name="keywords" content="личный опыт, статьи, программирование, создание сайтов, SEO, безопасность, базы данных, фото, видео, WordPress, конструктор сайтов">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="/public/seo/article/article.css">
     <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="/public/menu/menu.css">
     <link rel="stylesheet" href="/public/header/header.css">
     <link rel="stylesheet" href="/public/footer/footer.css">
+</head>
 <body>
-<div id="header"></div>
-<div id="menu"></div>
-<div id="marquee-container"></div>
-<div class="container">
-    <h1 class="primary">Статейки - GPT ПОМОГАТОР</h1>
-    <p>Каждый современный человек хочет иметь свой сайт, но...</p>
-    <ul>
-        <li>требует фантазии</li>
-        <li>требует усилий для достижения цели</li>
-        <li>простой путь - финансово независимый (купил и забыл)</li>
-        <li>в интернете распространены "ПОМОГАТОРЫ", которые делают сайты или "аля сайты"</li>
-    </ul>
-    <p class="highlighted">Этот Сайт Целиком и полностью написан через ChatGPT. Без знаний Английского и без знаний кода. Правильно сформулированные вопросы - дают правильный ответ.</p>
-    <p> самое главное, статейки - помогают SEO (ссылки внутри статей, ссылаясь на другие ресурсы)</p>
-    <main>
-        <section id="articles">
-            <article class="article" data-target="/seo/article/article1">
-                <h2>Аля - сайты</h2>
-                <p>Этот текст обращается к тем, кто интересуется созданием сайтов, предупреждая о возможных проблемах при выборе метода разработки и наполнения контентом. Он обсуждает различные аспекты создания и продвижения веб-сайта, подчеркивая важность знаний о кодировании, SEO и качественного контента для успешного онлайн-присутствия.</p>
-            </article>
-            <article class="article" data-target="/seo/article/article2">
-                <h2 data-target="article2">Как путешествовать бюджетно и не потерять в качестве</h2>
-                <p>Я расскажу о своих приключениях по миру и поделюсь секретами, как путешествовать экономно, не жертвуя при этом комфортом.</p>
-            </article>
-            <article class="article" data-target="/seo/article/article3">
-                <h2 data-target="article3">Как я перестал откладывать дела на потом</h2>
-                <p>В этой статье я расскажу о своем опыте борьбы с прокрастинацией и поделюсь методами, которые помогли мне стать более продуктивным.</p>
-            </article>
-            <article class="article" data-target="/seo/article/article4">
-                <h2 data-target="article4">Как я научился управлять своим временем</h2>
-                <p>В данной статье я поделюсь с вами своими методами организации времени и планирования, которые помогли мне стать более успешным.</p>
-            </article>
-        </section>
-    </main>
-</div>
-<div class="overlay"></div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="article-container"></div>
+    <div id="header"></div>
+    <div id="menu"></div>
+    <div id="marquee-container"></div>
+    
+    <div class="container">
+        <h1 class="primary">Статейки - опыт</h1>
+        <p class="intro">Добро пожаловать в раздел с личным опытом! Здесь я делюсь своими историями, успехами и неудачами, надеясь, что мой опыт поможет вам избежать типичных ошибок и достичь своих целей.</p>
+        
+        <main>
+            <section id="articles">
+                <article class="article">
+                    <h2><a href="/public/articles/article1.html">Как я научился программировать без знания английского</a></h2>
+                    <p>Подробное руководство по изучению программирования без знания английского языка. Пошаговая инструкция для начинающих с нуля.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">35 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article2.html">Правда о шаблонных сайтах: что скрывают разработчики</a></h2>
+                    <p>Подробное сравнение конструкторов сайтов и шаблонов: преимущества, недостатки и скрытые проблемы. Пошаговая инструкция по выбору и использованию.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">30 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article3.html">SEO-оптимизация: что действительно работает в 2024</a></h2>
+                    <p>Полное руководство по SEO-оптимизации сайта в 2024 году: от базовых принципов до продвинутых техник. Пошаговая инструкция с примерами и чек-листами.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">40 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article4.html">Метаданные фото и видео: секрет успешного контента</a></h2>
+                    <p>Полное руководство по работе с метаданными фото и видео: от базовых принципов до продвинутых техник оптимизации. Пошаговая инструкция с примерами и чек-листами.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">45 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article5.html">WordPress vs конструкторы сайтов: мой опыт</a></h2>
+                    <p>WordPress или конструктор сайтов? Подробное сравнение, плюсы и минусы, нюансы, примеры и советы для новичков и опытных пользователей.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">40 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article6.html">Как я научился редактировать фото для сайта</a></h2>
+                    <p>Полное руководство по редактированию фото для сайта: инструменты, форматы, оптимизация, SEO и практические советы для новичков и профи.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">35 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article7.html">Подводные камни SEO: что не расскажут маркетологи</a></h2>
+                    <p>Подробный разбор подводных камней SEO: ошибки, мифы, реальные кейсы, советы и нюансы для продвижения сайта в 2024 году.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">40 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article8.html">Создание контента для сайта: полное руководство</a></h2>
+                    <p>Полное руководство по созданию и управлению контентом для сайта: от написания текстов до работы с медиафайлами. Практические советы и примеры.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">50 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article9.html">Оптимизация видео для сайта: мой опыт</a></h2>
+                    <p>Полное руководство по оптимизации видео для сайта: выбор формата, сжатие, SEO, инструменты и практические советы.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">35 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article10.html">Безопасность сайта: полное руководство</a></h2>
+                    <p>Полное руководство по безопасности сайта: от защиты от взлома до безопасных платежей. Практические советы и пошаговые инструкции.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">50 минут</span>
+                    </div>
+                </article>
+
+                <article class="article">
+                    <h2><a href="/public/articles/article11.html">Базы данных: полное руководство</a></h2>
+                    <p>Полное руководство по базам данных: от выбора типа до оптимизации производительности. Практические советы и примеры.</p>
+                    <div class="article-meta">
+                        <span class="date">24 мая 2024</span>
+                        <span class="reading-time">55 минут</span>
+                    </div>
+                </article>
+                <!-- Место для будущих статей: серверы, хостинг, домены -->
+            </section>
+        </main>
     </div>
-</div>
-<br>
-<div id="footer"></div>
-<script src="index.js"></script>
-<script src="global.js"></script>
+
+    <div id="footer"></div>
+    
+    <script src="index.js"></script>
+    <script src="global.js"></script>
 </body>
 </html>

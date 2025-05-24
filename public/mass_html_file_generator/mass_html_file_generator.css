@@ -1,3 +1,12 @@
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.analyzer-section {
+    margin-bottom: 30px;
+}
 textarea {
     width: 90%;
     max-width: 600px;
@@ -30,13 +39,18 @@ textarea {
 }
 
 /* Адаптивность для экранов меньшей ширины */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+    .container {
+        padding: 10px;
+    }
     textarea {
         font-size: 14px;
-        height: 180px; /* Уменьшаем высоту textarea на мобильных */
+        height: 180px;
+        max-width: 100vw;
     }
-    #generate {
-        width: 80%; /* Делаем кнопку шире на мобильных */
+    .analyzer-section {
+        max-width: 100vw;
+        padding: 10px;
     }
 }
 
@@ -44,9 +58,9 @@ textarea {
 @media (max-width: 480px) {
     textarea {
         font-size: 12px;
-        height: 150px; /* Еще меньше высота для маленьких экранов */
+        height: 150px;
     }
     #generate {
-        width: 70%; /* Кнопка еще шире */
+        width: 90%;
     }
 }

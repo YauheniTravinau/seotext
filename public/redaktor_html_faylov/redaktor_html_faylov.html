@@ -16,52 +16,68 @@
 <div id="marquee-container"></div>
 
 <!-- Основной контейнер -->
-<div class="app-container">
-    <h1>Редактор HTML файлов</h1>
-    <!-- Поле ввода для шаблона -->
-    <label for="template-input">Шаблон:</label>
-    <textarea id="template-input" class="template-input"></textarea>
+<div class="container">
+  <div class="analyzer-section" style="background: #e7f4ff; border-left: 4px solid #2196F3; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: left; max-width: 900px; margin-left: auto; margin-right: auto;">
+    <h3 style="color: #0d47a1; display: flex; align-items: center; gap: 10px;"><i class="fas fa-edit"></i> Массoвый редактор HTML-файлов</h3>
+    <p style="color: #333; margin: 0;">
+      Этот инструмент позволяет массово редактировать, применять шаблоны и SEO-мета-теги, а также скачивать и сохранять множество HTML-файлов одновременно. Просто загрузите файлы, внесите изменения, примените шаблон или мета-теги, и скачайте все файлы одним архивом.<br><br>
+      <strong>Возможности:</strong>
+      <ul>
+        <li>Массовое редактирование HTML-файлов прямо в браузере</li>
+        <li>Применение шаблона ко всем файлам одним кликом</li>
+        <li>Массовое добавление SEO-мета-тегов (title, description, keywords и др.)</li>
+        <li>Сохранение и скачивание всех файлов одним архивом</li>
+        <li>Модальное окно для удобного редактирования содержимого</li>
+        <li>Адаптивный дизайн для любых устройств</li>
+      </ul>
+      <span style="color: #e91e63;">Важно: все изменения происходят только в вашем браузере, ваши файлы не отправляются на сервер.</span>
+    </p>
+  </div>
+  <h1>Редактор HTML файлов</h1>
+  <!-- Поле ввода для шаблона -->
+  <label for="template-input">Шаблон:</label>
+  <textarea id="template-input" class="template-input"></textarea>
 
-    <!-- Кнопка для применения шаблона -->
-    <div class="button-container">
-        <button id="apply-template-btn" class="process-btn">Применить шаблон</button>
-    </div>
+  <!-- Кнопка для применения шаблона -->
+  <div class="button-container">
+      <button id="apply-template-btn" class="process-btn">Применить шаблон</button>
+  </div>
 
-    <label for="meta-tag-select">Выберите мета тег:</label>
-    <select id="meta-tag-select">
-        <option value="title">Title</option>
-        <option value="description">Description</option>
-        <option value="keywords">Keywords</option>
-        <option value="author">Author</option>
-        <option value="robots">Robots</option>
-        <option value="og_title">OG Title</option>
-        <option value="og_description">OG Description</option>
-        <option value="og_image">OG Image</option>
-    </select>
+  <label for="meta-tag-select">Выберите мета тег:</label>
+  <select id="meta-tag-select">
+      <option value="title">Title</option>
+      <option value="description">Description</option>
+      <option value="keywords">Keywords</option>
+      <option value="author">Author</option>
+      <option value="robots">Robots</option>
+      <option value="og_title">OG Title</option>
+      <option value="og_description">OG Description</option>
+      <option value="og_image">OG Image</option>
+  </select>
 
-    <label for="meta-tag-value">Значения SEO мета тегов (каждое на новой строке):</label>
-    <textarea id="meta-tag-value" placeholder="Введите значения мета тегов..." class="template-input"></textarea>
+  <label for="meta-tag-value">Значения SEO мета тегов (каждое на новой строке):</label>
+  <textarea id="meta-tag-value" placeholder="Введите значения мета тегов..." class="template-input"></textarea>
 
-    <div id="line-count">Количество строк: 0</div>
+  <div id="line-count">Количество строк: 0</div>
 
-    <button id="apply-meta-tag-btn" class="process-btn">Применить мета теги</button>
+  <button id="apply-meta-tag-btn" class="process-btn">Применить мета теги</button>
 
 
-    <!-- Кнопка для добавления файлов -->
-    <button id="add-files-btn" class="process-btn">Добавить файлы</button>
+  <!-- Кнопка для добавления файлов -->
+  <button id="add-files-btn" class="process-btn">Добавить файлы</button>
 
-    <!-- Скрытый input для выбора файлов -->
-    <input type="file" id="file-input" multiple accept=".html" style="display: none;">
+  <!-- Скрытый input для выбора файлов -->
+  <input type="file" id="file-input" multiple accept=".html" style="display: none;">
 
-    <!-- Подсчет файлов -->
-    <p id="file-count">Файлов: 0 / 2500</p>
-    <!-- Кнопки для сохранения и скачивания всех файлов -->
-    <button id="save-all-btn" class="process-btn">Сохранить все</button>
-    <button id="download-all-btn" class="process-btn">Скачать все</button>
-    <!-- Список файлов -->
-    <div class="file-list">
-        <!-- Список файлов будет добавлен сюда динамически -->
-    </div>
+  <!-- Подсчет файлов -->
+  <p id="file-count">Файлов: 0 / 2500</p>
+  <!-- Кнопки для сохранения и скачивания всех файлов -->
+  <button id="save-all-btn" class="process-btn">Сохранить все</button>
+  <button id="download-all-btn" class="process-btn">Скачать все</button>
+  <!-- Список файлов -->
+  <div class="file-list">
+      <!-- Список файлов будет добавлен сюда динамически -->
+  </div>
 </div>
 
 <!-- Шаблон для каждого файла -->

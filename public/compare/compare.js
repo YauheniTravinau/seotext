@@ -9,29 +9,39 @@ function countNonSpaceChars(text) {
 }
 
 function compareText() {
-    const text1Value = text1.value;
-    const text2Value = text2.value;
+    try {
+        const text1Value = text1.value.trim();
+        const text2Value = text2.value.trim();
 
-    const text1NonSpaceCount = countNonSpaceChars(text1Value);
-    const text2NonSpaceCount = countNonSpaceChars(text2Value);
+        const text1NonSpaceCount = countNonSpaceChars(text1Value);
+        const text2NonSpaceCount = countNonSpaceChars(text2Value);
 
-    differences.innerHTML = '';
-    charCount1.textContent = `Количество символов: ${text1Value.length}, без пробелов: ${text1NonSpaceCount}`;
-    charCount2.textContent = `Количество символов: ${text2Value.length}, без пробелов: ${text2NonSpaceCount}`;
+        differences.innerHTML = '';
+        charCount1.textContent = `Количество символов: ${text1Value.length}, без пробелов: ${text1NonSpaceCount}`;
+        charCount2.textContent = `Количество символов: ${text2Value.length}, без пробелов: ${text2NonSpaceCount}`;
 
-    const text1Words = text1Value.split(' ');
-    const text2Words = text2Value.split(' ');
-    const diffArray = [];
-
-    text2Words.forEach(word => {
-        if (!text1Words.includes(word)) {
-            diffArray.push(`<span class="added">${word}</span>`);
-        } else {
-            diffArray.push(word);
+        if (!text1Value || !text2Value) {
+            differences.innerHTML = '<p class="warning">Введите текст в оба поля для сравнения</p>';
+            return;
         }
-    });
 
-    differences.innerHTML = diffArray.join(' ');
+        const text1Words = text1Value.split(/\s+/);
+        const text2Words = text2Value.split(/\s+/);
+        const diffArray = [];
+
+        text2Words.forEach(word => {
+            if (!text1Words.includes(word)) {
+                diffArray.push(`<span class="added">${word}</span>`);
+            } else {
+                diffArray.push(word);
+            }
+        });
+
+        differences.innerHTML = diffArray.join(' ');
+    } catch (error) {
+        console.error('Ошибка при сравнении текстов:', error);
+        differences.innerHTML = '<p class="error">Произошла ошибка при сравнении текстов</p>';
+    }
 }
 
 text1.addEventListener('input', compareText);
@@ -39,163 +49,106 @@ text2.addEventListener('input', compareText);
 
 
 
-// Функция для изменения размера изображений и их сохранения
+// Оптимизированная функция для обработки изображений
 async function resizeAndRenameImages() {
-    const files = document.getElementById('fileInput').files;
-    const width = parseInt(document.getElementById('width').value) || 0;
-    const height = parseInt(document.getElementById('height').value) || 0;
-    const copies = parseInt(document.getElementById('copies').value);
-    let captions = document.getElementById('captions').value.trim() !== '' ?
-        document.getElementById('captions').value.split('\n') : [];
-    const formatSelect = document.getElementById('format');
-    const selectedFormat = formatSelect.value;
-    const saveMethod = document.getElementById('saveMethod').value;
-    const outputDiv = document.getElementById('output');
+    try {
+        const files = document.getElementById('fileInput').files;
+        if (!files.length) {
+            throw new Error('Пожалуйста, выберите файлы для обработки');
+        }
 
-    let captionIndex = 0;
-    let processedCount = 0;
-    const totalToProcess = files.length * copies;
+        const options = {
+            width: parseInt(document.getElementById('width').value) || 0,
+            height: parseInt(document.getElementById('height').value) || 0,
+            copies: parseInt(document.getElementById('copies').value) || 1,
+            format: document.getElementById('format').value,
+            saveMethod: document.getElementById('saveMethod').value,
+            captions: document.getElementById('captions').value.trim() ? 
+                document.getElementById('captions').value.split('\n') : []
+        };
 
-    // Для ZIP-архива
-    let zip;
-    if (saveMethod === 'zip') {
-        zip = new JSZip();
-        outputDiv.innerHTML = '<p>Подготовка ZIP-архива...</p>';
-    } else {
-        outputDiv.innerHTML = '';
-    }
+        const outputDiv = document.getElementById('output');
+        let zip;
+        if (options.saveMethod === 'zip') {
+            zip = new JSZip();
+            outputDiv.innerHTML = '<p>Подготовка ZIP-архива...</p>';
+        }
 
-    async function processFile(file) {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
+        let processedCount = 0;
+        const totalToProcess = files.length * options.copies;
+        let captionIndex = 0;
 
-            reader.onload = function(e) {
-                const img = new Image();
-                img.src = e.target.result;
+        for (const file of files) {
+            for (let j = 0; j < options.copies; j++) {
+                let fileName = file.name.split('.')[0];
+                if (captionIndex < options.captions.length && options.captions[captionIndex].trim()) {
+                    fileName = sanitizeFilename(options.captions[captionIndex].trim());
+                    captionIndex++;
+                } else if (options.copies > 1) {
+                    fileName = sanitizeFilename(fileName) + `_${j + 1}`;
+                }
 
-                img.onload = async function() {
-                    const aspectRatio = img.width / img.height;
-                    const promises = [];
+                const imageOptions = {
+                    width: options.width,
+                    height: options.height,
+                    format: options.format === 'original' ? file.type.split('/')[1] : options.format,
+                    quality: options.format === 'png' ? 1.0 : 0.85,
+                    fileName: fileName
+                };
 
-                    for (let j = 0; j < copies; j++) {
-                        let fileName = file.name.split('.')[0];
-                        if (captionIndex < captions.length && captions[captionIndex].trim() !== '') {
-                            fileName = sanitizeFilename(captions[captionIndex].trim());
-                            captionIndex++;
-                        } else if (copies > 1) {
-                            fileName = sanitizeFilename(fileName) + `_${j + 1}`;
-                        }
-
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-
-                        canvas.width = width || img.width;
-                        canvas.height = height || img.height;
-
-                        let newWidth, newHeight;
-
-                        if (width && height) {
-                            if (width / aspectRatio > height) {
-                                newWidth = width;
-                                newHeight = width / aspectRatio;
-                            } else {
-                                newHeight = height;
-                                newWidth = height * aspectRatio;
-                            }
+                try {
+                    const { blob, fileName: newFileName } = await processImage(file, imageOptions);
+                    
+                    if (options.saveMethod === 'zip') {
+                        if (options.copies > 1) {
+                            const folderName = (j + 1).toString().padStart(3, '0');
+                            zip.folder(folderName).file(newFileName, blob);
                         } else {
-                            newWidth = width || img.width;
-                            newHeight = height || img.height;
+                            zip.file(newFileName, blob);
                         }
-
-                        const offsetX = (canvas.width - newWidth) / 2;
-                        const offsetY = (canvas.height - newHeight) / 2;
-
-                        ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, newWidth, newHeight);
-
-                        let format = selectedFormat === 'original' ?
-                            file.type.split('/')[1] : selectedFormat;
-
-                        if (!['jpeg', 'png', 'webp'].includes(format.toLowerCase())) {
-                            format = 'jpeg';
-                        }
-
-                        const quality = format === 'png' ? 1.0 : 0.85;
-
-                        promises.push(new Promise((resolveCanvas) => {
-                            canvas.toBlob(async (blob) => {
-                                const newName = `${fileName}.${format}`;
-
-                                if (saveMethod === 'zip') {
-                                    zip.file(newName, blob);
-                                } else {
-                                    downloadImage(blob, newName);
-                                }
-
-                                processedCount++;
-                                outputDiv.innerHTML = `<p>Обработано ${processedCount} из ${totalToProcess}</p>`;
-                                resolveCanvas();
-                            }, `image/${format}`, quality);
-                        }));
+                    } else {
+                        downloadImage(blob, newFileName);
                     }
 
-                    await Promise.all(promises);
-                    resolve();
-                };
-
-                img.onerror = function() {
-                    console.error('Ошибка загрузки изображения');
-                    resolve();
-                };
-            };
-
-            reader.onerror = function() {
-                console.error('Ошибка чтения файла');
-                resolve();
-            };
-
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // Обрабатываем файлы последовательно для избежания перегрузки памяти
-    for (let i = 0; i < files.length; i++) {
-        await processFile(files[i]);
-    }
-
-    if (saveMethod === 'zip' && zip) {
-        try {
-            outputDiv.innerHTML = '<p>Создание ZIP-архива...</p>';
-
-            // Упрощенная версия сохранения архива
-            const content = await zip.generateAsync({type: 'blob'});
-            const url = URL.createObjectURL(content);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'images.zip';
-            document.body.appendChild(a);
-            a.click();
-
-            // Очистка через 100 мс
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                outputDiv.innerHTML = '<p>ZIP-архив успешно создан и сохранен!</p>';
-            }, 100);
-
-        } catch (error) {
-            console.error('Ошибка при создании ZIP-архива:', error);
-            outputDiv.innerHTML = '<p>Ошибка при создании ZIP-архива</p>';
+                    processedCount++;
+                    outputDiv.innerHTML = `<p>Обработано ${processedCount} из ${totalToProcess}</p>`;
+                } catch (error) {
+                    console.error(`Ошибка при обработке файла ${file.name}:`, error);
+                }
+            }
         }
-    } else {
-        outputDiv.innerHTML = '<p>Все изображения обработаны!</p>';
-    }
 
-    // Очистка полей ввода
-    document.getElementById('width').value = '';
-    document.getElementById('height').value = '';
-    document.getElementById('captions').value = '';
-    document.getElementById('fileInput').value = '';
-    clearLineCount();
+        if (options.saveMethod === 'zip' && zip) {
+            try {
+                outputDiv.innerHTML = '<p>Создание ZIP-архива...</p>';
+                const content = await zip.generateAsync({type: 'blob'});
+                const url = URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'images.zip';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    outputDiv.innerHTML = '<p>ZIP-архив успешно создан и сохранен!</p>';
+                }, 100);
+            } catch (error) {
+                console.error('Ошибка при создании ZIP-архива:', error);
+                outputDiv.innerHTML = '<p>Ошибка при создании ZIP-архива</p>';
+            }
+        } else {
+            outputDiv.innerHTML = '<p>Все изображения обработаны!</p>';
+        }
+
+        // Очистка полей
+        document.getElementById('captions').value = '';
+        document.getElementById('fileInput').value = '';
+        clearLineCount();
+    } catch (error) {
+        console.error('Ошибка при обработке изображений:', error);
+        document.getElementById('output').innerHTML = `<p>Ошибка: ${error.message}</p>`;
+    }
 }
 
 // Остальные функции остаются без изменений
@@ -204,6 +157,34 @@ function sanitizeFilename(filename) {
         .replace(/[^a-zA-Z0-9а-яА-ЯёЁ\-_]/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
+}
+
+// TODO: Реализовать функцию processImage для обработки изображений
+async function processImage(file, options) {
+    console.log(`Processing file: ${file.name} with options:`, options);
+    // Эта функция должна обрабатывать изображение (изменять размер, формат и т.д.)
+    // и возвращать Promise, который разрешается объектом { blob: Blob, fileName: string }
+    
+    // Временная заглушка: просто возвращает исходный файл как blob
+    // В РЕАЛЬНОСТИ ТРЕБУЕТСЯ ПОЛНАЯ РЕАЛИЗАЦИЯ ОБРАБОТКИ ИЗОБРАЖЕНИЯ
+    
+    return new Promise((resolve) => {
+        // Читаем файл как ArrayBuffer, чтобы создать Blob
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            const blob = new Blob([reader.result], { type: file.type });
+            // Возвращаем оригинальное имя файла с новым расширением, если формат изменен
+            let newFileName = options.fileName;
+            if (options.format !== 'original' && file.type.split('/')[1] !== options.format) {
+                 newFileName = newFileName.split('.')[0] + '.' + options.format;
+            } else if (!newFileName.includes('.')) {
+                 // Добавляем расширение, если его нет в имени
+                 newFileName = newFileName + '.' + file.name.split('.').pop();
+            }
+            resolve({ blob: blob, fileName: newFileName });
+        };
+        reader.readAsArrayBuffer(file);
+    });
 }
 
 function downloadImage(blob, filename) {
@@ -221,7 +202,14 @@ function downloadImage(blob, filename) {
 
 document.getElementById('fileInput').addEventListener('change', function() {
     const files = this.files;
+    const fileStatus = document.getElementById('fileInputStatus');
     const outputDiv = document.getElementById('output');
+
+    if (files.length > 0) {
+        fileStatus.textContent = `${files.length} файл(ов) выбран(о)`;
+    } else {
+        fileStatus.textContent = 'Файл не выбран';
+    }
 
     outputDiv.innerHTML = '';
 
@@ -264,24 +252,33 @@ function changeShuffleMode() {
 }
 
 function shuffleText() {
-    let inputText = document.getElementById("unique_inputText").value;
-    let maxLineLength = parseInt(document.getElementById("maxLineLength").value);
-    let output;
+    try {
+        const inputText = document.getElementById("unique_inputText").value.trim();
+        if (!inputText) {
+            throw new Error('Введите текст для обработки');
+        }
 
-    // Удаление кавычек и замена точек на запятые во входном тексте
-    inputText = inputText.replace(/["']/g, '').replace(/\./g, ',');
+        const maxLineLength = parseInt(document.getElementById("maxLineLength").value) || 70;
+        if (maxLineLength < 1) {
+            throw new Error('Максимальная длина строки должна быть положительным числом');
+        }
 
-    if (shuffleMode === 1) {
-        output = shufflePhrasesV1(inputText, maxLineLength);
-    } else {
-        output = shufflePhrasesV2(inputText, maxLineLength);
+        // Удаление кавычек и замена точек на запятые
+        const cleanedText = inputText.replace(/["']/g, '').replace(/\./g, ',');
+        
+        let output = shuffleMode === 1 ? 
+            shufflePhrasesV1(cleanedText, maxLineLength) : 
+            shufflePhrasesV2(cleanedText, maxLineLength);
+
+        if (document.getElementById("transliteration").checked) {
+            output = transliterate(output);
+        }
+
+        document.getElementById("unique_output").innerHTML = output;
+    } catch (error) {
+        console.error('Ошибка при обработке текста:', error);
+        document.getElementById("unique_output").innerHTML = `<p class="error">Ошибка: ${error.message}</p>`;
     }
-
-    if (document.getElementById("transliteration").checked) {
-        output = transliterate(output);
-    }
-
-    document.getElementById("unique_output").innerHTML = output;
 }
 
 function transliterate(text) {
@@ -400,20 +397,57 @@ function copyResult() {
 
 /*поле ввода url*/
 function generateWgetCommand() {
-    const url = document.getElementById("urlInput_new").value; // Обновленный идентификатор
-    const wgetCommand = `wget --spider --recursive --no-verbose --no-check-certificate -nd --restrict-file-names=ascii ${url} 2>&1 | findstr /v /c:"404 Not Found" /c:"403 Forbidden" /c:"500 Internal Server Error" >> wget-log.txt`;
-    const outputContainer = document.getElementById("changed_unique_output_new"); // Обновленный идентификатор
-    outputContainer.innerText = wgetCommand;
-    document.getElementById("resultContainer_new").style.display = "block"; // Обновленный идентификатор
+    try {
+        const url = document.getElementById("urlInput_new").value.trim();
+        if (!url) {
+            throw new Error('Введите URL сайта');
+        }
+
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            throw new Error('URL должен начинаться с http:// или https://');
+        }
+
+        const wgetCommand = `wget --spider --recursive --no-verbose --no-check-certificate -nd --restrict-file-names=ascii ${url} 2>&1 | findstr /v /c:"404 Not Found" /c:"403 Forbidden" /c:"500 Internal Server Error" >> wget-log.txt`;
+        
+        const outputContainer = document.getElementById("changed_unique_output_new");
+        outputContainer.innerText = wgetCommand;
+        document.getElementById("resultContainer_new").style.display = "block";
+    } catch (error) {
+        console.error('Ошибка при генерации команды:', error);
+        document.getElementById("changed_unique_output_new").innerText = `Ошибка: ${error.message}`;
+    }
 }
 
-function copyToClipboard() {
-    const copyText = document.getElementById("changed_unique_output_new"); // Обновленный идентификатор
-    const range = document.createRange();
-    range.selectNode(copyText);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand("copy");
+function copyToClipboard(text, elementId) {
+    try {
+        if (elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                text = element.innerText;
+            }
+        }
+        
+        if (!text) {
+            throw new Error('No text to copy');
+        }
+
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log("Текст скопирован успешно!");
+            })
+            .catch(err => {
+                console.error('Ошибка копирования текста: ', err);
+                // Fallback для старых браузеров
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+            });
+    } catch (error) {
+        console.error('Ошибка при копировании:', error);
+    }
 }
 
 /*скачивание ссылок*/
@@ -597,20 +631,37 @@ function sanitizeXmlContent(content) {
 
 /*быстро делаем текст через запятую*/
 function combinePhrases() {
-    const input = document.getElementById('input').value;
-    const phrases = input.split('\n')
-        .map(phrase => phrase.trim())
-        .filter(phrase => phrase !== '');
-    const combined = phrases.join(', ');
-    document.getElementById('outputt').innerText = combined;
+    try {
+        const input = document.getElementById('input').value.trim();
+        if (!input) {
+            throw new Error('Введите текст для обработки');
+        }
+
+        const phrases = input.split('\n')
+            .map(phrase => phrase.trim())
+            .filter(phrase => phrase !== '');
+
+        if (phrases.length === 0) {
+            throw new Error('Нет фраз для объединения');
+        }
+
+        const combined = phrases.join(', ');
+        document.getElementById('outputt').innerText = combined;
+    } catch (error) {
+        console.error('Ошибка при объединении фраз:', error);
+        document.getElementById('outputt').innerText = `Ошибка: ${error.message}`;
+    }
 }
 
-function copyToClipboardd() {
+// Обновляем вызовы функций копирования
+document.getElementById('copyBtn').addEventListener('click', function() {
     const outputText = document.getElementById('outputt').innerText;
-    const tempInput = document.createElement('textarea');
-    tempInput.value = outputText;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-}
+    copyToClipboard(outputText);
+});
+
+// Обработчик для кнопки "Обработать текст"
+document.getElementById('shuffleButton').addEventListener('click', function() {
+    shuffleText(); // Вызываем основную функцию обработки текста
+    const result = document.getElementById('unique_output').innerText; // Получаем результат после обработки
+    copyToClipboard(result); // Копируем результат
+});

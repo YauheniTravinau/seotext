@@ -1,5 +1,5 @@
-.containerr {
-    max-width: 900px;
+.container {
+    max-width: 1600px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -83,7 +83,7 @@
 
 /* Медиа-запросы для мобильных устройств */
 @media (max-width: 768px) {
-    .containerr {
+    .container {
         padding: 10px;
     }
 

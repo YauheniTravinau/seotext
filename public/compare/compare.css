@@ -1,9 +1,27 @@
-.container h2,
-.container textarea,
-.container .options,
-.container .input-container {
-    margin-bottom: 20px;
-    margin-top: 20px;
+.container {
+    margin-bottom: 20px; /* Add consistent bottom margin */
+    border: 1px solid #ddd;
+    padding: 40px;
+    background-color: #f9f9f9;
+    box-shadow: none;
+    transition: none;
+    display: block; /* Убедимся, что контейнер ведет себя как блочный элемент */
+    padding-bottom: 20px; /* Внутренний нижний отступ */
+    padding-top: 30px; /* Добавляем верхний внутренний отступ для создания расстояния между блоками */
+    max-width: 1600px; /* Restore max width */
+    margin: 20px auto; /* Restore centering and add top margin */
+}
+
+.container:hover {
+    box-shadow: none;
+}
+
+.container h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ff8c00;
 }
 
 .text-container {
@@ -11,26 +29,151 @@
     width: 100%;
 }
 
-textarea {
-    width: calc(100% - 10px); /* Учитываем внутренние отступы */
-    height: 100px;
-    resize: none;
-    border: 1px solid #ccc;
+.text-container textarea {
+    margin-bottom: 10px;
+}
+
+.text-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Реверт стилей полей ввода к базовым */
+textarea, input[type="text"], input[type="number"], select {
+    border: 1px solid #000; /* Черная обводка */
+    border-radius: 4px;
     padding: 5px;
     box-sizing: border-box;
+    /* Удаляем все width, max-width, display, float, clear стили */
+    width: auto; /* Позволяем элементу взять естественный размер */
+    display: inline-block; /* Для корректного расположения рядом с метками */
+    transition: none; /* Убираем переходы */
 }
 
-.char-count {
-    margin-top: 5px;
-    font-size: 14px;
+textarea {
+    height: 100px;
+    resize: none;
+    width: calc(100% - 10px); /* Возможно, оригинальный стиль для textarea */
 }
 
+textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    border-color: #000; /* Черная обводка при фокусе */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, .25); /* Черная тень при фокусе */
+}
+
+.input-container {
+    margin-bottom: 20px;
+    /* Удаляем все width, max-width, display, float, clear стили */
+    /* Возможно, потребуется вернуть display: flex или grid если использовалось для выравнивания */
+}
+
+.input-container label {
+    /* Удаляем все width, max-width, display, float, clear стили */
+    display: inline-block; /* Для корректного расположения рядом с полями ввода */
+    margin-right: 10px; /* Отступ справа от метки */
+}
+
+/* Стили для описаний разделов */
+.section-description {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px; /* Add bottom margin */
+}
+
+.section-description p {
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.section-description ul, 
+.section-description ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    list-style: none; /* Убираем стандартные маркеры списка */
+    padding-left: 0; /* Убираем стандартный левый padding */
+}
+
+.section-description li {
+    margin-bottom: 5px;
+    color: #495057;
+}
+
+.how-to-use {
+    font-weight: bold;
+    color: #ff8c00;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* Стили для списков в описаниях */
+.section-description ul li::before {
+    content: "•";
+    color: #ff8c00;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.section-description ol {
+    counter-reset: item;
+    list-style: none;
+}
+
+.section-description ol li {
+    counter-increment: item;
+    position: relative;
+    padding-left: 1.5em;
+}
+
+.section-description ol li::before {
+    content: counter(item) ". ";
+    color: #ff8c00;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Стили для кнопок */
+.process-btn {
+    background-color: #ff8c00; /* Orange background */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: none; /* Remove transitions */
+    transform: none; /* Remove transformations */
+    box-shadow: none; /* Remove shadows */
+    margin: 5px; /* Small margin between buttons */
+    display: inline-block; /* Убедимся, что кнопки отображаются как строчно-блочные элементы */
+    text-decoration: none; /* Убираем подчеркивание, если применяется к ссылкам */
+    text-align: center; /* Выравнивание текста по центру */
+    line-height: normal; /* Сброс высоты строки */
+}
+
+.process-btn:hover {
+    background-color: #e07b00; /* Darker orange on hover */
+    transform: none; /* Remove transformations */
+    box-shadow: none; /* Remove shadows */
+}
+
+.process-btn:active {
+    background-color: #c06a00; /* Even darker orange on active */
+    transform: none; /* Remove transformations */
+    box-shadow: none; /* Remove shadows */
+}
+
+/* Стили для результата сравнения */
 .result {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
 }
 
 #differences {
@@ -43,12 +186,6 @@ textarea {
     background-color: lightgreen;
 }
 
-.container {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 40px;
-}
-
 #unique_output {
     margin-top: 10px;
     padding: 10px;
@@ -57,6 +194,32 @@ textarea {
     min-height: 100px;
 }
 
+.error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
 
 /* Дополнительные стили для мобильных устройств */
 @media only screen and (max-width: 600px) {
@@ -70,12 +233,87 @@ textarea {
 
     button.convert-btn,
     button.process-btn {
-        margin-bottom: 20px; /* Добавляем отступ снизу для кнопок */
+        margin-bottom: 20px;
     }
 
     #unique_output {
-        margin-bottom: 20px; /* Добавляем отступ снизу для окна #unique_output */
+        margin-bottom: 20px;
     }
 }
 
-/*быстро делаем все словачерез запятую*/
+/* Стили для кастомного инпута файла */
+.custom-file-upload {
+    border: 1px solid #000; /* Черная обводка */
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #ff8c00; /* Оранжевый фон */
+    color: white;
+    border-radius: 4px;
+}
+
+.hidden-file-input {
+    display: none; /* Скрываем оригинальный input type="file" */
+}
+
+#fileInputStatus {
+    margin-left: 10px;
+    font-style: italic;
+    color: #555;
+    vertical-align: middle; /* Выравниваем по вертикали со скрытым инпутом */
+}
+
+/* Add button group styles */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Standardize input and button styles */
+textarea,
+input[type="text"],
+input[type="number"],
+select,
+.process-btn,
+.convert-btn,
+.custom-file-upload {
+    border: 1px solid #000; /* Thin black border */
+    border-radius: 0; /* Square corners */
+    padding: 5px;
+    box-sizing: border-box;
+    /* Keep existing styles for width, display etc if needed */
+    transition: none; /* Remove transitions */
+    transform: none; /* Remove transformations */
+    box-shadow: none; /* Remove shadows */
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+    width: calc(100% - 10px);
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #000; /* Black border on focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, .25); /* Black shadow on focus */
+}
+
+.input-container {
+    margin-bottom: 20px; /* Add bottom margin to input containers */
+    /* Keep existing styles */
+}
+
+.input-container label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Add margin to options class for spacing */
+.options {
+    margin-bottom: 15px;
+}

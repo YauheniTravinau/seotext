@@ -1,56 +1,115 @@
-.title {
-    text-align: center; /* Центрирование текста по горизонтали */
-}
-
-/* Стили для блоков цен и описания работы */
-.pricing {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
-}
-
-.pricing-column {
-    flex: 1;
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ddd;
 }
 
+.primary {
+    text-align: center;
+    margin: 40px 0;
+    color: #333;
+    font-size: 2.5em;
+}
 
-/* Медиа-запрос для мобильных устройств */
-@media only screen and (max-width: 600px) {
-    .pricing {
-        flex-direction: column; /* Отображаем блоки цен в столбик на маленьких экранах */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.service-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.service-card h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.service-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-card li {
+    margin: 12px 0;
+    padding-left: 25px;
+    position: relative;
+    color: #555;
+}
+
+.service-card li:before {
+    content: "•";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+}
+
+.contact-section {
+    text-align: center;
+    margin: 60px 0;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.contact-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.contact-section p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.telegram-button {
+    display: inline-block;
+    background: #0088cc;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.telegram-button:hover {
+    background: #006699;
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
     }
 
-    .pricing-column {
-        margin: 20px 0; /* Добавляем отступы сверху и снизу между блоками цен на маленьких экранах */
+    .service-card {
+        margin: 0 10px;
+    }
+
+    .primary {
+        font-size: 2em;
     }
 }
 
-/* Медиа-запрос для планшетов и средних устройств */
-@media only screen and (min-width: 601px) and (max-width: 1024px) {
-    .pricing {
-        flex-wrap: wrap; /* Разрешаем перенос строк для блоков цен на средних экранах */
-    }
-
-    .pricing-column {
-        flex-basis: calc(50% - 10px); /* Делаем блоки цен по 2 в ряду на средних экранах */
-        margin: 20px 5px; /* Добавляем отступы сверху и снизу, отступы по бокам для создания промежутка между колонками на средних экранах */
-    }
-
-    .pricing-column:last-child {
-        margin-right: 0; /* Убираем правый отступ у последнего блока цен в ряду на средних экранах */
-    }
-}
-
-/* Медиа-запрос для больших устройств */
-@media only screen and (min-width: 1025px) {
-    .pricing-column {
-        flex-basis: 30%; /* Уменьшаем ширину блоков цен на больших экранах */
-        margin: 20px 5px; /* Добавляем отступы сверху и снизу, отступы по бокам для создания промежутка между колонками на больших экранах */
-    }
-
-    .pricing-column:last-child {
-        margin-right: 0; /* Убираем правый отступ у последнего блока цен на больших экранах */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

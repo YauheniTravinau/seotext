@@ -1,7 +1,7 @@
 /* Основной контейнер */
-.app-container {
+.container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 1600px;
     text-align: center;
     margin: 0 auto;
     box-sizing: border-box; /* Учитываем padding и border в общей ширине */
@@ -225,7 +225,7 @@
 
 /* Адаптивность для маленьких экранов */
 @media (max-width: 480px) {
-    .app-container {
+    .container {
         width: 100%;
         padding: 10px;
     }
@@ -255,4 +255,8 @@
     .close {
         font-size: 20px; /* Ещё меньше кнопка закрытия */
     }
+}
+
+.analyzer-section {
+    margin-bottom: 30px;
 }

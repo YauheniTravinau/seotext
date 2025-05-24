@@ -14,13 +14,28 @@ document.addEventListener('DOMContentLoaded', function() {
     uploadButton.addEventListener('click', () => uploadList.click());
     uploadList.addEventListener('change', uploadTextFile);
 
-    function createList() {
-        const lines1 = inputText1.value.trim().split('\n');
-        const lines2 = inputText2.value.trim().split('\n');
-        const lines3 = inputText3.value.trim().split('\n');
-        const message = inputMessage.value.trim(); // Capture message input
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function validatePhone(phone) {
+        return /^\+?\d{7,15}$/.test(phone.replace(/\D/g, ''));
+    }
+    function checkLengths(lines1, lines2, lines3) {
+        return lines1.length === lines2.length && lines1.length === lines3.length;
+    }
 
-        if (lines1.length !== lines2.length || lines1.length !== lines3.length) {
+    function createList() {
+        let lines1 = inputText1.value.trim().split('\n').map(x => x.trim());
+        let lines2 = inputText2.value.trim().split('\n').map(x => x.trim());
+        let lines3 = inputText3.value.trim().split('\n').map(x => x.trim());
+        const message = inputMessage.value.trim();
+
+        // Удаляем пустые строки
+        lines1 = lines1.filter((v, i) => v && lines2[i] && lines3[i]);
+        lines2 = lines2.filter((v, i) => v && lines1[i] && lines3[i]);
+        lines3 = lines3.filter((v, i) => v && lines1[i] && lines2[i]);
+
+        if (!checkLengths(lines1, lines2, lines3)) {
             alert('Количество записей в каждом поле должно быть одинаковым.');
             return;
         }
@@ -30,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             name: name,
             phone: lines2[index],
             email: lines3[index]
-        }));
+        })).filter(line => validateEmail(line.email) && validatePhone(line.phone));
 
         const uniqueLines = removeDuplicates(combinedLines);
 
@@ -96,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.className = 'messenger-button ' + messenger;
                 button.textContent = messenger.charAt(0).toUpperCase() + messenger.slice(1);
                 button.onclick = function() {
-                    openMessenger(messenger, line.phone, line.email, message); // Передача сообщения
+                    openMessenger(messenger, line.phone, line.email, message);
                 };
                 const deleteIcon = document.createElement('span');
                 deleteIcon.className = 'delete-icon';
@@ -125,7 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteButton.className = 'delete-row';
             deleteButton.textContent = 'Удалить строку';
             deleteButton.onclick = function() {
-                lineElement.remove();
+                if (confirm('Вы уверены, что хотите удалить эту строку?')) {
+                    lineElement.remove();
+                }
             };
             deleteColumn.appendChild(deleteButton);
             lineElement.appendChild(deleteColumn);
@@ -134,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
             textAndButtonsContainer.appendChild(lineElement);
         });
     }
-
 
     function openMessenger(messenger, phone, email, message) {
         let url = '';
@@ -172,27 +188,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function downloadTextFile() {
-        const lines1 = inputText1.value.trim().split('\n');
-        const lines2 = inputText2.value.trim().split('\n');
-        const lines3 = inputText3.value.trim().split('\n');
-
-        if (lines1.length !== lines2.length || lines1.length !== lines3.length) {
+        let lines1 = inputText1.value.trim().split('\n').map(x => x.trim());
+        let lines2 = inputText2.value.trim().split('\n').map(x => x.trim());
+        let lines3 = inputText3.value.trim().split('\n').map(x => x.trim());
+        // Удаляем пустые строки
+        lines1 = lines1.filter((v, i) => v && lines2[i] && lines3[i]);
+        lines2 = lines2.filter((v, i) => v && lines1[i] && lines3[i]);
+        lines3 = lines3.filter((v, i) => v && lines1[i] && lines2[i]);
+        if (!checkLengths(lines1, lines2, lines3)) {
             alert('Количество записей в каждом поле должно быть одинаковым.');
             return;
         }
-
         let uniqueLines = [];
         const uniqueEmails = new Set();
-
         lines1.forEach((name, index) => {
-            const email = lines3[index].trim(); // Assuming email is in lines3
-
-            if (!uniqueEmails.has(email)) {
+            const email = lines3[index].trim();
+            const phone = lines2[index].trim();
+            if (!uniqueEmails.has(email) && validateEmail(email) && validatePhone(phone)) {
                 uniqueEmails.add(email);
-                uniqueLines.push(`${name}\t${lines2[index]}\t${email}`);
+                uniqueLines.push(`${name}\t${phone}\t${email}`);
             }
         });
-
         const content = uniqueLines.join('\n');
         const blob = new Blob([content], { type: 'text/plain' });
         const link = document.createElement('a');
@@ -206,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!file) {
             return;
         }
-
         const reader = new FileReader();
         reader.onload = function(e) {
             const content = e.target.result;
@@ -214,21 +229,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const text1 = [];
             const text2 = [];
             const text3 = [];
-
             lines.forEach(line => {
                 const [name, phone, email] = line.split('\t');
-                text1.push(name);
-                text2.push(phone);
-                text3.push(email);
+                if (name && phone && email) {
+                    text1.push(name);
+                    text2.push(phone);
+                    text3.push(email);
+                }
             });
-
             inputText1.value = text1.join('\n');
             inputText2.value = text2.join('\n');
             inputText3.value = text3.join('\n');
-
             createList();  // Automatically create the list after uploading the file
         };
-
         reader.readAsText(file);
     }
 

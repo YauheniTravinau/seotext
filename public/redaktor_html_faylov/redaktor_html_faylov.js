@@ -98,10 +98,18 @@ function addFile(fileName, fileContent) {
 }
 
 function saveFile(fileName, fileContent) {
+    if (!fileName || !/^[\w\-. ]+$/.test(fileName)) {
+        alert('Некорректное имя файла!');
+        return;
+    }
     console.log(`Файл ${fileName} сохранён с содержимым:`, fileContent);
 }
 
 function downloadFile(fileName, fileContent) {
+    if (!fileName || !/^[\w\-. ]+$/.test(fileName)) {
+        alert('Некорректное имя файла!');
+        return;
+    }
     const blob = new Blob([fileContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

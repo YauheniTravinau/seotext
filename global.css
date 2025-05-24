@@ -1,20 +1,16 @@
 /* Основные стили */
-
 body {
     font-family: "Courier New", Courier, monospace;
     font-size: 16px;
     line-height: 1.6;
     background-color: #f8f8f8;
     color: #333;
+    margin: 0;
+    overflow-x: hidden;
 }
 
 .primary {
     color: #ff6600;
-}
-
-.container {
-    max-width: 1600px;
-    margin: 0 auto;
 }
 
 .section {
@@ -53,13 +49,7 @@ h1 {
     text-align: center;
 }
 
-
 /*бегущая строка*/
-body {
-    margin: 0;
-    overflow-x: hidden;
-}
-
 .marquee-container {
     width: 100%;
     border-top: 1px solid black;
@@ -69,21 +59,33 @@ body {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    height: 50px; /* Высота контейнера */
-    margin-top: 20px; /* Отступ сверху */
+    height: 50px;
+    position: relative;
+    max-width: 100vw; /* Ограничиваем максимальную ширину */
 }
 
 .marquee {
     display: inline-block;
     white-space: nowrap;
     box-sizing: border-box;
+    position: relative;
+    will-change: transform;
+    max-width: 100%; /* Ограничиваем максимальную ширину */
 }
 
 .marquee span {
     display: inline-block;
     white-space: nowrap;
-    font-size: 2rem; /* Размер шрифта */
-    animation: marquee 180s linear infinite; /* Изменяем время анимации для теста */
+    font-size: 2rem;
+    animation: marquee 180s linear infinite;
+    padding-right: 50px;
+}
+
+/* Добавляем поддержку prefers-reduced-motion для пользователей, которые предпочитают меньше анимации */
+@media (prefers-reduced-motion: reduce) {
+    .marquee span {
+        animation: none;
+    }
 }
 
 button.convert-btn,
@@ -109,10 +111,6 @@ button.process-btn:hover {
 }
 
 @media screen and (max-width: 1620px) {
-    .container {
-        padding: 0 20px; /* Добавляем отступы по краям */
-    }
-
     .section {
         padding: 10px; /* Уменьшаем внутренние отступы */
     }
@@ -134,12 +132,12 @@ button.process-btn:hover {
 /* Медиа запросы для уменьшения размера бегущей строки на мобильных устройствах */
 @media (max-width: 768px) {
     .marquee span {
-        font-size: 1.5rem; /* Уменьшение размера шрифта на мобильных устройствах */
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .marquee span {
-        font-size: 1rem; /* Дополнительное уменьшение размера шрифта на более узких экранах */
+        font-size: 1rem;
     }
 }

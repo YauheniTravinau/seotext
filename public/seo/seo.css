@@ -1,82 +1,193 @@
 /* Общие стили для .service */
 .service {
     display: flex;
-    flex-direction: column; /* Изменяем направление flex контейнера на вертикальное */
+    flex-direction: column;
     margin-bottom: 40px;
+    padding: 0 15px;
 }
 
 /* Стили для .description */
 .description {
-    margin-left: 0; /* Убираем отступ слева */
-    margin-top: 10px; /* Добавляем отступ сверху для разделения блоков услуг */
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
 }
 
+.square {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
 .square span {
-    font-size: 42px; /* Уменьшим размер числа в квадрате */
-    font-weight: bold; /* Жирный шрифт для большей выразительности */
+    font-size: 32px;
+    font-weight: bold;
     border: 2px solid black;
-    padding: 10px; /* Добавим равномерные отступы */
+    padding: 10px;
+    min-width: 60px;
+    text-align: center;
 }
 
 /* Стили для pre внутри .description */
 .description pre {
-    white-space: pre-wrap; /* Перенос строк в pre элементе при необходимости */
+    white-space: pre-wrap;
     background-color: #333;
     color: white;
     padding: 15px;
     border-radius: 8px;
     overflow-x: auto;
+    font-size: 14px;
 }
 
 /* Стили для .bordered-box */
 .bordered-box {
     border: 2px solid #ff6600;
-    padding: 20px; /* Увеличим отступы внутри блока */
-    margin-top: 40px; /* Увеличим интервал от верхнего блока */
+    padding: 20px;
+    margin: 40px 15px;
+    border-radius: 8px;
 }
 
 /* Стили для .container */
 .container {
-    max-width: 800px; /* Ширина контейнера ограничена для улучшения читаемости на больших экранах */
-    margin: 0 auto; /* Центрирование контейнера на странице */
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
 /* Стили для .primary заголовка */
 .primary {
-    color: #333; /* Цвет заголовка */
+    color: #333;
+    font-size: 24px;
+    margin: 20px 0;
 }
 
-/* Медиа-запросы для адаптивности */
-@media only screen and (min-width: 768px) {
-    /* При ширине экрана не менее 768px */
-    .service {
-        flex-direction: row; /* Изменяем направление flex контейнера на горизонтальное */
-    }
-    .description {
-        margin-left: 20px; /* Возвращаем отступ слева для блока описания */
-        margin-top: 0; /* Убираем отступ сверху для блока описания */
-        flex: 1; /* Растягиваем блок описания на всю доступную ширину */
-    }
-
-    .bordered-box {
-        margin-top: 40px; /* Возвращаем интервал от верхнего блока */
-        margin-bottom: 40px; /* Возвращаем интервал к нижнему блоку */
-    }
-}
-
+/* Стили для .styled-div */
 .styled-div {
-    background-color: #f0f0f0; /* Цвет фона */
-    padding: 20px; /* Отступы внутри блока */
-    border-radius: 8px; /* Закругление углов */
-    margin-bottom: 20px; /* Интервал снизу */
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 15px;
 }
 
 .styled-div p {
-    margin: 0; /* Убираем внешние отступы у параграфов */
-    line-height: 1.5; /* Межстрочный интервал */
+    margin: 0;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .styled-div strong {
-    color: #333; /* Цвет текста внутри тега <strong> */
+    color: #333;
+}
+
+/* Медиа-запросы для адаптивности */
+/* Мобильные устройства (до 480px) */
+@media only screen and (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .primary {
+        font-size: 20px;
+    }
+    
+    .description pre {
+        font-size: 12px;
+        padding: 10px;
+    }
+    
+    .square span {
+        font-size: 28px;
+        padding: 8px;
+    }
+}
+
+/* Планшеты (481px - 768px) */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .service {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .description {
+        margin-left: 15px;
+        flex: 1;
+        min-width: 300px;
+    }
+    
+    .square {
+        margin-bottom: 0;
+    }
+}
+
+/* Планшеты и маленькие десктопы (769px - 1024px) */
+@media only screen and (min-width: 769px) {
+    .service {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .description {
+        margin-left: 20px;
+        flex: 1;
+    }
+    
+    .square {
+        margin-bottom: 0;
+    }
+    
+    .primary {
+        font-size: 28px;
+    }
+}
+
+/* Десктопы (1025px и выше) */
+@media only screen and (min-width: 1025px) {
+    .container {
+        padding: 0 30px;
+    }
+    
+    .service {
+        margin-bottom: 60px;
+    }
+    
+    .description {
+        margin-left: 30px;
+    }
+    
+    .primary {
+        font-size: 32px;
+    }
+    
+    .styled-div {
+        margin: 30px 0;
+    }
+}
+
+/* Стили для изображений */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Стили для ссылок */
+a {
+    word-break: break-word;
+}
+
+/* Стили для списков */
+ul, ol {
+    padding-left: 20px;
+    margin: 15px 0;
+}
+
+li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Стили для горизонтальной линии */
+hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #ddd;
 }

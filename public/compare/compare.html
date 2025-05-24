@@ -17,33 +17,89 @@
 <div id="menu"></div>
 <div id="marquee-container"></div>
 <h1 class="primary">Самописные GPT помогаторы для SEO</h1>
+
+<!-- Секция сравнения текстов -->
 <div class="container">
     <h2>Сравнение текстов на отличия друг от друга</h2>
+    <div class="section-description">
+        <p>Этот инструмент поможет вам сравнить два текста и найти различия между ними. Полезно для:</p>
+        <ul>
+            <li>Сравнения разных версий одного текста</li>
+            <li>Поиска уникального контента</li>
+            <li>Анализа изменений в тексте</li>
+        </ul>
+        <p class="how-to-use">Как использовать:</p>
+        <ol>
+            <li>Вставьте первый текст в верхнее поле</li>
+            <li>Вставьте второй текст в нижнее поле</li>
+            <li>Различия будут автоматически подсвечены зеленым цветом</li>
+        </ol>
+    </div>
     <div class="text-container">
-        <label for="text1"></label><textarea id="text1" placeholder="Введите текст 1"></textarea>
+        <label for="text1"></label>
+        <textarea id="text1" placeholder="Введите текст 1"></textarea>
         <p id="charCount1" class="char-count">Количество символов: 0</p>
     </div>
     <div class="text-container">
-        <label for="text2"></label><textarea id="text2" placeholder="Введите текст 2"></textarea>
+        <label for="text2"></label>
+        <textarea id="text2" placeholder="Введите текст 2"></textarea>
         <p id="charCount2" class="char-count">Количество символов: 0</p>
+    </div>
+    <div class="result">
+        <p id="differences"></p>
     </div>
 </div>
 
-<div class="result">
-    <p id="differences"></p>
-</div>
-
+<!-- Секция объединения фраз -->
 <div class="container">
     <h2>Быстро делаем текст через запятую</h2>
-    <label for="input"></label>
-    <textarea id="input" placeholder="Введите словосочетания по одному на строку"></textarea>
-    <button class="process-btn" onclick="combinePhrases()">Combine</button>
-    <button class="process-btn" id="copyBtn" onclick="copyToClipboardd()">&#128203;</button>
-    <div id="outputt"></div>
+    <div class="section-description">
+        <p>Инструмент для быстрого объединения списка фраз в одну строку через запятую. Идеально подходит для:</p>
+        <ul>
+            <li>Создания мета-тегов</li>
+            <li>Формирования списков ключевых слов</li>
+            <li>Подготовки alt-текстов для изображений</li>
+        </ul>
+        <p class="how-to-use">Как использовать:</p>
+        <ol>
+            <li>Введите каждую фразу с новой строки</li>
+            <li>Нажмите кнопку "Объединить"</li>
+            <li>Используйте кнопку копирования для сохранения результата</li>
+        </ol>
+    </div>
+    <div class="text-container">
+        <label for="input"></label>
+        <textarea id="input" placeholder="Введите словосочетания по одному на строку"></textarea>
+        <div class="button-group">
+            <button class="process-btn" onclick="combinePhrases()">Объединить</button>
+            <button class="process-btn" id="copyBtn" onclick="copyToClipboard()">&#128203;</button>
+        </div>
+        <div id="outputt"></div>
+    </div>
 </div>
-<br>
+
+<!-- Секция конвертера изображений -->
 <div class="container">
     <h2>Конвертер изображений | Быстрая обрезка</h2>
+    <div class="section-description">
+        <p>Мощный инструмент для обработки изображений. Позволяет:</p>
+        <ul>
+            <li>Изменять размеры изображений с сохранением пропорций</li>
+            <li>Конвертировать в разные форматы (JPEG, PNG, WEBP)</li>
+            <li>Создавать несколько копий с разными размерами</li>
+            <li>Добавлять подписи к изображениям</li>
+            <li>Сохранять как отдельные файлы или ZIP-архив</li>
+        </ul>
+        <p class="how-to-use">Как использовать:</p>
+        <ol>
+            <li>Укажите желаемые размеры (ширина и высота)</li>
+            <li>Выберите количество копий</li>
+            <li>Загрузите изображения</li>
+            <li>Выберите формат и метод сохранения</li>
+            <li>При необходимости добавьте подписи</li>
+            <li>Нажмите "Обработать и переименовать"</li>
+        </ol>
+    </div>
     <div class="input-container">
         <label for="width">Ширина:</label>
         <input type="text" id="width" placeholder="2500">
@@ -56,7 +112,14 @@
         <label for="copies">Количество копий:</label>
         <input type="number" id="copies" min="1" value="1">
     </div>
-    <input type="file" id="fileInput" multiple>
+    
+    <!-- Custom file input with Russian text -->
+    <label for="fileInput" class="custom-file-upload process-btn">
+        Выбрать файлы
+    </label>
+    <input type="file" id="fileInput" multiple class="hidden-file-input">
+    <span id="fileInputStatus">Файл не выбран</span>
+
     <div class="input-container">
         <label for="format">Формат:</label>
         <select id="format">
@@ -82,9 +145,26 @@
     <div id="output"></div>
 </div>
 
-<br>
+<!-- Секция преобразования текста -->
 <div class="container">
     <h2>Быстрое сокращение и преобразование текста</h2>
+    <div class="section-description">
+        <p>Инструмент для создания уникального контента. Поддерживает:</p>
+        <ul>
+            <li>Два режима работы для разных типов контента</li>
+            <li>Транслитерацию русского текста в латиницу</li>
+            <li>Ограничение длины строк</li>
+            <li>Перемешивание фраз для уникальности</li>
+        </ul>
+        <p class="how-to-use">Как использовать:</p>
+        <ol>
+            <li>Выберите режим работы</li>
+            <li>Укажите максимальную длину строки</li>
+            <li>Введите исходный текст</li>
+            <li>При необходимости включите транслитерацию</li>
+            <li>Нажмите "Обработать текст"</li>
+        </ol>
+    </div>
     <label for="unique_inputText"></label><textarea id="unique_inputText" placeholder="Введите текст здесь..."></textarea>
     <div class="options">
         <label for="maxLineLength">Макс. длина строки:</label>
@@ -101,14 +181,33 @@
         <label for="transliteration">Преобразовать русские слова в латиницу:</label>
         <input type="checkbox" id="transliteration">
     </div>
-    <button class="process-btn" id="shuffleButton" onclick="shuffleText()">Обработать текст</button>
+    <button class="process-btn" id="shuffleButton">Обработать текст</button>
     <button class="process-btn" onclick="copyResult()">&#128203;</button>
     <h2>Готовый результат:</h2>
     <div id="unique_output"></div>
 </div>
-<br>
+
+<!-- Секция создания Sitemap -->
 <div class="container">
     <h2>Создание Sitemap - способ через Windows</h2>
+    <div class="section-description">
+        <p>Инструмент для создания XML-карты сайта. Помогает:</p>
+        <ul>
+            <li>Создавать sitemap.xml для страниц сайта</li>
+            <li>Создавать sitemap-images.xml для изображений</li>
+            <li>Добавлять метаданные для изображений</li>
+            <li>Оптимизировать индексацию сайта</li>
+        </ul>
+        <p class="how-to-use">Как использовать:</p>
+        <ol>
+            <li>Скачайте и установите wget</li>
+            <li>Введите URL вашего сайта</li>
+            <li>Скопируйте и выполните сгенерированную команду</li>
+            <li>Загрузите полученный файл wget-log.txt</li>
+            <li>Добавьте описания для изображений</li>
+            <li>Создайте sitemap файлы</li>
+        </ol>
+    </div>
     <p><a href="/downloads/robots.txt" download>robots.txt</a> - пример файла (Добавляем в корневую директорию сайта, исправте внутри ссылку "ваш_сайт")</p>
     <p><a href="/downloads/wget_1.21.1.rar" download>wget_1.21.1</a> - скачайте архив | разорхивируйте | скопируйте путь к архиву</p>
     <p>мой путь cd /d E:\программер\Программки\wget_1.21.1 - пути начинаются с "cd /d"</p>
@@ -116,8 +215,6 @@
     <p>Win + R - вписываем cmd и жмём OK</p>
     <p>в появившемся окне вписываем путь к файлу wget_1.21.1</p>
     <p>cd /d E:\программер\Программки\wget_1.21.1</p>
-    <hr>
-    <br>
     <label for="urlInput_new"></label><input type="text" id="urlInput_new" placeholder="Введите URL сайта">
     <button class="process-btn" onclick="generateWgetCommand()">Сгенерировать wget команду</button>
     <div id="resultContainer_new" style="display: none;">
@@ -125,11 +222,9 @@
         <div id="changed_unique_output_new"></div>
         <button class="process-btn" onclick="copyToClipboard()">&#128203;</button>
         <p>Копируем и вставляем команду в "cmd". Файл появится в той же папке, где программа, и ждём примерно 1-5 минут до полного завершения.</p>
-        <hr>
         <h2>Cюда добавляем полученный файл wget-log.txt</h2>
         <input type="file" id="file-input_new" accept=".txt"><p>Файл мгновенно скачается, под названием extracted_links</p>
         <p>загружаем данный файл в "Создание Sitemap"</p>
-        <hr>
         <h2>Создание Sitemap</h2>
         <p>(jpg|jpeg|webp) форматы изображений которые будут в sitemap-images</p>
         <form id="fileForm_new">
@@ -140,7 +235,6 @@
         </form>
     </div>
 </div>
-<br>
 <div id="footer"></div>
 <script src="/global.js"></script>
 <script src="compare.js"></script>

@@ -3,6 +3,11 @@
 }
 
 .container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -14,6 +19,8 @@
 
 .container textarea {
     width: 400px;
+    max-width: 100%;
+    min-width: 200px;
     height: 400px;
     resize: none;
     padding: 10px;
@@ -21,6 +28,10 @@
     border: 1px solid #ccc;
     font-family: inherit;
     font-size: 14px;
+    box-sizing: border-box;
+    max-height: 300px;
+    min-height: 80px;
+    overflow-y: auto;
 }
 
 .container button {
@@ -36,6 +47,9 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .text-line {
@@ -128,28 +142,89 @@ button.delete-row {
     border: none;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-    .container textarea {
-        width: 100%; /* Full width on smaller screens */
-        height: auto; /* Allow height to adjust */
-    }
+.text-line.edit-mode {
+    background: #fffbe6;
+    border: 2px solid #f0ad4e;
+}
 
+.inputs-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+.buttons-row {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+@media (max-width: 1200px) {
     .container {
-        padding: 10px; /* Add padding to container */
+        max-width: 100vw;
+        padding: 10px;
     }
-
-    .text-line {
-        flex-direction: column; /* Stack text lines vertically */
+    .container textarea {
+        width: 100%;
+        min-width: 0;
+        height: 200px;
     }
+    .text-and-buttons-container {
+        max-width: 100vw;
+        padding: 0 5px;
+    }
+}
 
-    .text-line > div {
-        margin-bottom: 5px; /* Adjust spacing between items */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+    }
+    .container textarea {
+        width: 100%;
+        min-width: 0;
+        height: 120px;
+    }
+    .text-and-buttons-container {
+        max-width: 100vw;
+        padding: 0 2px;
     }
 }
 
 @media (max-width: 480px) {
     .container {
-        flex-direction: column; /* Stack containers vertically on smaller screens */
+        padding: 5px;
+    }
+    .container textarea {
+        font-size: 12px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 900px) {
+    .inputs-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .container textarea {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .inputs-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .buttons-row {
+        flex-direction: column;
+        gap: 5px;
     }
 }

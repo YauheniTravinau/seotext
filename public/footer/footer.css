@@ -3,3 +3,23 @@ footer {
     border-top: 1px solid black;
     text-align: center;
 }
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff6600; /* Используем оранжевый цвет сайта */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none; /* Скрываем по умолчанию, будем показывать с помощью JS */
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.scroll-to-top:hover {
+    background-color: #e65c00;
+}

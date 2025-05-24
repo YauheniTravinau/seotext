@@ -14,26 +14,39 @@
 <div id="header"></div>
 <div id="menu"></div>
 <div id="marquee-container"></div>
-<h1>Генератор HTML Файлов</h1>
-
-<label for="separator" class="centered">Выберите разделитель:</label>
-<select id="separator" class="centered">
-    <option value="-">-</option>
-    <option value="_">_</option>
-</select>
-
-<label for="suffix" class="centered">Выберите окончание для файлов:</label>
-<select id="suffix" class="centered">
-    <option value="">Без окончания</option>
-    <option value="_ru">_ru</option>
-    <option value="_pl">_pl</option>
-    <option value="_en">_en</option>
-</select>
-
-<label for="fileNames" class="centered">Введите имена файлов, по одному в строке:</label>
-<textarea id="fileNames" placeholder="Введите имена файлов, по одному в строке"></textarea>
-
-<button id="generate" class="process-btn">Сгенерировать и Скачать</button>
+<div class="container">
+  <div class="analyzer-section" style="background: #e7f4ff; border-left: 4px solid #2196F3; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: left; max-width: 900px; margin-left: auto; margin-right: auto;">
+    <h3 style="color: #0d47a1; display: flex; align-items: center; gap: 10px;"><i class="fas fa-file-code"></i> Массовый генератор HTML-файлов</h3>
+    <p style="color: #333; margin: 0;">
+      Этот инструмент позволяет быстро создать архив с множеством HTML-файлов по списку имён. Просто введите имена файлов (по одному в строке), выберите разделитель и окончание, и скачайте готовый ZIP-архив для массовой загрузки на сайт или для других задач.<br><br>
+      <strong>Возможности:</strong>
+      <ul>
+        <li>Автоматическая транслитерация имён файлов (русский, польский, английский)</li>
+        <li>Выбор разделителя и окончания для файлов</li>
+        <li>Генерация чистых HTML-файлов с базовой структурой</li>
+        <li>Скачивание всех файлов одним архивом</li>
+        <li>Адаптивный дизайн для любых устройств</li>
+      </ul>
+      <span style="color: #e91e63;">Важно: все файлы генерируются только в вашем браузере, ваши данные не отправляются на сервер.</span>
+    </p>
+  </div>
+  <h1>Генератор HTML Файлов</h1>
+  <label for="separator" class="centered">Выберите разделитель:</label>
+  <select id="separator" class="centered">
+      <option value="-">-</option>
+      <option value="_">_</option>
+  </select>
+  <label for="suffix" class="centered">Выберите окончание для файлов:</label>
+  <select id="suffix" class="centered">
+      <option value="">Без окончания</option>
+      <option value="_ru">_ru</option>
+      <option value="_pl">_pl</option>
+      <option value="_en">_en</option>
+  </select>
+  <label for="fileNames" class="centered">Введите имена файлов, по одному в строке:</label>
+  <textarea id="fileNames" placeholder="Введите имена файлов, по одному в строке"></textarea>
+  <button id="generate" class="process-btn">Сгенерировать и Скачать</button>
+</div>
 
 <div id="footer"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>

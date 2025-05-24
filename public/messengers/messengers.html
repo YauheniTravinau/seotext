@@ -16,15 +16,34 @@
 <div id="marquee-container"></div>
 <br>
 <div class="container">
-    <label for="inputText1"></label><textarea id="inputText1" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
-    <label for="inputText2"></label><textarea id="inputText2" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
-    <label for="inputText3"></label><textarea id="inputText3" placeholder="Введите текст (каждая строчка - новый текст)"></textarea>
+  <div class="analyzer-section" style="background: #e7f4ff; border-left: 4px solid #2196F3; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: left; max-width: 900px; margin-left: auto; margin-right: auto;">
+    <h3 style="color: #0d47a1; display: flex; align-items: center; gap: 10px;"><i class="fas fa-paper-plane"></i> Мульти-мессенджер генератор</h3>
+    <p style="color: #333; margin: 0;">
+      Этот инструмент позволяет быстро подготовить и отправить сообщения через WhatsApp, Viber, Telegram или Email для списка контактов. Просто вставьте списки имён, телефонов и email, напишите текст сообщения — и для каждого контакта появятся кнопки для отправки сообщения в выбранный мессенджер.<br><br>
+      <strong>Возможности:</strong>
+      <ul>
+        <li>Генерация кнопок для отправки сообщений в мессенджеры и на email</li>
+        <li>Редактирование контактов прямо в списке</li>
+        <li>Удаление строк и отдельных кнопок</li>
+        <li>Загрузка и сохранение списка контактов в TXT</li>
+        <li>Автоматическое удаление дубликатов по email</li>
+        <li>Адаптивный дизайн для любых устройств</li>
+      </ul>
+      <span style="color: #e91e63;">Важно: ваши данные не сохраняются на сервере и обрабатываются только в вашем браузере.</span>
+    </p>
+  </div>
+  <div class="inputs-row">
+    <label for="inputText1"></label><textarea id="inputText1" placeholder="Введите имена (каждая строчка - новое имя)"></textarea>
+    <label for="inputText2"></label><textarea id="inputText2" placeholder="Введите телефоны (каждая строчка - новый телефон)"></textarea>
+    <label for="inputText3"></label><textarea id="inputText3" placeholder="Введите email (каждая строчка - новый email)"></textarea>
     <label for="inputMessage"></label><textarea id="inputMessage" placeholder="Введите сообщение для мессенджеров"></textarea>
-
+  </div>
+  <div class="buttons-row">
     <button id="createButtons" class="dropdown">Создать</button>
     <button id="downloadList" class="dropdown">Скачать список</button>
     <input type="file" id="uploadList" accept=".txt" style="display: none;">
     <button id="uploadButton" class="dropdown">Загрузить список</button>
+  </div>
 </div>
 <br>
 <div id="textAndButtons" class="text-and-buttons-container">

@@ -1,21 +1,26 @@
-
+/* Container styles */
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
 /* Стили для статей */
 #articles {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 20px;
+    grid-gap: 40px;
+    padding: 0 20px;
+    margin-top: 20px;
 }
-
-
 
 /* Добавим стили для статей */
 .article {
     border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 30px;
+    border-radius: 8px;
     background-color: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
 
@@ -23,9 +28,24 @@
     transform: translateY(-5px);
 }
 
-.article h2 {
+.article h2 a,
+.article h3 a,
+.article h4 a {
+    color: #ff6600;
+    text-decoration: none;
+}
+
+.article h2 a:hover,
+.article h3 a:hover,
+.article h4 a:hover {
+    text-decoration: underline;
+}
+
+.article h2,
+.article h3,
+.article h4 {
     margin-top: 0;
-    color: #333;
+    font-weight: bold;
 }
 
 .article p {
@@ -34,9 +54,8 @@
 
 .highlighted {
     border: 2px solid #ff6600;
-    padding: 5px; /* Добавим немного отступа вокруг текста */
+    padding: 5px;
 }
-
 
 /* Обновленные стили для модального окна */
 .modal {
@@ -49,11 +68,19 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     max-width: 80%;
-    width: 90%; /* Изменено на относительное значение для лучшей адаптивности */
-    max-height: 90%; /* Добавлено для предотвращения выхода за пределы экрана */
+    width: 90%;
+    max-height: 90%;
     overflow-y: auto;
     z-index: 9999;
     display: none;
+}
+
+.modal h1,
+.modal h2,
+.modal h3,
+.modal h4 {
+    color: #ff6600;
+    font-weight: bold;
 }
 
 .overlay {
@@ -78,7 +105,7 @@
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #e65c00;
     text-decoration: none;
     cursor: pointer;
 }
@@ -87,7 +114,7 @@
 @media screen and (max-width: 768px) {
     .modal {
         width: 80%;
-        max-width: 80%; /* Уменьшаем максимальную ширину для мобильных устройств */
+        max-width: 80%;
     }
 }
 

@@ -203,9 +203,6 @@ select, input[type="text"] {
 
 /* Мобильные стили */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
     .container {
         padding: 10px;
     }
@@ -697,4 +694,10 @@ select, input[type="text"] {
 .analyzer-section .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
 }

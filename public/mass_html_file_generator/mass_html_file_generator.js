@@ -1,17 +1,25 @@
 document.getElementById('generate').addEventListener('click', () => {
     const separator = document.getElementById('separator').value;
     const suffix = document.getElementById('suffix').value;
-    const fileNames = document.getElementById('fileNames').value.split('\n').filter(name => name.trim() !== '');
+    const fileNames = document.getElementById('fileNames').value.split('\n').map(name => name.trim()).filter(name => name !== '');
 
     if (fileNames.length === 0) {
-        alert('Please enter at least one file name.');
+        alert('Пожалуйста, введите хотя бы одно имя файла.');
         return;
     }
 
     const zip = new JSZip();
+    let errorFiles = [];
 
     fileNames.forEach(fileName => {
-        const sanitizedFileName = convertToLatin(fileName.trim(), separator) + suffix + '.html';
+        let sanitizedFileName = convertToLatin(fileName, separator)
+            .replace(/[^a-zA-Z0-9\-_]/g, '') // только латиница, цифры, - и _
+            .replace(/\s+/g, separator);
+        if (!sanitizedFileName) {
+            errorFiles.push(fileName);
+            return;
+        }
+        sanitizedFileName += suffix + '.html';
         const content = `
             <!DOCTYPE html>
             <html lang="en">
@@ -27,6 +35,10 @@ document.getElementById('generate').addEventListener('click', () => {
         `;
         zip.file(sanitizedFileName, content);
     });
+
+    if (errorFiles.length > 0) {
+        alert('Некоторые имена файлов были пропущены из-за недопустимых символов или пустого результата после транслитерации:\n' + errorFiles.join('\n'));
+    }
 
     zip.generateAsync({ type: 'blob' }).then(content => {
         const link = document.createElement('a');

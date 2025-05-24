@@ -11,7 +11,6 @@ nav ul {
 nav ul li {
     display: inline-block;
     margin: 10px;
-    border: 1px solid black;
     position: relative;
 }
 
@@ -24,6 +23,10 @@ nav ul li a {
     text-decoration: none;
     display: block;
     padding: 10px;
+}
+
+nav ul li a i {
+    margin-right: 8px; /* Add some space between the icon and the text */
 }
 
 nav ul li:hover {
@@ -44,6 +47,7 @@ nav ul li .dropdown-menu li a:hover {
 
 .burger-menu {
     display: none;
+    /* Default state - hidden on large screens */
 }
 
 @media (max-width: 1200px) {
@@ -55,8 +59,8 @@ nav ul li .dropdown-menu li a:hover {
         display: flex;
         justify-content: flex-end;
         padding: 10px;
-        position: absolute;
-        top: -75px;
+        position: fixed;
+        top: 10px;
         right: 10px;
         z-index: 9999;
     }
@@ -73,6 +77,27 @@ nav ul li .dropdown-menu li a:hover {
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
         border-top: 16px solid #ff6600;
         padding: 20px;
+        z-index: 998;
+    }
+
+    .menu-items li {
+        display: block;
+        margin: 0;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+    }
+
+    .menu-items li:last-child {
+        border-bottom: none;
+    }
+
+    .menu-items a {
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
     }
 
     .menu-items.open {
@@ -86,8 +111,72 @@ nav ul li .dropdown-menu li a:hover {
         color: #ff6600;
         cursor: pointer;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: none;
         border-radius: 4px;
+    }
+
+    /* Стили для выпадающего меню в бургер-меню */
+    nav ul li .dropdown-menu {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
+        position: static;
+        box-shadow: none;
+        min-width: auto;
+        background-color: transparent; /* Убираем фон */
+        margin-left: 0; /* Убираем отступ слева */
+        border-radius: 0; /* Убираем скругление углов */
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        width: 100%; /* Гарантируем ширину 100% родителя */
+        box-sizing: border-box; /* Учитываем padding в ширине */
+    }
+
+    /* Анимация при открытии выпадающего меню */
+    nav ul li.dropdown.dropdown-open .dropdown-menu {
+        max-height: 500px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Стили для пунктов выпадающего меню */
+    nav ul li .dropdown-menu li {
+        border-bottom: 1px solid #eee; /* Более светлая граница */
+        padding: 8px 20px; /* Увеличиваем левый отступ для вида подпунктов */
+        transition: background-color 0.3s ease;
+    }
+
+    nav ul li .dropdown-menu li:last-child {
+        border-bottom: none;
+    }
+
+    nav ul li .dropdown-menu li a {
+        padding: 0; /* Убираем padding у ссылок, так как он есть у li */
+        color: #333;
+        font-size: 15px; /* Немного увеличим размер шрифта */
+        transition: color 0.3s ease;
+    }
+
+    nav ul li .dropdown-menu li:hover {
+        background-color: #f0f0f0; /* Фон при наведении */
+    }
+
+    nav ul li .dropdown-menu li a:hover {
+        color: #ff6600;
+    }
+
+    /* Анимация иконки стрелки */
+    nav ul li.dropdown > a::after {
+        content: '▼';
+        font-size: 12px;
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+
+    nav ul li.dropdown.dropdown-open > a::after {
+        transform: rotate(180deg);
     }
 }
 
@@ -117,6 +206,12 @@ nav ul li:last-child {
 
 nav ul li .dropdown-menu li {
     display: block;
+    border-bottom: 1px solid #ccc; /* Add bottom border as separator */
+    text-align: left; /* Align text to the left */
+}
+
+nav ul li .dropdown-menu li:last-child {
+    border-bottom: none; /* Remove bottom border from the last item */
 }
 
 nav ul li .dropdown-menu li a {
@@ -124,10 +219,54 @@ nav ul li .dropdown-menu li a {
     color: black;
     text-decoration: none;
     display: block;
+    font-size: 14px; /* Reduce font size for dropdown items on wide screens */
+    white-space: nowrap; /* Prevent text wrapping for dropdown items on wide screens */
+    overflow: hidden; /* Hide overflowing text for dropdown items on wide screens */
+    text-overflow: ellipsis; /* Add ellipsis for dropdown items on wide screens */
 }
 
 /* Прокрутка для выпадающего меню на узких экранах */
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* Apply to mobile and tablet */
+    nav {
+        position: static; /* Ensure nav doesn't become a positioning context */
+    }
+
+    .burger-menu {
+        display: flex;
+        /* justify-content: flex-end; Remove as padding is on icon */
+        padding: 0; /* Remove padding from wrapper */
+        position: fixed; /* Position relative to the viewport */
+        top: 3px; /* Keep the current top position */
+        right: 10px; /* Keep distance from the right */
+        z-index: 10000; /* Ensure it's above other content */
+    }
+
+    .burger-icon {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+        cursor: pointer;
+        padding: 2px 4px; /* Further reduced padding */
+        border: 1px solid #ff6600; /* Keep border */
+        border-radius: 4px; /* Keep border radius */
+        background-color: #333; /* Match header background */
+    }
+
+    .menu-items {
+        width: 240px;
+        position: fixed; /* Stay fixed on the screen */
+        top: 0;
+        left: -100%;
+        background-color: #f9f9f9;
+        height: 100%;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        border-top: 16px solid #ff6600;
+        padding: 20px;
+        z-index: 9999; /* Ensure it's below the burger icon but above other content */
+    }
+
     nav ul li .dropdown-menu {
         max-height: 300px; /* Максимальная высота выпадающего меню */
         overflow-y: auto; /* Включаем вертикальную прокрутку */
