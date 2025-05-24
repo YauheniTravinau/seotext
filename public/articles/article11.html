@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Полное руководство по базам данных: от выбора типа до оптимизации производительности. Практические советы и примеры.">
+    <meta name="keywords" content="базы данных, MySQL, PostgreSQL, MongoDB, оптимизация, личный опыт">
+    <title>Базы данных: полное руководство | Личный опыт</title>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/public/menu/menu.css">
+    <link rel="stylesheet" href="/public/header/header.css">
+    <link rel="stylesheet" href="/public/footer/footer.css">
+    <link rel="stylesheet" href="/public/articles/article.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div id="menu"></div>
+    
+    <div class="container">
+        <article class="full-article">
+            <h1>Базы данных: полное руководство</h1>
+            
+            <div class="article-meta">
+                <span class="date">24 мая 2024</span>
+                <span class="reading-time">Время чтения: 55 минут</span>
+            </div>
+
+            <div class="article-content">
+                <p>Привет! Меня зовут Михаил, и я администратор баз данных с 7-летним опытом. За это время я работал с различными СУБД и помог оптимизировать более 100 проектов. Сегодня я расскажу о том, как правильно выбрать и настроить базу данных для вашего сайта.</p>
+
+                <h2>Типы баз данных</h2>
+                <p>Какие бывают базы данных:</p>
+                <ul>
+                    <li>
+                        <strong>Реляционные (SQL):</strong>
+                        <ul>
+                            <li>MySQL</li>
+                            <li>PostgreSQL</li>
+                            <li>SQLite</li>
+                            <li>Oracle</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Нереляционные (NoSQL):</strong>
+                        <ul>
+                            <li>MongoDB</li>
+                            <li>Redis</li>
+                            <li>Cassandra</li>
+                            <li>Neo4j</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Выбор базы данных</h2>
+                <p>Как выбрать подходящую СУБД:</p>
+                <ul>
+                    <li>
+                        <strong>Критерии выбора:</strong>
+                        <ul>
+                            <li>Тип данных</li>
+                            <li>Объем данных</li>
+                            <li>Нагрузка</li>
+                            <li>Масштабируемость</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Сравнение:</strong>
+                        <ul>
+                            <li>Производительность</li>
+                            <li>Надежность</li>
+                            <li>Стоимость</li>
+                            <li>Поддержка</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Проектирование базы данных</h2>
+                <p>Как спроектировать структуру:</p>
+                <ul>
+                    <li>
+                        <strong>Нормализация:</strong>
+                        <ul>
+                            <li>Первая нормальная форма</li>
+                            <li>Вторая нормальная форма</li>
+                            <li>Третья нормальная форма</li>
+                            <li>Денормализация</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Связи:</strong>
+                        <ul>
+                            <li>Один к одному</li>
+                            <li>Один ко многим</li>
+                            <li>Многие ко многим</li>
+                            <li>Референциальная целостность</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Оптимизация производительности</h2>
+                <p>Как ускорить работу базы данных:</p>
+                <ul>
+                    <li>
+                        <strong>Индексы:</strong>
+                        <ul>
+                            <li>Типы индексов</li>
+                            <li>Создание индексов</li>
+                            <li>Оптимизация запросов</li>
+                            <li>Мониторинг</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Кэширование:</strong>
+                        <ul>
+                            <li>Кэш запросов</li>
+                            <li>Кэш результатов</li>
+                            <li>Распределенный кэш</li>
+                            <li>Инвалидация</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Резервное копирование</h2>
+                <p>Как защитить данные:</p>
+                <ul>
+                    <li>
+                        <strong>Типы бэкапов:</strong>
+                        <ul>
+                            <li>Полные</li>
+                            <li>Инкрементальные</li>
+                            <li>Дифференциальные</li>
+                            <li>Транзакционные</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Восстановление:</strong>
+                        <ul>
+                            <li>Точка восстановления</li>
+                            <li>Временные метки</li>
+                            <li>Тестирование</li>
+                            <li>Документация</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Масштабирование</h2>
+                <p>Как увеличить производительность:</p>
+                <ul>
+                    <li>
+                        <strong>Вертикальное масштабирование:</strong>
+                        <ul>
+                            <li>Увеличение ресурсов</li>
+                            <li>Оптимизация сервера</li>
+                            <li>Настройка параметров</li>
+                            <li>Мониторинг</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Горизонтальное масштабирование:</strong>
+                        <ul>
+                            <li>Шардирование</li>
+                            <li>Репликация</li>
+                            <li>Балансировка нагрузки</li>
+                            <li>Кластеризация</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Безопасность</h2>
+                <p>Как защитить базу данных:</p>
+                <ul>
+                    <li>
+                        <strong>Доступ:</strong>
+                        <ul>
+                            <li>Пользователи и роли</li>
+                            <li>Права доступа</li>
+                            <li>Шифрование</li>
+                            <li>Аудит</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Защита данных:</strong>
+                        <ul>
+                            <li>Шифрование данных</li>
+                            <li>Маскирование</li>
+                            <li>Анонимизация</li>
+                            <li>Резервное копирование</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Мониторинг</h2>
+                <p>Как отслеживать состояние:</p>
+                <ul>
+                    <li>
+                        <strong>Метрики:</strong>
+                        <ul>
+                            <li>Производительность</li>
+                            <li>Использование ресурсов</li>
+                            <li>Ошибки</li>
+                            <li>Запросы</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Инструменты:</strong>
+                        <ul>
+                            <li>Системы мониторинга</li>
+                            <li>Логи</li>
+                            <li>Алерты</li>
+                            <li>Отчеты</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Оптимизация запросов</h2>
+                <p>Как писать эффективные запросы:</p>
+                <ul>
+                    <li>
+                        <strong>SQL:</strong>
+                        <ul>
+                            <li>Индексы</li>
+                            <li>JOIN</li>
+                            <li>Подзапросы</li>
+                            <li>Оконные функции</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>NoSQL:</strong>
+                        <ul>
+                            <li>Агрегации</li>
+                            <li>Индексы</li>
+                            <li>Проекции</li>
+                            <li>Шардирование</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Чек-лист оптимизации</h2>
+                <p>Что проверить:</p>
+                <ul>
+                    <li>
+                        <strong>Производительность:</strong>
+                        <ul>
+                            <li>Индексы</li>
+                            <li>Запросы</li>
+                            <li>Кэширование</li>
+                            <li>Конфигурация</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Безопасность:</strong>
+                        <ul>
+                            <li>Доступ</li>
+                            <li>Шифрование</li>
+                            <li>Бэкапы</li>
+                            <li>Аудит</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Заключение</h2>
+                <p>Работа с базами данных требует постоянного внимания и оптимизации. Выбирайте подходящую СУБД, следите за производительностью и не забывайте о безопасности. Помните, что хорошая база данных - это основа стабильной работы вашего сайта.</p>
+            </div>
+
+            <div class="article-navigation">
+                <a href="/public/articles/article10.html" class="prev">← Предыдущая статья</a>
+                <a href="/index.html" class="all-articles">Все статьи</a>
+                <a href="/public/articles/article12.html" class="next">Следующая статья →</a>
+            </div>
+
+            <div class="article-tags">
+                <span class="tag">базы данных</span>
+                <span class="tag">SQL</span>
+                <span class="tag">оптимизация</span>
+                <span class="tag">личный опыт</span>
+            </div>
+        </article>
+    </div>
+
+    <div id="footer"></div>
+    
+    <script src="/index.js"></script>
+    <script src="/global.js"></script>
+</body>
+</html> 
