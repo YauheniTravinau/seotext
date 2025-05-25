@@ -144,6 +144,7 @@ async function resizeAndRenameImages() {
         // Очистка полей
         document.getElementById('captions').value = '';
         document.getElementById('fileInput').value = '';
+        document.getElementById('fileInputStatus').textContent = 'Файл не выбран';
         clearLineCount();
     } catch (error) {
         console.error('Ошибка при обработке изображений:', error);
@@ -164,26 +165,97 @@ async function processImage(file, options) {
     console.log(`Processing file: ${file.name} with options:`, options);
     // Эта функция должна обрабатывать изображение (изменять размер, формат и т.д.)
     // и возвращать Promise, который разрешается объектом { blob: Blob, fileName: string }
-    
-    // Временная заглушка: просто возвращает исходный файл как blob
-    // В РЕАЛЬНОСТИ ТРЕБУЕТСЯ ПОЛНАЯ РЕАЛИЗАЦИЯ ОБРАБОТКИ ИЗОБРАЖЕНИЯ
-    
-    return new Promise((resolve) => {
-        // Читаем файл как ArrayBuffer, чтобы создать Blob
+
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = function() {
-            const blob = new Blob([reader.result], { type: file.type });
-            // Возвращаем оригинальное имя файла с новым расширением, если формат изменен
-            let newFileName = options.fileName;
-            if (options.format !== 'original' && file.type.split('/')[1] !== options.format) {
-                 newFileName = newFileName.split('.')[0] + '.' + options.format;
-            } else if (!newFileName.includes('.')) {
-                 // Добавляем расширение, если его нет в имени
-                 newFileName = newFileName + '.' + file.name.split('.').pop();
-            }
-            resolve({ blob: blob, fileName: newFileName });
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Use provided width and height options, or original size if not provided
+                const targetWidth = options.width || img.width;
+                const targetHeight = options.height || img.height;
+
+                // Set canvas size to the target dimensions
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+
+                let newWidth, newHeight;
+                const aspectRatio = img.width / img.height;
+
+                // Calculate scaled dimensions to cover the target canvas size while preserving aspect ratio
+                if (options.width && options.height) {
+                    // If both width and height are provided, scale proportionally to cover the target box
+                    const scaleX = targetWidth / img.width;
+                    const scaleY = targetHeight / img.height;
+                    const scale = Math.max(scaleX, scaleY); // Use Math.max to scale to cover
+
+                    newWidth = img.width * scale;
+                    newHeight = img.height * scale;
+
+                } else if (options.width && !options.height) {
+                    // If only width is provided, scale proportionally
+                    newWidth = targetWidth;
+                    newHeight = targetWidth / aspectRatio;
+
+                } else if (!options.width && options.height) {
+                    // If only height is provided, scale proportionally
+                    newHeight = targetHeight;
+                    newWidth = targetHeight * aspectRatio;
+                } else {
+                    // No dimensions provided, use original size
+                    newWidth = img.width;
+                    newHeight = img.height;
+                }
+
+                // Calculate offset to center the scaled image on the canvas
+                const offsetX = (canvas.width - newWidth) / 2;
+                const offsetY = (canvas.height - newHeight) / 2;
+
+                // Draw the image onto the canvas with scaling and centering
+                ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, newWidth, newHeight);
+
+                // Determine the output format
+                let outputFormat = 'image/jpeg'; // Default to jpeg
+                if (options.format === 'png') {
+                    outputFormat = 'image/png';
+                } else if (options.format === 'webp') {
+                    outputFormat = 'image/webp';
+                } else if (options.format === 'original') {
+                    outputFormat = file.type; // Use original file type
+                }
+
+                // Get the image quality (only applies to jpeg and webp)
+                const quality = options.quality || 0.85; // Default quality
+
+                canvas.toBlob(function(blob) {
+                    let newFileName = options.fileName;
+                    const originalExtension = file.name.split('.').pop();
+                    const outputExtension = outputFormat.split('/')[1];
+
+                    // Update filename extension if format changed
+                    if (options.format !== 'original' && originalExtension.toLowerCase() !== outputExtension.toLowerCase()) {
+                         newFileName = newFileName.split('.')[0] + '.' + outputExtension;
+                    } else if (!newFileName.includes('.')) {
+                         // Add original extension if no extension was in the provided name
+                         newFileName = newFileName + '.' + originalExtension;
+                    }
+
+
+                    resolve({ blob: blob, fileName: newFileName });
+                }, outputFormat, quality);
+            };
+            img.onerror = function() {
+                reject(new Error(`Failed to load image: ${file.name}`));
+            };
+            img.src = event.target.result;
         };
-        reader.readAsArrayBuffer(file);
+        reader.onerror = function() {
+            reject(new Error(`Failed to read file: ${file.name}`));
+        };
+        reader.readAsDataURL(file);
     });
 }
 
