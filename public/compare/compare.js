@@ -61,8 +61,10 @@ async function resizeAndRenameImages() {
             width: parseInt(document.getElementById('width').value) || 0,
             height: parseInt(document.getElementById('height').value) || 0,
             copies: parseInt(document.getElementById('copies').value) || 1,
-            format: document.getElementById('format').value,
-            saveMethod: document.getElementById('saveMethod').value,
+            format: document.getElementById('format').value || 'original',
+            quality: document.getElementById('quality').value || 'high',
+            saveMethod: document.getElementById('saveMethod').value || 'individual',
+            addOriginalName: document.getElementById('addOriginalName').checked || false,
             captions: document.getElementById('captions').value.trim() ? 
                 document.getElementById('captions').value.split('\n') : []
         };
@@ -88,11 +90,17 @@ async function resizeAndRenameImages() {
                     fileName = sanitizeFilename(fileName) + `_${j + 1}`;
                 }
 
+                // Add original filename if option is checked
+                if (options.addOriginalName) {
+                    const originalName = file.name.split('.')[0];
+                    fileName = `${fileName}_${originalName}`;
+                }
+
                 const imageOptions = {
                     width: options.width,
                     height: options.height,
                     format: options.format === 'original' ? file.type.split('/')[1] : options.format,
-                    quality: options.format === 'png' ? 1.0 : 0.85,
+                    quality: getQualityValue(options.quality),
                     fileName: fileName
                 };
 
@@ -160,12 +168,26 @@ function sanitizeFilename(filename) {
         .replace(/^-|-$/g, '');
 }
 
-// TODO: Реализовать функцию processImage для обработки изображений
+// Обновляем функцию getQualityValue для использования стандартных значений
+function getQualityValue(qualityOption) {
+    switch (qualityOption) {
+        case 'original':
+            return 1.0;
+        case 'high':
+            return 0.85;
+        case 'medium':
+            return 0.7;
+        case 'low':
+            return 0.5;
+        default:
+            return 0.85; // Стандартное значение - высокое качество
+    }
+}
+
+// Update processImage function to handle quality better
 async function processImage(file, options) {
     console.log(`Processing file: ${file.name} with options:`, options);
-    // Эта функция должна обрабатывать изображение (изменять размер, формат и т.д.)
-    // и возвращать Promise, который разрешается объектом { blob: Blob, fileName: string }
-
+    
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -187,25 +209,19 @@ async function processImage(file, options) {
 
                 // Calculate scaled dimensions to cover the target canvas size while preserving aspect ratio
                 if (options.width && options.height) {
-                    // If both width and height are provided, scale proportionally to cover the target box
                     const scaleX = targetWidth / img.width;
                     const scaleY = targetHeight / img.height;
-                    const scale = Math.max(scaleX, scaleY); // Use Math.max to scale to cover
+                    const scale = Math.max(scaleX, scaleY);
 
                     newWidth = img.width * scale;
                     newHeight = img.height * scale;
-
                 } else if (options.width && !options.height) {
-                    // If only width is provided, scale proportionally
                     newWidth = targetWidth;
                     newHeight = targetWidth / aspectRatio;
-
                 } else if (!options.width && options.height) {
-                    // If only height is provided, scale proportionally
                     newHeight = targetHeight;
                     newWidth = targetHeight * aspectRatio;
                 } else {
-                    // No dimensions provided, use original size
                     newWidth = img.width;
                     newHeight = img.height;
                 }
@@ -218,17 +234,17 @@ async function processImage(file, options) {
                 ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, newWidth, newHeight);
 
                 // Determine the output format
-                let outputFormat = 'image/jpeg'; // Default to jpeg
+                let outputFormat = 'image/jpeg';
                 if (options.format === 'png') {
                     outputFormat = 'image/png';
                 } else if (options.format === 'webp') {
                     outputFormat = 'image/webp';
                 } else if (options.format === 'original') {
-                    outputFormat = file.type; // Use original file type
+                    outputFormat = file.type;
                 }
 
-                // Get the image quality (only applies to jpeg and webp)
-                const quality = options.quality || 0.85; // Default quality
+                // Get the image quality
+                const quality = options.quality;
 
                 canvas.toBlob(function(blob) {
                     let newFileName = options.fileName;
@@ -237,12 +253,10 @@ async function processImage(file, options) {
 
                     // Update filename extension if format changed
                     if (options.format !== 'original' && originalExtension.toLowerCase() !== outputExtension.toLowerCase()) {
-                         newFileName = newFileName.split('.')[0] + '.' + outputExtension;
+                        newFileName = newFileName.split('.')[0] + '.' + outputExtension;
                     } else if (!newFileName.includes('.')) {
-                         // Add original extension if no extension was in the provided name
-                         newFileName = newFileName + '.' + originalExtension;
+                        newFileName = newFileName + '.' + originalExtension;
                     }
-
 
                     resolve({ blob: blob, fileName: newFileName });
                 }, outputFormat, quality);

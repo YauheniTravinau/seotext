@@ -130,11 +130,24 @@
         </select>
     </div>
     <div class="input-container">
+        <label for="quality">Качество изображения:</label>
+        <select id="quality">
+            <option value="original">Оригинальное (100%)</option>
+            <option value="high" selected>Высокое (85%)</option>
+            <option value="medium">Среднее (70%)</option>
+            <option value="low">Низкое (50%)</option>
+        </select>
+    </div>
+    <div class="input-container">
         <label for="saveMethod">Метод сохранения:</label>
         <select id="saveMethod">
             <option value="individual">Отдельные файлы</option>
             <option value="zip">ZIP-архив</option>
         </select>
+    </div>
+    <div class="input-container">
+        <label for="addOriginalName">Добавить оригинальное название в конец:</label>
+        <input type="checkbox" id="addOriginalName">
     </div>
     <div class="input-container">
         <label for="captions">Подписи:</label>
